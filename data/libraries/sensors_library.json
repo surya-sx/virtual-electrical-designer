@@ -1,0 +1,635 @@
+{
+  "library_name": "Sensors & Transducers",
+  "version": "3.0",
+  "category": "Sensors",
+  "description": "Comprehensive sensor library with 8 essential sensing types",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "temperature_sensor",
+      "name": "Temperature Sensor (NTC/RTD)",
+      "type": "Sensor",
+      "symbol": "R",
+      "description": "Thermistor or RTD temperature sensor with high accuracy. NTC: -40°C to +150°C range, ±1°C accuracy. RTD: -200°C to +600°C, ±0.5°C. Fast response <1s. Analog voltage output or I2C digital.",
+      "use_cases": "HVAC systems, industrial ovens, medical thermometers, weather stations, thermal management",
+      "editable_properties": {
+        "Sensor_Type": {
+          "value": "NTC Thermistor",
+          "unit": "type",
+          "options": ["NTC", "PTC", "RTD", "IC Sensor"],
+          "description": "Temperature sensor type"
+        },
+        "Temperature_Range": {
+          "value": "-40 to 150",
+          "unit": "°C",
+          "description": "Operating temperature range"
+        },
+        "Accuracy": {
+          "value": 1,
+          "unit": "°C",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Measurement accuracy"
+        },
+        "Resistance_at_25C": {
+          "value": 10000,
+          "unit": "Ω",
+          "min": 1000,
+          "max": 1000000,
+          "step": 1000,
+          "description": "Nominal resistance"
+        },
+        "B_Coefficient": {
+          "value": 3435,
+          "unit": "K",
+          "min": 2000,
+          "max": 4500,
+          "step": 50,
+          "description": "Temperature coefficient"
+        },
+        "Response_Time": {
+          "value": 0.5,
+          "unit": "s",
+          "min": 0.01,
+          "max": 10,
+          "step": 0.1,
+          "description": "Thermal response time"
+        },
+        "Dissipation_Constant": {
+          "value": 5,
+          "unit": "mW/°C",
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "description": "Self-heating coefficient"
+        },
+        "Package": {
+          "value": "0603",
+          "unit": "size",
+          "options": ["0603", "0805", "1206", "Axial"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Epcos, Murata",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.25,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 10,
+          "step": 0.05,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "humidity_sensor",
+      "name": "Humidity Sensor (Capacitive)",
+      "type": "Sensor",
+      "symbol": "R",
+      "description": "Capacitive humidity sensor with low hysteresis <2%. Measurement range 0-100% RH. Accuracy ±3%. I2C or analog voltage output. Typical response time 15s. Excellent stability over time.",
+      "use_cases": "Weather stations, HVAC control, data center monitoring, agricultural sensors, air quality",
+      "editable_properties": {
+        "Measurement_Range": {
+          "value": "0-100",
+          "unit": "%RH",
+          "description": "Relative humidity range"
+        },
+        "Accuracy": {
+          "value": 3,
+          "unit": "%RH",
+          "min": 1,
+          "max": 10,
+          "step": 0.5,
+          "description": "Typical accuracy"
+        },
+        "Hysteresis": {
+          "value": 2,
+          "unit": "%RH",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.5,
+          "description": "Maximum hysteresis"
+        },
+        "Response_Time": {
+          "value": 15,
+          "unit": "s",
+          "min": 5,
+          "max": 60,
+          "step": 5,
+          "description": "Time to 63% reading"
+        },
+        "Temperature_Coefficient": {
+          "value": 0.5,
+          "unit": "%RH/°C",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "description": "Temp effect on accuracy"
+        },
+        "Operating_Temperature": {
+          "value": "-40 to 80",
+          "unit": "°C",
+          "description": "Temperature range"
+        },
+        "Interface": {
+          "value": "I2C",
+          "unit": "type",
+          "options": ["Analog", "I2C", "SPI", "UART"],
+          "description": "Output interface"
+        },
+        "Supply_Voltage": {
+          "value": 3.3,
+          "unit": "V",
+          "min": 2.7,
+          "max": 5.5,
+          "step": 0.5,
+          "description": "Supply voltage"
+        },
+        "Manufacturer": {
+          "value": "Sensirion, Honeywell, DHT",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 5.00,
+          "unit": "USD",
+          "min": 1,
+          "max": 50,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "pressure_sensor",
+      "name": "Pressure Sensor (Barometric)",
+      "type": "Sensor",
+      "symbol": "R",
+      "description": "MEMS barometric pressure sensor 300-1100hPa with integrated temperature compensation. Accuracy ±0.6hPa. I2C/SPI interface. Low power: 5µA typical. Used for altitude calculation and weather monitoring.",
+      "use_cases": "Altimeter, weather stations, barometer, drone altitude hold, meteorological instruments",
+      "editable_properties": {
+        "Pressure_Range": {
+          "value": "300-1100",
+          "unit": "hPa",
+          "description": "Measurement range"
+        },
+        "Accuracy": {
+          "value": 0.6,
+          "unit": "hPa",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Absolute accuracy"
+        },
+        "Resolution": {
+          "value": 0.01,
+          "unit": "hPa",
+          "min": 0.001,
+          "max": 1,
+          "step": 0.001,
+          "description": "Digital resolution"
+        },
+        "Response_Time": {
+          "value": 10,
+          "unit": "ms",
+          "min": 1,
+          "max": 100,
+          "step": 5,
+          "description": "Measurement time"
+        },
+        "Operating_Temperature": {
+          "value": "-40 to 85",
+          "unit": "°C",
+          "description": "Temperature range"
+        },
+        "Interface": {
+          "value": "I2C/SPI",
+          "unit": "type",
+          "options": ["Analog", "I2C", "SPI"],
+          "description": "Communication interface"
+        },
+        "Current_Consumption": {
+          "value": 5,
+          "unit": "µA",
+          "min": 1,
+          "max": 50,
+          "step": 2,
+          "description": "Average current"
+        },
+        "Package": {
+          "value": "LGA-8",
+          "unit": "type",
+          "options": ["LGA-8", "BGA-16", "Module"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Bosch, STM, Infineon",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 3.50,
+          "unit": "USD",
+          "min": 1,
+          "max": 30,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "accelerometer_sensor",
+      "name": "Accelerometer (3-Axis MEMS)",
+      "type": "Sensor",
+      "symbol": "R",
+      "description": "3-axis MEMS accelerometer ±2g to ±16g range. Sensitivity 4-196 mV/g. Frequency response 0.5Hz-16kHz. I2C/SPI interface. Low power: 10µA. Excellent for motion detection, vibration monitoring.",
+      "use_cases": "Smartphone orientation, vibration analysis, fall detection, motion tracking, activity monitoring",
+      "editable_properties": {
+        "Axes": {
+          "value": 3,
+          "unit": "axes",
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "description": "Number of measurement axes"
+        },
+        "Range": {
+          "value": "±16",
+          "unit": "g",
+          "options": ["±2", "±4", "±8", "±16", "±32"],
+          "description": "Measurement range"
+        },
+        "Sensitivity": {
+          "value": 48,
+          "unit": "mV/g",
+          "min": 1,
+          "max": 196,
+          "step": 1,
+          "description": "Output sensitivity"
+        },
+        "Noise": {
+          "value": 100,
+          "unit": "µg/√Hz",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "description": "Noise floor"
+        },
+        "Bandwidth": {
+          "value": 1600,
+          "unit": "Hz",
+          "min": 100,
+          "max": 5000,
+          "step": 100,
+          "description": "Output bandwidth"
+        },
+        "Interface": {
+          "value": "I2C/SPI",
+          "unit": "type",
+          "options": ["Analog", "I2C", "SPI"],
+          "description": "Output interface"
+        },
+        "Current_Consumption": {
+          "value": 10,
+          "unit": "µA",
+          "min": 2,
+          "max": 100,
+          "step": 5,
+          "description": "Supply current"
+        },
+        "Package": {
+          "value": "LGA-14",
+          "unit": "type",
+          "options": ["LGA-14", "BGA-16", "Module"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "STM, Bosch, InvenSense",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 2.00,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 20,
+          "step": 0.2,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "light_sensor",
+      "name": "Ambient Light Sensor (ALS)",
+      "type": "Sensor",
+      "symbol": "R",
+      "description": "Ambient light sensor with visible and IR filtering. Range 0.01-10,000 lux with logarithmic output. I2C interface. Typical accuracy ±10%. Low power: 100µA. Spectral response matches human eye.",
+      "use_cases": "Display brightness control, energy management, outdoor light measurement, security lighting",
+      "editable_properties": {
+        "Measurement_Range": {
+          "value": "0.01-10000",
+          "unit": "lux",
+          "description": "Light intensity range"
+        },
+        "Accuracy": {
+          "value": 10,
+          "unit": "%",
+          "min": 3,
+          "max": 20,
+          "step": 1,
+          "description": "Measurement accuracy"
+        },
+        "Response_Time": {
+          "value": 100,
+          "unit": "ms",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "description": "Response to light change"
+        },
+        "Spectral_Response": {
+          "value": "Visible & IR",
+          "unit": "range",
+          "options": ["Visible Only", "Visible & IR", "UV", "Full Spectrum"],
+          "description": "Light spectrum"
+        },
+        "Interface": {
+          "value": "I2C",
+          "unit": "type",
+          "options": ["Analog", "I2C", "SPI"],
+          "description": "Output interface"
+        },
+        "Operating_Temperature": {
+          "value": "-40 to 85",
+          "unit": "°C",
+          "description": "Temperature range"
+        },
+        "Current_Consumption": {
+          "value": 100,
+          "unit": "µA",
+          "min": 20,
+          "max": 500,
+          "step": 20,
+          "description": "Supply current"
+        },
+        "Package": {
+          "value": "LGA-6",
+          "unit": "type",
+          "options": ["LGA-6", "Module", "SMD"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "ams AG, ROHM, Broadcom",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 1.50,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 15,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "proximity_sensor",
+      "name": "Proximity Sensor (Infrared)",
+      "type": "Sensor",
+      "symbol": "R",
+      "description": "Infrared proximity sensor with 2-10cm range. Detects object presence/distance. Single pin digital output. Low power: 5mA. Suitable for obstacle detection and proximity switching.",
+      "use_cases": "Obstacle avoidance, proximity switches, automatic faucets, phone screen unlock, parking sensors",
+      "editable_properties": {
+        "Detection_Range": {
+          "value": "2-10",
+          "unit": "cm",
+          "description": "Sensing distance"
+        },
+        "Field_of_View": {
+          "value": 25,
+          "unit": "degrees",
+          "min": 5,
+          "max": 90,
+          "step": 5,
+          "description": "Detection angle"
+        },
+        "Output_Type": {
+          "value": "Digital",
+          "unit": "type",
+          "options": ["Digital", "Analog", "PWM"],
+          "description": "Signal type"
+        },
+        "Response_Time": {
+          "value": 10,
+          "unit": "ms",
+          "min": 1,
+          "max": 100,
+          "step": 5,
+          "description": "Detection response time"
+        },
+        "Operating_Temperature": {
+          "value": "-20 to 60",
+          "unit": "°C",
+          "description": "Temperature range"
+        },
+        "Supply_Voltage": {
+          "value": 5,
+          "unit": "V",
+          "min": 3.3,
+          "max": 5,
+          "step": 0.5,
+          "description": "Supply voltage"
+        },
+        "Current_Consumption": {
+          "value": 5,
+          "unit": "mA",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "description": "Supply current"
+        },
+        "Package": {
+          "value": "Module",
+          "unit": "type",
+          "options": ["Module", "Discrete", "Integrated"],
+          "description": "Package style"
+        },
+        "Manufacturer": {
+          "value": "Sharp, Panasonic, ROHM",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.80,
+          "unit": "USD",
+          "min": 0.3,
+          "max": 10,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "motion_sensor",
+      "name": "Motion Sensor (PIR)",
+      "type": "Sensor",
+      "symbol": "R",
+      "description": "Passive Infrared motion detector with 5-7m range. Digital output signal on motion detection. Configurable delay/sensitivity. Low power: 65mA. Suitable for occupancy detection and security systems.",
+      "use_cases": "Motion-activated lighting, security systems, occupancy sensors, energy management, surveillance",
+      "editable_properties": {
+        "Detection_Range": {
+          "value": 7,
+          "unit": "m",
+          "min": 3,
+          "max": 15,
+          "step": 1,
+          "description": "Maximum detection distance"
+        },
+        "Field_of_View": {
+          "value": 120,
+          "unit": "degrees",
+          "min": 30,
+          "max": 180,
+          "step": 10,
+          "description": "Detection angle"
+        },
+        "Response_Time": {
+          "value": 1,
+          "unit": "s",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.5,
+          "description": "Time to detect motion"
+        },
+        "Sensitivity": {
+          "value": "Adjustable",
+          "unit": "type",
+          "description": "Sensitivity control"
+        },
+        "Delay_Time": {
+          "value": 30,
+          "unit": "s",
+          "min": 5,
+          "max": 600,
+          "step": 5,
+          "description": "Timeout before reset"
+        },
+        "Operating_Temperature": {
+          "value": "-20 to 60",
+          "unit": "°C",
+          "description": "Temperature range"
+        },
+        "Supply_Voltage": {
+          "value": 12,
+          "unit": "V",
+          "min": 9,
+          "max": 16,
+          "step": 1,
+          "description": "Operating voltage"
+        },
+        "Output": {
+          "value": "Relay 8A@240V",
+          "unit": "rating",
+          "description": "Output contact rating"
+        },
+        "Manufacturer": {
+          "value": "Panasonic, Murata, SensorMax",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 2.50,
+          "unit": "USD",
+          "min": 0.8,
+          "max": 20,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "distance_sensor",
+      "name": "Distance Sensor (Ultrasonic)",
+      "type": "Sensor",
+      "symbol": "R",
+      "description": "Ultrasonic distance sensor 2cm-400cm range with 3mm accuracy. PWM output proportional to distance. Immunity to ambient light. Operating frequency 40kHz. Wide 15° detection angle.",
+      "use_cases": "Distance measurement, obstacle avoidance, robot navigation, parking assist, level sensing",
+      "editable_properties": {
+        "Measurement_Range": {
+          "value": "2-400",
+          "unit": "cm",
+          "description": "Detection range"
+        },
+        "Accuracy": {
+          "value": 0.3,
+          "unit": "cm",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Measurement accuracy"
+        },
+        "Resolution": {
+          "value": 0.1,
+          "unit": "cm",
+          "min": 0.1,
+          "max": 1,
+          "step": 0.1,
+          "description": "Digital resolution"
+        },
+        "Frequency": {
+          "value": 40,
+          "unit": "kHz",
+          "min": 40,
+          "max": 200,
+          "step": 20,
+          "description": "Operating frequency"
+        },
+        "Beam_Angle": {
+          "value": 15,
+          "unit": "degrees",
+          "min": 5,
+          "max": 60,
+          "step": 5,
+          "description": "Detection angle"
+        },
+        "Operating_Temperature": {
+          "value": "-15 to 70",
+          "unit": "°C",
+          "description": "Temperature range"
+        },
+        "Supply_Voltage": {
+          "value": 5,
+          "unit": "V",
+          "min": 3.3,
+          "max": 12,
+          "step": 1,
+          "description": "Operating voltage"
+        },
+        "Package": {
+          "value": "Module",
+          "unit": "type",
+          "options": ["Module", "Integrated"],
+          "description": "Package style"
+        },
+        "Manufacturer": {
+          "value": "Maxbotix, HC-SR04, DFRobot",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 3.00,
+          "unit": "USD",
+          "min": 1,
+          "max": 30,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    }
+  ]
+}

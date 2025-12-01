@@ -7,11 +7,12 @@ from PySide6.QtWidgets import (
     QFileDialog, QMessageBox
 )
 from PySide6.QtCore import Qt, QSize, Signal
+import logging
 
 from frontend.ui.menu_bar import MenuBar
 from frontend.ui.toolbar import Toolbar
 from frontend.panels.circuit_canvas import CircuitCanvas
-from frontend.panels.component_library import ComponentLibraryPanel
+from frontend.panels.component_library_direct import BackendComponentLibraryPanel
 from frontend.panels.inspector import InspectorPanel
 from frontend.panels.console import ConsolePanel, LogLevel
 from frontend.panels.waveform import WaveformPanel
@@ -21,9 +22,13 @@ from frontend.panels.properties_panel import PropertiesPanel
 from frontend.windows.script_editor_window import ScriptEditorWindow
 from frontend.windows.waveform_viewer_window import WaveformViewerWindow
 from frontend.core.command_manager import CommandManager
+from frontend.utils.icon_loader import get_icon
 from backend.circuit.circuit_validator import CircuitValidator
 from backend.circuit.circuit_analyzer import CircuitAnalyzer
 from backend.reporting.report_generator import ReportGenerator
+from frontend.backend_connector import get_backend_connector
+
+logger = logging.getLogger(__name__)
 
 
 class MainWindow(QMainWindow):
@@ -37,11 +42,18 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Virtual Electrical Designer & Simulator")
         self.setGeometry(100, 100, 1600, 1000)
         
+        # Apply modern styling
+        self._apply_global_styling()
+        
+        # Backend connector (initialized after panels setup)
+        self.backend = None
+        
         # Backend references
         self.project_manager = None
         self.simulation_engine = None
         self.current_project = None
         self.current_filename = None
+        self.current_circuit_id = None
         
         # Core managers
         self.command_manager = CommandManager()
@@ -66,6 +78,15 @@ class MainWindow(QMainWindow):
         self._setup_dock_widgets()
         self._connect_signals()
         
+        # Initialize backend after panels are ready
+        try:
+            self.backend = get_backend_connector()
+            self.console.log("[OK] Backend connected", LogLevel.INFO)
+        except Exception as e:
+            logger.error(f"Failed to connect backend: {e}")
+            self.backend = None
+            self.console.log(f"⚠ Backend connection failed: {e}", LogLevel.WARNING)
+        
         # Initial status
         self._update_title()
         self.status_bar.showMessage("Ready")
@@ -75,6 +96,198 @@ class MainWindow(QMainWindow):
         self.menu_bar = MenuBar()
         self.setMenuBar(self.menu_bar)
         self._connect_menu_actions()
+    
+    def _apply_global_styling(self):
+        """Apply modern, professional styling to the entire application"""
+        stylesheet = """
+        QMainWindow {
+            background-color: #fafafa;
+        }
+        
+        QDockWidget {
+            background-color: #ffffff;
+            border: 1px solid #e8e8e8;
+            padding: 0px;
+            margin: 0px;
+        }
+        
+        QDockWidget::title {
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                      stop:0 #d4c5f9, stop:1 #c9b8f5);
+            color: #444;
+            padding: 6px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        QDockWidget::close-button, QDockWidget::float-button {
+            background-color: transparent;
+            padding: 2px;
+        }
+        
+        QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        QTabWidget::pane {
+            border: 1px solid #e8e8e8;
+            background-color: #ffffff;
+        }
+        
+        QTabBar::tab {
+            background-color: #f5f5f5;
+            color: #444;
+            padding: 8px 15px;
+            border: 1px solid #e8e8e8;
+            border-bottom: none;
+            margin-right: 2px;
+            font-weight: 500;
+        }
+        
+        QTabBar::tab:selected {
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                      stop:0 #d4c5f9, stop:1 #c9b8f5);
+            color: #444;
+            border: 1px solid #c9b8f5;
+        }
+        
+        QTabBar::tab:hover:!selected {
+            background-color: #f0f0f0;
+        }
+        
+        QStatusBar {
+            background-color: #fafafa;
+            border-top: 1px solid #e8e8e8;
+            color: #444;
+            font-size: 11px;
+        }
+        
+        QMenuBar {
+            background-color: #fafafa;
+            border-bottom: 1px solid #e8e8e8;
+            color: #444;
+        }
+        
+        QMenuBar::item:selected {
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                      stop:0 #d4c5f9, stop:1 #c9b8f5);
+            color: #444;
+        }
+        
+        QMenu {
+            background-color: #ffffff;
+            color: #444;
+            border: 1px solid #e8e8e8;
+        }
+        
+        QMenu::item:selected {
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                      stop:0 #d4c5f9, stop:1 #c9b8f5);
+            color: #444;
+        }
+        
+        QMenu::separator {
+            background-color: #e8e8e8;
+            height: 1px;
+            margin: 4px 0px;
+        }
+        
+        QToolBar {
+            background-color: #fafafa;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 3px;
+            spacing: 2px;
+        }
+        
+        QToolButton {
+            background-color: transparent;
+            border: 1px solid transparent;
+            border-radius: 3px;
+            padding: 4px;
+            color: #444;
+        }
+        
+        QToolButton:hover {
+            background-color: #f0f0f0;
+            border: 1px solid #e8e8e8;
+        }
+        
+        QToolButton:pressed {
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                      stop:0 #d4c5f9, stop:1 #c9b8f5);
+            color: #444;
+        }
+        
+        QTableWidget {
+            background-color: #ffffff;
+            alternate-background-color: #fafafa;
+            gridline-color: #e8e8e8;
+            border: 1px solid #e8e8e8;
+        }
+        
+        QTableWidget::item {
+            padding: 4px;
+            border: none;
+            color: #444;
+        }
+        
+        QTableWidget::item:selected {
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                      stop:0 #d4c5f9, stop:1 #c9b8f5);
+            color: #444;
+        }
+        
+        QHeaderView::section {
+            background-color: #f0f0f0;
+            color: #444;
+            padding: 4px;
+            border: 1px solid #e8e8e8;
+            font-weight: bold;
+        }
+        
+        QScrollBar:vertical {
+            background-color: #fafafa;
+            width: 12px;
+            border: 1px solid #e8e8e8;
+        }
+        
+        QScrollBar::handle:vertical {
+            background-color: #e0d5f5;
+            border-radius: 6px;
+            min-height: 20px;
+        }
+        
+        QScrollBar::handle:vertical:hover {
+            background-color: #d4c5f9;
+        }
+        
+        QScrollBar:horizontal {
+            background-color: #fafafa;
+            height: 12px;
+            border: 1px solid #e8e8e8;
+        }
+        
+        QScrollBar::handle:horizontal {
+            background-color: #e0d5f5;
+            border-radius: 6px;
+            min-width: 20px;
+        }
+        
+        QScrollBar::handle:horizontal:hover {
+            background-color: #d4c5f9;
+        }
+        
+        QPlainTextEdit, QTextEdit {
+            background-color: #ffffff;
+            color: #333;
+            border: 1px solid #e8e8e8;
+        }
+        
+        QLabel {
+            color: #444;
+        }
+        """
+        self.setStyleSheet(stylesheet)
     
     def _connect_menu_actions(self):
         """Connect all menu actions"""
@@ -216,7 +429,7 @@ class MainWindow(QMainWindow):
     
     def _setup_panels(self):
         """Setup UI panels"""
-        self.component_library = ComponentLibraryPanel()
+        self.component_library = BackendComponentLibraryPanel()
         self.inspector = InspectorPanel()
         self.console = ConsolePanel()
         self.waveform = WaveformPanel()
@@ -242,40 +455,125 @@ class MainWindow(QMainWindow):
         self.status_bar.showMessage("Ready")
     
     def _setup_dock_widgets(self):
-        """Setup dock widgets for left, right, and bottom panels"""
-        # Left: Component Library
+        """Setup modern dock widget layout with optimal proportions and styling"""
+        # ===== LEFT: Component Library =====
         self.left_dock = QDockWidget("Component Library", self)
         self.left_dock.setWidget(self.component_library)
-        self.left_dock.setMinimumWidth(250)
-        self.left_dock.setMaximumWidth(350)
+        
+        # Modern sizing: responsive but bounded
+        self.left_dock.setMinimumWidth(300)
+        self.left_dock.setMaximumWidth(500)
+        self.left_dock.setStyleSheet("""
+            QDockWidget::title {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                          stop:0 #d4c5f9, stop:1 #c9b8f5);
+                padding-left: 8px;
+            }
+        """)
+        
+        # Full dock features for modern UX
+        self.left_dock.setFeatures(
+            QDockWidget.DockWidgetClosable | 
+            QDockWidget.DockWidgetMovable | 
+            QDockWidget.DockWidgetFloatable
+        )
         self.addDockWidget(Qt.LeftDockWidgetArea, self.left_dock)
-        self.left_dock.show()  # Show component library on startup
+        self.left_dock.show()
         
-        # Right: Inspector
-        self.right_dock = QDockWidget("Inspector", self)
+        # ===== RIGHT: Inspector =====
+        self.right_dock = QDockWidget("Properties Inspector", self)
         self.right_dock.setWidget(self.inspector)
-        self.right_dock.setMinimumWidth(250)
-        self.right_dock.setMaximumWidth(350)
-        self.addDockWidget(Qt.RightDockWidgetArea, self.right_dock)
         
-        # Bottom: Tabbed panels
-        self.bottom_dock = QDockWidget("Output Panels", self)
-        self.bottom_dock.setMinimumHeight(200)
+        # Modern sizing: matches left dock for balance
+        self.right_dock.setMinimumWidth(300)
+        self.right_dock.setMaximumWidth(500)
+        self.right_dock.setStyleSheet("""
+            QDockWidget::title {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                          stop:0 #d4c5f9, stop:1 #c9b8f5);
+                padding-left: 8px;
+            }
+        """)
+        
+        # Full dock features
+        self.right_dock.setFeatures(
+            QDockWidget.DockWidgetClosable | 
+            QDockWidget.DockWidgetMovable | 
+            QDockWidget.DockWidgetFloatable
+        )
+        self.addDockWidget(Qt.RightDockWidgetArea, self.right_dock)
+        self.right_dock.show()
+        
+        # ===== BOTTOM: Output Panels (Tabbed) =====
+        self.bottom_dock = QDockWidget("Output & Analysis", self)
+        
+        # Lower height: reduced from 200-500px to 120-300px
+        self.bottom_dock.setMinimumHeight(120)
         self.bottom_dock.setMaximumHeight(300)
+        self.bottom_dock.setStyleSheet("""
+            QDockWidget::title {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                          stop:0 #d4c5f9, stop:1 #c9b8f5);
+                padding-left: 8px;
+            }
+        """)
+        
+        # Create tabbed widget with modern styling
         bottom_tabs = QTabWidget()
+        bottom_tabs.setStyleSheet("""
+            QTabBar::tab {
+                background-color: #f5f5f5;
+                color: #444;
+                padding: 10px 20px;
+                border: 1px solid #e8e8e8;
+                border-bottom: none;
+                margin-right: 2px;
+                font-weight: 500;
+                font-size: 11px;
+            }
+            QTabBar::tab:selected {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                          stop:0 #d4c5f9, stop:1 #c9b8f5);
+                color: #444;
+                border: 1px solid #c9b8f5;
+            }
+            QTabBar::tab:hover:!selected {
+                background-color: #f0f0f0;
+            }
+        """)
         bottom_tabs.addTab(self.console, "Console")
         bottom_tabs.addTab(self.waveform, "Waveforms")
         bottom_tabs.addTab(self.reports, "Reports")
         self.bottom_dock.setWidget(bottom_tabs)
+        
+        # Full dock features
+        self.bottom_dock.setFeatures(
+            QDockWidget.DockWidgetClosable | 
+            QDockWidget.DockWidgetMovable | 
+            QDockWidget.DockWidgetFloatable
+        )
         self.addDockWidget(Qt.BottomDockWidgetArea, self.bottom_dock)
         
-        # Resizable splitter behavior
-        self.resizeDocks([self.bottom_dock], [250], Qt.Vertical)
+        # ===== OPTIMAL INITIAL LAYOUT =====
+        # Set proportions: left/right = 300px, bottom = 150px (lower)
+        self.resizeDocks(
+            [self.left_dock, self.right_dock], 
+            [300, 300],
+            Qt.Horizontal
+        )
+        self.resizeDocks(
+            [self.bottom_dock], 
+            [150],
+            Qt.Vertical
+        )
     
     def _connect_signals(self):
         """Connect UI signals to backend"""
         # Circuit canvas signals
-        self.circuit_canvas.component_selected.connect(self._on_component_selected)
+        def on_component_selected(comp_id):
+            self._on_component_selected(comp_id)
+        
+        self.circuit_canvas.component_selected.connect(on_component_selected)
         self.circuit_canvas.circuit_changed.connect(self._on_circuit_changed)
         
         # Canvas signals to toolbar - undo/redo
@@ -302,6 +600,15 @@ class MainWindow(QMainWindow):
             elif reply == QMessageBox.Cancel:
                 return
         
+        # Create new circuit via backend
+        if self.backend:
+            try:
+                circuit_id = self.backend.create_new_circuit("New Circuit")
+                self.current_circuit_id = circuit_id
+                self.console.log(f"[OK] Created circuit: {circuit_id}", LogLevel.INFO)
+            except Exception as e:
+                self.console.log(f"✗ Could not create circuit: {e}", LogLevel.ERROR)
+        
         self.circuit_canvas.clear_canvas()
         self.console.log_list.clear()
         self.inspector.clear()
@@ -312,7 +619,7 @@ class MainWindow(QMainWindow):
         
         self.console.log("New project created", LogLevel.INFO)
         self._update_title()
-        self.status_bar.showMessage("New project ready")
+        self.status_bar.showMessage("Ready")
     
     def open_project(self):
         """Open existing project"""
@@ -440,23 +747,16 @@ class MainWindow(QMainWindow):
     
     def zoom_in(self):
         """Zoom in"""
-        current_zoom = int(self.toolbar.zoom_spinbox.value())
-        new_zoom = min(500, current_zoom + 10)
-        self.toolbar.zoom_spinbox.setValue(new_zoom)
         self.circuit_canvas.scale(1.1, 1.1)
-        self.status_bar.showMessage(f"Zoom: {new_zoom}%")
+        self.status_bar.showMessage("Zoom: In")
     
     def zoom_out(self):
         """Zoom out"""
-        current_zoom = int(self.toolbar.zoom_spinbox.value())
-        new_zoom = max(10, current_zoom - 10)
-        self.toolbar.zoom_spinbox.setValue(new_zoom)
         self.circuit_canvas.scale(0.9, 0.9)
-        self.status_bar.showMessage(f"Zoom: {new_zoom}%")
+        self.status_bar.showMessage("Zoom: Out")
     
     def reset_zoom(self):
         """Reset zoom to 100%"""
-        self.toolbar.zoom_spinbox.setValue(100)
         self.circuit_canvas.resetTransform()
         self.status_bar.showMessage("Zoom: 100%")
     
@@ -560,8 +860,9 @@ class MainWindow(QMainWindow):
         self.waveform.fit_view()
     
     def _on_component_selected(self, comp_id: str):
-        """Handle component selection"""
-        if comp_id in self.circuit_canvas.components:
+        """Handle component selection - update inspector and toolbar"""
+        # Update inspector panel with component properties
+        if comp_id and comp_id in self.circuit_canvas.components:
             comp = self.circuit_canvas.components[comp_id]
             props = {
                 "Name": comp.name if hasattr(comp, 'name') else "Unknown",
@@ -570,6 +871,16 @@ class MainWindow(QMainWindow):
                 "Y": str(comp.y if hasattr(comp, 'y') else 0),
             }
             self.inspector.set_component_properties(comp_id, props)
+        else:
+            self.inspector.clear()
+        
+        # Update toolbar button states
+        has_selection = comp_id is not None and comp_id in self.circuit_canvas.components
+        self.toolbar.set_button_state("cut", has_selection)
+        self.toolbar.set_button_state("copy", has_selection)
+        self.toolbar.set_button_state("delete", has_selection)
+        self.toolbar.set_button_state("duplicate", has_selection)
+        self.toolbar.set_button_state("rotate", has_selection)
     
     def _on_library_component_selected(self, comp_type: str, name: str):
         """Handle library component selection"""
@@ -745,15 +1056,6 @@ class MainWindow(QMainWindow):
         """Update paste button state"""
         self.toolbar.set_button_state("paste", has_content)
     
-    def _on_component_selected(self, comp_id: str):
-        """Enable edit buttons when component is selected"""
-        has_selection = comp_id is not None
-        self.toolbar.set_button_state("cut", has_selection)
-        self.toolbar.set_button_state("copy", has_selection)
-        self.toolbar.set_button_state("delete", has_selection)
-        self.toolbar.set_button_state("duplicate", has_selection)
-        self.toolbar.set_button_state("rotate", has_selection)
-    
     def _on_circuit_changed(self):
         """Handle circuit changes"""
         self.modified = True
@@ -804,7 +1106,7 @@ class MainWindow(QMainWindow):
             script_window.showMaximized()
             
             self.status_bar.showMessage(f"Script Editor opened: {script_name}")
-            self.console.log(f"✓ Script editor opened (Full Screen): {script_name}", LogLevel.INFO)
+            self.console.log(f"[OK] Script editor opened (Full Screen): {script_name}", LogLevel.INFO)
         except Exception as e:
             self.console.log(f"❌ Error opening Script Editor: {str(e)}", LogLevel.ERROR)
             self.status_bar.showMessage(f"Error: {str(e)}")
@@ -910,14 +1212,14 @@ class MainWindow(QMainWindow):
             if isolated:
                 self.console.log(f"⚠ Isolated components: {', '.join(isolated)}", LogLevel.WARNING)
             else:
-                self.console.log("✓ All components properly connected", LogLevel.INFO)
+                self.console.log("[OK] All components properly connected", LogLevel.INFO)
         else:
             self.console.log("Circuit is empty", LogLevel.WARNING)
     
     def open_design_wizard(self):
         """Open design wizard for component selection"""
         self.console.log("Design Wizard: Starting component selection guide...", LogLevel.INFO)
-        self.console.log("📋 Available design wizards:", LogLevel.INFO)
+        self.console.log("Available design wizards:", LogLevel.INFO)
         self.console.log("  • RC Filter Designer", LogLevel.INFO)
         self.console.log("  • LC Filter Designer", LogLevel.INFO)
         self.console.log("  • Amplifier Designer", LogLevel.INFO)
@@ -928,7 +1230,7 @@ class MainWindow(QMainWindow):
     def open_measurement_tools(self):
         """Open measurement tools panel"""
         self.console.log("Measurement Tools: Ready for probing", LogLevel.INFO)
-        self.console.log("🔍 Available measurements:", LogLevel.INFO)
+        self.console.log("Available measurements:", LogLevel.INFO)
         self.console.log("  • Voltage measurement (V)", LogLevel.INFO)
         self.console.log("  • Current measurement (I)", LogLevel.INFO)
         self.console.log("  • Power measurement (P)", LogLevel.INFO)
@@ -939,7 +1241,7 @@ class MainWindow(QMainWindow):
     def open_simulation_monitor(self):
         """Open simulation monitor panel"""
         self.console.log("Simulation Monitor: Ready", LogLevel.INFO)
-        self.console.log("📊 Real-time monitoring capabilities:", LogLevel.INFO)
+        self.console.log("Real-time monitoring capabilities:", LogLevel.INFO)
         self.console.log("  • Node voltage tracking", LogLevel.INFO)
         self.console.log("  • Branch current monitoring", LogLevel.INFO)
         self.console.log("  • Power dissipation", LogLevel.INFO)
@@ -949,9 +1251,9 @@ class MainWindow(QMainWindow):
     
     def open_simulation_library(self):
         """Open simulation library with available functions"""
-        self.console.log("📚 Simulation Library - Available Functions:", LogLevel.SIM_START)
+        self.console.log("Simulation Library - Available Functions:", LogLevel.SIM_START)
         
-        self.console.log("\n🔢 Math Functions (math module):", LogLevel.INFO)
+        self.console.log("\nMath Functions (math module):", LogLevel.INFO)
         self.console.log("  • sin, cos, tan, asin, acos, atan", LogLevel.INFO)
         self.console.log("  • sqrt, exp, log, log10", LogLevel.INFO)
         self.console.log("  • degrees, radians, pi, e", LogLevel.INFO)
@@ -961,7 +1263,7 @@ class MainWindow(QMainWindow):
         self.console.log("  • np.sin, np.cos, np.exp, np.log", LogLevel.INFO)
         self.console.log("  • np.fft, np.convolve, np.correlate", LogLevel.INFO)
         
-        self.console.log("\n📉 Signal Processing (signal module):", LogLevel.INFO)
+        self.console.log("\nSignal Processing (signal module):", LogLevel.INFO)
         self.console.log("  • signal.butter - Butterworth filter", LogLevel.INFO)
         self.console.log("  • signal.bessel - Bessel filter", LogLevel.INFO)
         self.console.log("  • signal.cheby1 - Chebyshev filter", LogLevel.INFO)
@@ -969,13 +1271,13 @@ class MainWindow(QMainWindow):
         self.console.log("  • signal.resample - Resample signal", LogLevel.INFO)
         self.console.log("  • signal.hilbert - Analytic signal", LogLevel.INFO)
         
-        self.console.log("\n⚡ Circuit Functions:", LogLevel.INFO)
+        self.console.log("\nCircuit Functions:", LogLevel.INFO)
         self.console.log("  • circuit - Access to circuit components", LogLevel.INFO)
         self.console.log("  • wires - Access to wires", LogLevel.INFO)
         self.console.log("  • nodes - Access to nodes", LogLevel.INFO)
         self.console.log("  • len(circuit) - Number of components", LogLevel.INFO)
         
-        self.console.log("\n💡 Usage Example in Script Editor:", LogLevel.INFO)
+        self.console.log("\nUsage Example in Script Editor:", LogLevel.INFO)
         self.console.log("  import numpy as np", LogLevel.INFO)
         self.console.log("  from scipy import signal", LogLevel.INFO)
         self.console.log("  t = np.linspace(0, 1, 1000)", LogLevel.INFO)
@@ -986,7 +1288,7 @@ class MainWindow(QMainWindow):
     
     def open_import_library(self):
         """Show available and importable external libraries"""
-        self.console.log("📦 External Libraries Management", LogLevel.SIM_START)
+        self.console.log("External Libraries Management", LogLevel.SIM_START)
         
         self.console.log("\n✅ Already Available:", LogLevel.INFO)
         self.console.log("  • numpy (np) - Numerical computing", LogLevel.INFO)
@@ -996,14 +1298,14 @@ class MainWindow(QMainWindow):
         self.console.log("  • scipy.optimize - Optimization tools", LogLevel.INFO)
         self.console.log("  • math - Standard math functions", LogLevel.INFO)
         
-        self.console.log("\n📥 For Additional Libraries:", LogLevel.INFO)
+        self.console.log("\nFor Additional Libraries:", LogLevel.INFO)
         self.console.log("  • Open terminal and run:", LogLevel.INFO)
         self.console.log("    pip install matplotlib", LogLevel.INFO)
         self.console.log("    pip install sympy", LogLevel.INFO)
         self.console.log("    pip install pandas", LogLevel.INFO)
         self.console.log("    pip install scipy", LogLevel.INFO)
         
-        self.console.log("\n📝 In Script Editor, you can import:", LogLevel.INFO)
+        self.console.log("\nIn Script Editor, you can import:", LogLevel.INFO)
         self.console.log("  • from scipy.integrate import odeint", LogLevel.INFO)
         self.console.log("  • from scipy.optimize import fsolve", LogLevel.INFO)
         self.console.log("  • from scipy.interpolate import interp1d", LogLevel.INFO)

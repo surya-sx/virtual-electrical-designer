@@ -64,11 +64,19 @@ class CanvasComponent:
     rotation: float = 0.0  # Rotation in degrees (0, 90, 180, 270)
     group_id: Optional[str] = None  # Group ID if part of group
     
+    # Store base dimensions for scaling
+    base_width: float = 60
+    base_height: float = 40
+    
     def __post_init__(self):
         if self.params is None:
             self.params = {}
         if self.properties is None:
             self.properties = {}
+        # Set base dimensions from initial width/height
+        if self.base_width == 60 and self.base_height == 40:  # Only if not set
+            self.base_width = self.width
+            self.base_height = self.height
         # Normalize rotation to 0-360
         self.rotation = self.rotation % 360
     
@@ -78,19 +86,72 @@ class CanvasComponent:
                 self.y - self.height/2 <= y <= self.y + self.height/2)
     
     def get_ports(self) -> List[Tuple[float, float]]:
-        """Get port positions based on component type"""
+        """Get port positions based on component type and rotation"""
+        import math
+        
         left = self.x - self.width/2
         right = self.x + self.width/2
+        top = self.y - self.height/2
+        bottom = self.y + self.height/2
         
-        # Ground/reference has only 1 port at the top
-        if "ground" in self.comp_type.lower():
-            return [(self.x, self.y - 15)]  # Single top port for ground connection
+        # Determine number of ports based on component type
+        comp_type_lower = self.comp_type.lower()
+        comp_name_lower = self.name.lower()
         
-        # Return 2 ports (left and right) for 2-terminal components
-        return [
-            (left, self.y),      # Left
-            (right, self.y),     # Right
-        ]
+        # 1-port components: Ground, Oscilloscope, Test Equipment
+        if ("ground" in comp_type_lower or "ground" in comp_name_lower or
+            "oscilloscope" in comp_name_lower or "scope" in comp_name_lower or
+            "multimeter" in comp_name_lower or "ammeter" in comp_name_lower or 
+            "voltmeter" in comp_name_lower or "wattmeter" in comp_name_lower or
+            "ohmmeter" in comp_name_lower or "function generator" in comp_name_lower):
+            base_ports = [(self.x, bottom)]  # Single bottom port
+        
+        # 3-port components: Transistors (BJT), MOSFETs, JFETs, IGBTs, TRIACs, SCRs, Thyristors
+        elif any(x in comp_name_lower for x in ["bjt", "mosfet", "jfet", "igbt", "triac", "scr", "thyristor", "transistor"]):
+            # 3 ports: Base/Gate at top, Collector/Drain at right, Emitter/Source at bottom
+            base_ports = [
+                (self.x, top + 10),       # Gate/Base/Control (top)
+                (right - 5, self.y),      # Drain/Collector (right)
+                (self.x, bottom - 10),    # Source/Emitter (bottom)
+            ]
+        
+        # 3-port components: Op-Amps, Comparators
+        elif any(x in comp_name_lower for x in ["op-amp", "opamp", "comparator"]):
+            # 3 ports: Inverting in, Non-inverting in, Output
+            base_ports = [
+                (left + 5, self.y - 8),   # Non-inverting input (left, upper)
+                (left + 5, self.y + 8),   # Inverting input (left, lower)
+                (right - 5, self.y),      # Output (right)
+            ]
+        
+        # 2-port components: Everything else by default
+        else:
+            base_ports = [
+                (left, self.y),      # Left
+                (right, self.y),     # Right
+            ]
+        
+        # Apply rotation to ports
+        if self.rotation == 0:
+            return base_ports
+        
+        # Rotate ports around component center
+        rotated_ports = []
+        rad = math.radians(self.rotation)
+        cos_a = math.cos(rad)
+        sin_a = math.sin(rad)
+        
+        for px, py in base_ports:
+            # Translate to origin
+            dx = px - self.x
+            dy = py - self.y
+            # Rotate
+            new_dx = dx * cos_a - dy * sin_a
+            new_dy = dx * sin_a + dy * cos_a
+            # Translate back
+            rotated_ports.append((self.x + new_dx, self.y + new_dy))
+        
+        return rotated_ports
 
 
 class CircuitCanvas(QWidget):
@@ -138,6 +199,7 @@ class CircuitCanvas(QWidget):
         # Wire drawing mode
         self.wire_mode_start_node: Optional[str] = None
         self.wire_preview: Optional[tuple] = None  # ((x1, y1), (x2, y2)) for preview line
+        self.dragging_from_node: Optional[str] = None  # Track dragging from a blue dot
         
         # Marquee selection
         self.marquee_start: Optional[QPoint] = None
@@ -234,13 +296,27 @@ class CircuitCanvas(QWidget):
         except:
             pass  # Use empty properties if library not available
         
+        # Determine component size based on type
+        name_lower = name.lower()
+        if any(term in name_lower for term in ["bjt", "mosfet", "jfet", "igbt", "triac", "scr", "thyristor", "transistor", "op-amp", "opamp", "comparator"]):
+            # 3-terminal components need more height
+            width, height = 60, 60
+        else:
+            # 2-terminal components (default)
+            width, height = 60, 40
+        
         self.components[comp_id] = CanvasComponent(
             x=x, y=y, comp_id=comp_id,
             comp_type=comp_type, name=name,
+            width=width, height=height,
             properties=properties
         )
         # Add nodes for component
         self._add_component_nodes(comp_id)
+        
+        # Automatically select the newly placed component
+        self.select_component(comp_id)
+        
         self.component_placed.emit(comp_id, x, y)
         self.circuit_changed.emit()
         return comp_id
@@ -541,15 +617,12 @@ class CircuitCanvas(QWidget):
         # Always check for node click first (wiring is always active)
         node_id = self.get_node_at(x, y, tolerance=15)
         if node_id:
+            # Start dragging from this node to create a wire
+            self.dragging_from_node = node_id
             if not self.wire_mode_start_node:
                 self.wire_mode_start_node = node_id
-                self.update()
-                return
-            elif node_id != self.wire_mode_start_node:  # Prevent self-connection
-                self.add_wire(self.wire_mode_start_node, node_id)
-                self.wire_mode_start_node = None
-                self.wire_preview = None
-                return
+            self.update()
+            return
         
         # Then check for component click (selection/dragging)
         comp_id = self.get_component_at(x, y)
@@ -675,11 +748,12 @@ class CircuitCanvas(QWidget):
             self.update()
     
     def _on_resize(self, comp_id: str, scale: float):
-        """Handle resize action"""
+        """Handle resize action - scale from base dimensions"""
         if comp_id in self.components:
             comp = self.components[comp_id]
-            comp.width *= scale
-            comp.height *= scale
+            # Scale from base dimensions to avoid cumulative scaling
+            comp.width = comp.base_width * scale
+            comp.height = comp.base_height * scale
             self._update_component_nodes(comp_id)
             self.circuit_changed.emit()
             self.update()
@@ -731,6 +805,12 @@ class CircuitCanvas(QWidget):
             self.preview_component.y = pos.y()
             self.update()
         
+        elif self.dragging_from_node and self.wire_mode_start_node:
+            # Show preview line from start node to current cursor position (dragging from blue dot)
+            start_node = self.nodes[self.wire_mode_start_node]
+            self.wire_preview = ((start_node.x, start_node.y), (pos.x(), pos.y()))
+            self.update()
+        
         elif self.mode == CanvasMode.DRAW_WIRE and self.wire_mode_start_node:
             # Show preview line from start node to current cursor position
             start_node = self.nodes[self.wire_mode_start_node]
@@ -778,7 +858,53 @@ class CircuitCanvas(QWidget):
             self.marquee_rect = None
             self.update()
         
+        # Check if releasing after dragging from a node
+        if self.dragging_from_node and self.wire_mode_start_node:
+            x, y = event.pos().x(), event.pos().y()
+            target_node = self.get_node_at(x, y, tolerance=15)
+            
+            if target_node and target_node != self.wire_mode_start_node:
+                # Complete the wire connection
+                self.add_wire(self.wire_mode_start_node, target_node)
+            
+            # Reset wire drawing state
+            self.dragging_from_node = None
+            self.wire_mode_start_node = None
+            self.wire_preview = None
+            self.update()
+        
         self.dragging = False
+    
+    def mouseDoubleClickEvent(self, event):
+        """Handle double-click to open component dialogs"""
+        pos = event.pos()
+        x, y = pos.x(), pos.y()
+        
+        comp_id = self.get_component_at(x, y)
+        if not comp_id or comp_id not in self.components:
+            return
+        
+        comp = self.components[comp_id]
+        comp_name_lower = comp.name.lower() if comp.name else ""
+        
+        # Handle oscilloscope double-click
+        if "oscilloscope" in comp_name_lower or "scope" in comp_name_lower:
+            from frontend.dialogs.oscilloscope_dialog import OscilloscopeDialog
+            dialog = OscilloscopeDialog(self, comp.name, comp.params or {})
+            if dialog.exec() == OscilloscopeDialog.Accepted:
+                settings = dialog.get_settings()
+                comp.params = settings
+                self.circuit_changed.emit()
+                self.update()
+        
+        # Handle other test equipment (expandable)
+        elif "multimeter" in comp_name_lower or "dmm" in comp_name_lower:
+            from frontend.dialogs.oscilloscope_dialog import OscilloscopeDialog
+            dialog = OscilloscopeDialog(self, comp.name, comp.params or {})
+            if dialog.exec() == OscilloscopeDialog.Accepted:
+                comp.params = dialog.get_settings()
+                self.circuit_changed.emit()
+                self.update()
     
     def wheelEvent(self, event):
         """Handle mouse wheel for zoom"""
@@ -875,7 +1001,7 @@ class CircuitCanvas(QWidget):
             painter.drawLine(0, y, self.width(), y)
     
     def _draw_component(self, painter: QPainter, comp: CanvasComponent, preview: bool = False):
-        """Draw component symbol with rotation support"""
+        """Draw component symbol with rotation support and dynamic sizing"""
         painter.save()
         
         x, y = int(comp.x), int(comp.y)
@@ -886,45 +1012,63 @@ class CircuitCanvas(QWidget):
             painter.rotate(comp.rotation)
             painter.translate(-x, -y)
         
+        # Calculate scale factor based on component dimensions
+        # Default component is 60x40, so scale from that
+        scale_x = comp.width / 60.0
+        scale_y = comp.height / 40.0
+        scale = (scale_x + scale_y) / 2.0  # Average scale
+        
         # Select symbol based on component name (case-insensitive)
         comp_name_lower = comp.name.lower()
         
         if "resistor" in comp_name_lower:
-            self._draw_resistor(painter, x, y, comp.selected)
+            self._draw_resistor(painter, x, y, comp.selected, scale)
         elif "capacitor" in comp_name_lower:
-            self._draw_capacitor(painter, x, y, comp.selected)
+            self._draw_capacitor(painter, x, y, comp.selected, scale)
         elif "inductor" in comp_name_lower:
-            self._draw_inductor(painter, x, y, comp.selected)
+            self._draw_inductor(painter, x, y, comp.selected, scale)
         elif "diode" in comp_name_lower:
-            self._draw_diode(painter, x, y, comp.selected)
+            self._draw_diode(painter, x, y, comp.selected, scale)
         elif "battery" in comp_name_lower:
-            self._draw_battery(painter, x, y, comp.selected)
+            self._draw_battery(painter, x, y, comp.selected, scale)
         elif "ac source" in comp_name_lower or "ac" in comp_name_lower:
-            self._draw_ac_source(painter, x, y, comp.selected)
+            self._draw_ac_source(painter, x, y, comp.selected, scale)
         elif "dc source" in comp_name_lower or "voltage" in comp_name_lower:
-            self._draw_dc_source(painter, x, y, comp.selected)
+            self._draw_dc_source(painter, x, y, comp.selected, scale)
         elif "current source" in comp_name_lower:
-            self._draw_current_source(painter, x, y, comp.selected)
+            self._draw_current_source(painter, x, y, comp.selected, scale)
         elif "ground" in comp_name_lower:
-            self._draw_ground(painter, x, y, comp.selected)
+            self._draw_ground(painter, x, y, comp.selected, scale)
         elif "switch" in comp_name_lower:
-            self._draw_switch(painter, x, y, comp.selected)
+            self._draw_switch(painter, x, y, comp.selected, scale)
         elif "relay" in comp_name_lower:
-            self._draw_relay(painter, x, y, comp.selected)
+            self._draw_relay(painter, x, y, comp.selected, scale)
         elif "transformer" in comp_name_lower:
-            self._draw_transformer(painter, x, y, comp.selected)
+            self._draw_transformer(painter, x, y, comp.selected, scale)
         elif "motor" in comp_name_lower:
-            self._draw_motor(painter, x, y, comp.selected)
+            self._draw_motor(painter, x, y, comp.selected, scale)
         elif "generator" in comp_name_lower:
-            self._draw_generator(painter, x, y, comp.selected)
+            self._draw_generator(painter, x, y, comp.selected, scale)
         elif "ammeter" in comp_name_lower:
-            self._draw_ammeter(painter, x, y, comp.selected)
+            self._draw_ammeter(painter, x, y, comp.selected, scale)
         elif "voltmeter" in comp_name_lower:
             self._draw_voltmeter(painter, x, y, comp.selected)
         elif "wattmeter" in comp_name_lower:
             self._draw_wattmeter(painter, x, y, comp.selected)
         elif "ohmmeter" in comp_name_lower:
             self._draw_ohmmeter(painter, x, y, comp.selected)
+        elif "oscilloscope" in comp_name_lower or "scope" in comp_name_lower:
+            self._draw_oscilloscope(painter, x, y, comp.selected)
+        elif "function generator" in comp_name_lower or "fgen" in comp_name_lower:
+            self._draw_function_generator(painter, x, y, comp.selected)
+        elif "multimeter" in comp_name_lower or "dmm" in comp_name_lower:
+            self._draw_multimeter(painter, x, y, comp.selected)
+        elif "spectrum analyzer" in comp_name_lower:
+            self._draw_spectrum_analyzer(painter, x, y, comp.selected)
+        elif "logic analyzer" in comp_name_lower:
+            self._draw_logic_analyzer(painter, x, y, comp.selected)
+        elif "lcr meter" in comp_name_lower or "lcr" in comp_name_lower:
+            self._draw_lcr_meter(painter, x, y, comp.selected)
         elif "thyristor" in comp_name_lower:
             self._draw_thyristor(painter, x, y, comp.selected)
         elif "bjt" in comp_name_lower:
@@ -1012,231 +1156,398 @@ class CircuitCanvas(QWidget):
         
         painter.restore()
     
-    def _draw_resistor(self, painter, x, y, selected):
-        """Draw resistor symbol"""
+    def _draw_resistor(self, painter, x, y, selected, scale=1.0):
+        """Draw resistor symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
-        points = [(x-25, y), (x-18, y-6), (x-12, y+6), (x-6, y-6), (x, y+6), (x+6, y-6), (x+12, y+6), (x+22, y)]
+        # Scale the dimensions
+        s = scale * 1.0
+        points = [
+            (x - 25*s, y), (x - 18*s, y - 6*s), (x - 12*s, y + 6*s), (x - 6*s, y - 6*s),
+            (x, y + 6*s), (x + 6*s, y - 6*s), (x + 12*s, y + 6*s), (x + 22*s, y)
+        ]
         for i in range(len(points)-1):
-            painter.drawLine(points[i][0], points[i][1], points[i+1][0], points[i+1][1])
-        painter.drawLine(x-30, y, x-25, y)
-        painter.drawLine(x+22, y, x+30, y)
-        painter.setFont(QFont("Arial", 7))
+            painter.drawLine(int(points[i][0]), int(points[i][1]), int(points[i+1][0]), int(points[i+1][1]))
+        painter.drawLine(int(x - 30*s), int(y), int(x - 25*s), int(y))
+        painter.drawLine(int(x + 22*s), int(y), int(x + 30*s), int(y))
+        painter.setFont(QFont("Arial", max(5, int(7*scale))))
         painter.setPen(QPen(QColor("#000000")))
-        painter.drawText(x-10, y+12, 20, 10, Qt.AlignCenter, "R")
+        painter.drawText(int(x - 10*s), int(y + 12*s), int(20*s), int(10*s), Qt.AlignCenter, "R")
     
-    def _draw_capacitor(self, painter, x, y, selected):
-        """Draw capacitor symbol - improved"""
+    def _draw_capacitor(self, painter, x, y, selected, scale=1.0):
+        """Draw capacitor symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
+        s = scale * 1.0
         # Left wire
-        painter.drawLine(x-30, y, x-15, y)
+        painter.drawLine(int(x - 30*s), int(y), int(x - 15*s), int(y))
         # Right wire
-        painter.drawLine(x+15, y, x+30, y)
+        painter.drawLine(int(x + 15*s), int(y), int(x + 30*s), int(y))
         # Two parallel plates (top and bottom)
-        painter.drawLine(x-15, y-12, x-15, y+12)
-        painter.drawLine(x+15, y-12, x+15, y+12)
+        painter.drawLine(int(x - 15*s), int(y - 12*s), int(x - 15*s), int(y + 12*s))
+        painter.drawLine(int(x + 15*s), int(y - 12*s), int(x + 15*s), int(y + 12*s))
         # Label
-        painter.setFont(QFont("Arial", 8))
+        painter.setFont(QFont("Arial", max(5, int(8*scale))))
         painter.setPen(QPen(QColor("#000000")))
-        painter.drawText(x-8, y+15, 16, 10, Qt.AlignCenter, "C")
+        painter.drawText(int(x - 8*s), int(y + 15*s), int(16*s), int(10*s), Qt.AlignCenter, "C")
     
-    def _draw_inductor(self, painter, x, y, selected):
-        """Draw inductor symbol - improved coil representation"""
+    def _draw_inductor(self, painter, x, y, selected, scale=1.0):
+        """Draw inductor symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
-        painter.drawLine(x-30, y, x-22, y)
-        painter.drawLine(x+22, y, x+30, y)
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 22*s), int(y))
+        painter.drawLine(int(x + 22*s), int(y), int(x + 30*s), int(y))
         # Draw coil loops
         for i in range(5):
-            painter.drawArc(x-20+i*8, y-6, 8, 12, 0, 180*16)
+            painter.drawArc(int(x - 20*s + i*8*s), int(y - 6*s), int(8*s), int(12*s), 0, 180*16)
         # Label
-        painter.setFont(QFont("Arial", 8))
+        painter.setFont(QFont("Arial", max(5, int(8*scale))))
         painter.setPen(QPen(QColor("#000000")))
-        painter.drawText(x-6, y+15, 12, 10, Qt.AlignCenter, "L")
+        painter.drawText(int(x - 6*s), int(y + 15*s), int(12*s), int(10*s), Qt.AlignCenter, "L")
     
-    def _draw_diode(self, painter, x, y, selected):
-        """Draw diode symbol"""
+    def _draw_diode(self, painter, x, y, selected, scale=1.0):
+        """Draw diode symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#cc0000")
         painter.setPen(QPen(color, 2 if selected else 1.5))
         painter.setBrush(QBrush(QColor("#ffcccc")))
-        painter.drawLine(x-30, y, x-15, y)
-        painter.drawLine(x+15, y, x+30, y)
-        tri = QPolygon([QPoint(x-12, y-10), QPoint(x-12, y+10), QPoint(x+10, y)])
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 15*s), int(y))
+        painter.drawLine(int(x + 15*s), int(y), int(x + 30*s), int(y))
+        tri = QPolygon([QPoint(int(x - 12*s), int(y - 10*s)), QPoint(int(x - 12*s), int(y + 10*s)), QPoint(int(x + 10*s), int(y))])
         painter.drawPolygon(tri)
-        painter.drawLine(x+10, y-12, x+10, y+12)
-        painter.setFont(QFont("Arial", 7))
+        painter.drawLine(int(x + 10*s), int(y - 12*s), int(x + 10*s), int(y + 12*s))
+        painter.setFont(QFont("Arial", max(5, int(7*scale))))
         painter.setPen(QPen(QColor("#000000")))
-        painter.drawText(x-8, y+12, 16, 10, Qt.AlignCenter, "D")
+        painter.drawText(int(x - 8*s), int(y + 12*s), int(16*s), int(10*s), Qt.AlignCenter, "D")
     
-    def _draw_battery(self, painter, x, y, selected):
-        """Draw battery symbol"""
+    def _draw_battery(self, painter, x, y, selected, scale=1.0):
+        """Draw battery symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#000000")
         painter.setPen(QPen(color, 2 if selected else 1.5))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
         # Positive terminal (long line)
-        painter.drawLine(x+10, y-12, x+10, y+12)
+        painter.drawLine(int(x + 10*s), int(y - 12*s), int(x + 10*s), int(y + 12*s))
         # Negative terminal (short line)
-        painter.drawLine(x-8, y-8, x-8, y+8)
-        painter.setFont(QFont("Arial", 7))
+        painter.drawLine(int(x - 8*s), int(y - 8*s), int(x - 8*s), int(y + 8*s))
+        painter.setFont(QFont("Arial", max(5, int(7*scale))))
         painter.setPen(QPen(QColor("#000000")))
-        painter.drawText(x-8, y+12, 16, 10, Qt.AlignCenter, "B")
+        painter.drawText(int(x - 8*s), int(y + 12*s), int(16*s), int(10*s), Qt.AlignCenter, "B")
     
-    def _draw_ac_source(self, painter, x, y, selected):
-        """Draw AC source symbol"""
+    def _draw_ac_source(self, painter, x, y, selected, scale=1.0):
+        """Draw AC source symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#0066cc")
         painter.setPen(QPen(color, 2 if selected else 1.5))
         painter.setBrush(QBrush(QColor("#e3f2fd")))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawEllipse(x-14, y-14, 28, 28)
-        painter.setFont(QFont("Arial", 10, QFont.Bold))
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
+        painter.drawEllipse(int(x - 14*s), int(y - 14*s), int(28*s), int(28*s))
+        painter.setFont(QFont("Arial", max(5, int(10*scale)), QFont.Bold))
         painter.setPen(QPen(QColor("#0066cc")))
-        painter.drawText(x-8, y-8, 16, 16, Qt.AlignCenter, "~")
+        painter.drawText(int(x - 8*s), int(y - 8*s), int(16*s), int(16*s), Qt.AlignCenter, "~")
     
-    def _draw_dc_source(self, painter, x, y, selected):
-        """Draw DC source symbol"""
+    def _draw_dc_source(self, painter, x, y, selected, scale=1.0):
+        """Draw DC source symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#0066cc")
         painter.setPen(QPen(color, 2 if selected else 1.5))
         painter.setBrush(QBrush(QColor("#e3f2fd")))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawEllipse(x-14, y-14, 28, 28)
-        painter.setFont(QFont("Arial", 10, QFont.Bold))
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
+        painter.drawEllipse(int(x - 14*s), int(y - 14*s), int(28*s), int(28*s))
+        painter.setFont(QFont("Arial", max(5, int(10*scale)), QFont.Bold))
         painter.setPen(QPen(QColor("#0066cc")))
-        painter.drawText(x-6, y-6, 12, 12, Qt.AlignCenter, "+")
-        painter.drawText(x-6, y+2, 12, 12, Qt.AlignCenter, "-")
+        painter.drawText(int(x - 6*s), int(y - 6*s), int(12*s), int(12*s), Qt.AlignCenter, "+")
+        painter.drawText(int(x - 6*s), int(y + 2*s), int(12*s), int(12*s), Qt.AlignCenter, "-")
     
-    def _draw_current_source(self, painter, x, y, selected):
-        """Draw current source symbol"""
+    def _draw_current_source(self, painter, x, y, selected, scale=1.0):
+        """Draw current source symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#009900")
         painter.setPen(QPen(color, 2 if selected else 1.5))
         painter.setBrush(QBrush(QColor("#e3ffe3")))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawEllipse(x-14, y-14, 28, 28)
-        painter.setFont(QFont("Arial", 10, QFont.Bold))
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
+        painter.drawEllipse(int(x - 14*s), int(y - 14*s), int(28*s), int(28*s))
+        painter.setFont(QFont("Arial", max(5, int(10*scale)), QFont.Bold))
         painter.setPen(QPen(QColor("#009900")))
-        painter.drawText(x-4, y-6, 8, 12, Qt.AlignCenter, "I")
+        painter.drawText(int(x - 4*s), int(y - 6*s), int(8*s), int(12*s), Qt.AlignCenter, "I")
     
-    def _draw_ground(self, painter, x, y, selected):
-        """Draw ground symbol with single top connection point"""
+    def _draw_ground(self, painter, x, y, selected, scale=1.0):
+        """Draw ground symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
-        
+        s = scale * 1.0
         # Top vertical line (connection point)
-        painter.drawLine(x, y-15, x, y-2)
-        
+        painter.drawLine(int(x), int(y - 15*s), int(x), int(y - 2*s))
         # Horizontal lines (ground symbol)
-        painter.drawLine(x-12, y, x+12, y)
-        painter.drawLine(x-9, y+5, x+9, y+5)
-        painter.drawLine(x-6, y+10, x+6, y+10)
-        
+        painter.drawLine(int(x - 12*s), int(y), int(x + 12*s), int(y))
+        painter.drawLine(int(x - 9*s), int(y + 5*s), int(x + 9*s), int(y + 5*s))
+        painter.drawLine(int(x - 6*s), int(y + 10*s), int(x + 6*s), int(y + 10*s))
         # Draw connection node indicator at top
         if selected:
             painter.setBrush(QBrush(QColor("#ff9800")))
-            painter.drawEllipse(QPointF(x, y-15), 3, 3)
+            painter.drawEllipse(QPointF(x, y - 15*s), 3*s, 3*s)
     
-    def _draw_switch(self, painter, x, y, selected):
-        """Draw switch symbol"""
+    def _draw_switch(self, painter, x, y, selected, scale=1.0):
+        """Draw switch symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
-        painter.drawLine(x-30, y, x-15, y)
-        painter.drawLine(x+15, y, x+30, y)
-        painter.drawLine(x-15, y, x+5, y+8)
-        painter.drawEllipse(x+5-3, y+8-3, 6, 6)
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 15*s), int(y))
+        painter.drawLine(int(x + 15*s), int(y), int(x + 30*s), int(y))
+        painter.drawLine(int(x - 15*s), int(y), int(x + 5*s), int(y + 8*s))
+        painter.drawEllipse(int(x + 5*s - 3*s), int(y + 8*s - 3*s), int(6*s), int(6*s))
     
-    def _draw_relay(self, painter, x, y, selected):
-        """Draw relay symbol"""
+    def _draw_relay(self, painter, x, y, selected, scale=1.0):
+        """Draw relay symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
-        painter.drawRect(x-18, y-12, 36, 24)
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawLine(x-10, y-15, x+10, y-15)
+        s = scale * 1.0
+        painter.drawRect(int(x - 18*s), int(y - 12*s), int(36*s), int(24*s))
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
+        painter.drawLine(int(x - 10*s), int(y - 15*s), int(x + 10*s), int(y - 15*s))
     
-    def _draw_transformer(self, painter, x, y, selected):
-        """Draw transformer symbol"""
+    def _draw_transformer(self, painter, x, y, selected, scale=1.0):
+        """Draw transformer symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
-        painter.drawLine(x-30, y, x-20, y)
-        painter.drawLine(x+20, y, x+30, y)
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 20*s), int(y))
+        painter.drawLine(int(x + 20*s), int(y), int(x + 30*s), int(y))
         for i in range(3):
-            painter.drawArc(x-22, y-8+i*8, 8, 8, 0, 360*16)
-            painter.drawArc(x+14, y-8+i*8, 8, 8, 0, 360*16)
+            painter.drawArc(int(x - 22*s), int(y - 8*s + i*8*s), int(8*s), int(8*s), 0, 360*16)
+            painter.drawArc(int(x + 14*s), int(y - 8*s + i*8*s), int(8*s), int(8*s), 0, 360*16)
     
-    def _draw_motor(self, painter, x, y, selected):
-        """Draw motor symbol"""
+    def _draw_motor(self, painter, x, y, selected, scale=1.0):
+        """Draw motor symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#009999")
         painter.setPen(QPen(color, 2 if selected else 1.5))
         painter.setBrush(QBrush(QColor("#ccffff")))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawEllipse(x-14, y-14, 28, 28)
-        painter.setFont(QFont("Arial", 12, QFont.Bold))
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
+        painter.drawEllipse(int(x - 14*s), int(y - 14*s), int(28*s), int(28*s))
+        painter.setFont(QFont("Arial", max(5, int(12*scale)), QFont.Bold))
         painter.setPen(QPen(color))
-        painter.drawText(x-6, y-8, 12, 16, Qt.AlignCenter, "M")
+        painter.drawText(int(x - 6*s), int(y - 8*s), int(12*s), int(16*s), Qt.AlignCenter, "M")
     
-    def _draw_generator(self, painter, x, y, selected):
-        """Draw generator symbol"""
+    def _draw_generator(self, painter, x, y, selected, scale=1.0):
+        """Draw generator symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#669900")
         painter.setPen(QPen(color, 2 if selected else 1.5))
         painter.setBrush(QBrush(QColor("#ffffcc")))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawEllipse(x-14, y-14, 28, 28)
-        painter.setFont(QFont("Arial", 12, QFont.Bold))
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
+        painter.drawEllipse(int(x - 14*s), int(y - 14*s), int(28*s), int(28*s))
+        painter.setFont(QFont("Arial", max(5, int(12*scale)), QFont.Bold))
         painter.setPen(QPen(color))
-        painter.drawText(x-6, y-8, 12, 16, Qt.AlignCenter, "G")
+        painter.drawText(int(x - 6*s), int(y - 8*s), int(12*s), int(16*s), Qt.AlignCenter, "G")
     
-    def _draw_ammeter(self, painter, x, y, selected):
-        """Draw ammeter symbol"""
+    def _draw_ammeter(self, painter, x, y, selected, scale=1.0):
+        """Draw ammeter symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
         painter.setBrush(QBrush(QColor("#f0f0f0")))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawEllipse(x-14, y-14, 28, 28)
-        painter.setFont(QFont("Arial", 8, QFont.Bold))
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
+        painter.drawEllipse(int(x - 14*s), int(y - 14*s), int(28*s), int(28*s))
+        painter.setFont(QFont("Arial", max(5, int(8*scale)), QFont.Bold))
         painter.setPen(QPen(QColor("#000000")))
-        painter.drawText(x-8, y-6, 16, 12, Qt.AlignCenter, "A")
+        painter.drawText(int(x - 8*s), int(y - 6*s), int(16*s), int(12*s), Qt.AlignCenter, "A")
     
-    def _draw_voltmeter(self, painter, x, y, selected):
-        """Draw voltmeter symbol"""
+    def _draw_voltmeter(self, painter, x, y, selected, scale=1.0):
+        """Draw voltmeter symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
         painter.setBrush(QBrush(QColor("#f0f0f0")))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawEllipse(x-14, y-14, 28, 28)
-        painter.setFont(QFont("Arial", 8, QFont.Bold))
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
+        painter.drawEllipse(int(x - 14*s), int(y - 14*s), int(28*s), int(28*s))
+        painter.setFont(QFont("Arial", max(5, int(8*scale)), QFont.Bold))
         painter.setPen(QPen(QColor("#000000")))
-        painter.drawText(x-8, y-6, 16, 12, Qt.AlignCenter, "V")
+        painter.drawText(int(x - 8*s), int(y - 6*s), int(16*s), int(12*s), Qt.AlignCenter, "V")
     
-    def _draw_wattmeter(self, painter, x, y, selected):
-        """Draw wattmeter symbol"""
+    def _draw_wattmeter(self, painter, x, y, selected, scale=1.0):
+        """Draw wattmeter symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
         painter.setBrush(QBrush(QColor("#f0f0f0")))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawEllipse(x-14, y-14, 28, 28)
-        painter.setFont(QFont("Arial", 8, QFont.Bold))
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
+        painter.drawEllipse(int(x - 14*s), int(y - 14*s), int(28*s), int(28*s))
+        painter.setFont(QFont("Arial", max(5, int(8*scale)), QFont.Bold))
         painter.setPen(QPen(QColor("#000000")))
-        painter.drawText(x-8, y-6, 16, 12, Qt.AlignCenter, "W")
+        painter.drawText(int(x - 8*s), int(y - 6*s), int(16*s), int(12*s), Qt.AlignCenter, "W")
     
-    def _draw_ohmmeter(self, painter, x, y, selected):
-        """Draw ohmmeter symbol"""
+    def _draw_ohmmeter(self, painter, x, y, selected, scale=1.0):
+        """Draw ohmmeter symbol with scaling"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
         painter.setBrush(QBrush(QColor("#f0f0f0")))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawEllipse(x-14, y-14, 28, 28)
+        s = scale * 1.0
+        painter.drawLine(int(x - 30*s), int(y), int(x - 18*s), int(y))
+        painter.drawLine(int(x + 18*s), int(y), int(x + 30*s), int(y))
+        painter.drawEllipse(int(x - 14*s), int(y - 14*s), int(28*s), int(28*s))
+        painter.setFont(QFont("Arial", max(5, int(7*scale)), QFont.Bold))
+        painter.setPen(QPen(QColor("#000000")))
+        painter.drawText(int(x - 8*s), int(y - 6*s), int(16*s), int(12*s), Qt.AlignCenter, "Ω")
+    
+    def _draw_oscilloscope(self, painter, x, y, selected, scale=1.0):
+        """Draw oscilloscope symbol with scaling"""
+        color = QColor("#ff9800") if selected else QColor("#1a4d7a")
+        painter.setPen(QPen(color, 2 if selected else 1.5))
+        painter.setBrush(QBrush(QColor("#e8f4f8")))
+        s = scale * 1.0
+        # Main cabinet outline
+        painter.drawRect(int(x - 28*s), int(y - 20*s), int(56*s), int(40*s))
+        # Display screen
+        painter.setPen(QPen(QColor("#000000"), 1))
+        painter.setBrush(QBrush(QColor("#1a1a1a")))
+        painter.drawRect(int(x - 24*s), int(y - 16*s), int(48*s), int(24*s))
+        # Grid lines on screen
+        painter.setPen(QPen(QColor("#00aa00"), 0.5))
+        grid_spacing = 6*s
+        for i in range(8):
+            painter.drawLine(int(x - 24*s + i*grid_spacing), int(y - 16*s), int(x - 24*s + i*grid_spacing), int(y + 8*s))
+        for j in range(4):
+            painter.drawLine(int(x - 24*s), int(y - 16*s + j*grid_spacing), int(x + 24*s), int(y - 16*s + j*grid_spacing))
+        # Label
+        painter.setFont(QFont("Arial", max(5, int(7*scale)), QFont.Bold))
+        painter.setPen(QPen(QColor("#000000")))
+        painter.drawText(int(x - 22*s), int(y + 12*s), int(44*s), int(10*s), Qt.AlignCenter, "SCOPE")
+    
+    def _draw_function_generator(self, painter, x, y, selected):
+        """Draw function generator symbol"""
+        color = QColor("#ff9800") if selected else QColor("#cc6600")
+        painter.setPen(QPen(color, 2 if selected else 1.5))
+        painter.setBrush(QBrush(QColor("#ffe8cc")))
+        
+        # Cabinet
+        painter.drawRect(x-28, y-16, 56, 32)
+        
+        # Display area
+        painter.setPen(QPen(QColor("#000000"), 1))
+        painter.setBrush(QBrush(QColor("#f5f5f5")))
+        painter.drawRect(x-24, y-12, 36, 12)
+        
+        # Waveform representation
+        painter.setPen(QPen(QColor("#0066cc"), 1.5))
+        points = [QPoint(x-20, y-6), QPoint(x-14, y-9), QPoint(x-8, y-3), 
+                 QPoint(x-2, y-10), QPoint(x+4, y-4)]
+        painter.drawPolyline(QPolygon(points))
+        
+        # Label
         painter.setFont(QFont("Arial", 7, QFont.Bold))
         painter.setPen(QPen(QColor("#000000")))
-        painter.drawText(x-8, y-6, 16, 12, Qt.AlignCenter, "Ω")
+        painter.drawText(x-22, y+4, 44, 10, Qt.AlignCenter, "FGEN")
+    
+    def _draw_multimeter(self, painter, x, y, selected):
+        """Draw digital multimeter symbol"""
+        color = QColor("#ff9800") if selected else QColor("#663300")
+        painter.setPen(QPen(color, 2 if selected else 1.5))
+        painter.setBrush(QBrush(QColor("#ffe8cc")))
+        
+        # Cabinet
+        painter.drawRect(x-26, y-18, 52, 36)
+        
+        # Display screen (digital)
+        painter.setPen(QPen(QColor("#000000"), 1))
+        painter.setBrush(QBrush(QColor("#ccffcc")))
+        painter.drawRect(x-22, y-14, 44, 12)
+        
+        # Label
+        painter.setFont(QFont("Arial", 6, QFont.Bold))
+        painter.setPen(QPen(QColor("#000000")))
+        painter.drawText(x-18, y-11, 36, 8, Qt.AlignCenter, "0.000 V")
+        
+        # Meter label
+        painter.setFont(QFont("Arial", 7, QFont.Bold))
+        painter.drawText(x-20, y+4, 40, 10, Qt.AlignCenter, "DMM")
+    
+    def _draw_spectrum_analyzer(self, painter, x, y, selected):
+        """Draw spectrum analyzer symbol"""
+        color = QColor("#ff9800") if selected else QColor("#993333")
+        painter.setPen(QPen(color, 2 if selected else 1.5))
+        painter.setBrush(QBrush(QColor("#ffeeee")))
+        
+        # Cabinet
+        painter.drawRect(x-28, y-20, 56, 40)
+        
+        # Display screen
+        painter.setPen(QPen(QColor("#000000"), 1))
+        painter.setBrush(QBrush(QColor("#1a1a1a")))
+        painter.drawRect(x-24, y-16, 48, 24)
+        
+        # Frequency spectrum representation
+        painter.setPen(QPen(QColor("#ff3300"), 1.5))
+        spectrum = [(x-16, y+2), (x-12, y-4), (x-8, y-8), (x-4, y-2), 
+                   (x, y-6), (x+4, y-1), (x+8, y-5), (x+12, y+1), (x+16, y-3)]
+        for px, py in spectrum:
+            painter.drawLine(px, py, px, y+8)
+        
+        # Label
+        painter.setFont(QFont("Arial", 7, QFont.Bold))
+        painter.setPen(QPen(QColor("#ffffff")))
+        painter.drawText(x-20, y+12, 40, 10, Qt.AlignCenter, "SA")
+    
+    def _draw_logic_analyzer(self, painter, x, y, selected):
+        """Draw logic analyzer symbol"""
+        color = QColor("#ff9800") if selected else QColor("#0066cc")
+        painter.setPen(QPen(color, 2 if selected else 1.5))
+        painter.setBrush(QBrush(QColor("#cce5ff")))
+        
+        # Cabinet
+        painter.drawRect(x-26, y-18, 52, 36)
+        
+        # Display screen
+        painter.setPen(QPen(QColor("#000000"), 1))
+        painter.setBrush(QBrush(QColor("#1a1a1a")))
+        painter.drawRect(x-22, y-14, 44, 20)
+        
+        # Digital signal lines
+        painter.setPen(QPen(QColor("#00ff00"), 1.5))
+        painter.drawLine(x-18, y-8, x-10, y-8)
+        painter.drawLine(x-10, y-8, x-10, y-2)
+        painter.drawLine(x-10, y-2, x+2, y-2)
+        painter.drawLine(x+2, y-2, x+2, y+4)
+        painter.drawLine(x+2, y+4, x+10, y+4)
+        
+        # Label
+        painter.setFont(QFont("Arial", 7, QFont.Bold))
+        painter.setPen(QPen(QColor("#000000")))
+        painter.drawText(x-20, y+8, 40, 10, Qt.AlignCenter, "LA")
+    
+    def _draw_lcr_meter(self, painter, x, y, selected):
+        """Draw LCR meter symbol"""
+        color = QColor("#ff9800") if selected else QColor("#663366")
+        painter.setPen(QPen(color, 2 if selected else 1.5))
+        painter.setBrush(QBrush(QColor("#f5ccff")))
+        
+        # Cabinet
+        painter.drawRect(x-26, y-18, 52, 36)
+        
+        # Display screen
+        painter.setPen(QPen(QColor("#000000"), 1))
+        painter.setBrush(QBrush(QColor("#ffffcc")))
+        painter.drawRect(x-22, y-14, 44, 12)
+        
+        # Display text
+        painter.setFont(QFont("Arial", 6, QFont.Bold))
+        painter.setPen(QPen(QColor("#000000")))
+        painter.drawText(x-18, y-11, 36, 8, Qt.AlignCenter, "100 μH")
+        
+        # Label
+        painter.setFont(QFont("Arial", 7, QFont.Bold))
+        painter.drawText(x-20, y+4, 40, 10, Qt.AlignCenter, "LCR")
     
     def _draw_bjt(self, painter, x, y, selected):
         """Draw BJT symbol"""
@@ -1288,7 +1599,7 @@ class CircuitCanvas(QWidget):
         painter.drawLine(x-30, y, x-15, y)
         painter.drawLine(x+15, y, x+30, y)
         # Button representation
-        painter.drawCircle(x, y-8, 8)
+        painter.drawEllipse(x-8, y-16, 16, 16)
         painter.drawRect(x-10, y+2, 20, 10)
         painter.drawLine(x, y-8, x, y+2)
     
@@ -1327,7 +1638,7 @@ class CircuitCanvas(QWidget):
         painter.drawRect(x-20, y-20, 40, 40)
         # Draw notch (pin 1 indicator)
         painter.drawLine(x-20, y-16, x-20, y-10)
-        painter.drawCircle(x-18, y-14, 2)
+        painter.drawEllipse(x-20, y-16, 4, 4)
         # Draw pin indicators
         for i in range(4):
             painter.drawLine(x-20, y-16+i*8, x-24, y-16+i*8)
@@ -1351,7 +1662,7 @@ class CircuitCanvas(QWidget):
         elif "not" in gate_type or "inverter" in gate_type:
             tri = QPolygon([QPoint(x-15, y-12), QPoint(x-15, y+12), QPoint(x+15, y)])
             painter.drawPolygon(tri)
-            painter.drawCircle(x+17, y, 3)
+            painter.drawEllipse(x+14, y-3, 6, 6)
         else:
             painter.drawArc(int(x-15), int(y-12), 10, 24, 270*16, 180*16)
             painter.drawArc(int(x-10), int(y-12), 10, 24, 270*16, 180*16)
@@ -1565,18 +1876,6 @@ class CircuitCanvas(QWidget):
         painter.drawLine(x-8, y-6, x-8, y+6)
         painter.drawLine(x+8, y-6, x+8, y+6)
     
-    def _draw_multimeter(self, painter, x, y, selected):
-        """Draw multimeter symbol"""
-        color = QColor("#ff9800") if selected else QColor("#333333")
-        painter.setPen(QPen(color, 2 if selected else 1.5))
-        painter.setBrush(QBrush(QColor("#f0f0f0")))
-        painter.drawLine(x-30, y, x-18, y)
-        painter.drawLine(x+18, y, x+30, y)
-        painter.drawEllipse(x-14, y-14, 28, 28)
-        painter.setFont(QFont("Arial", 7, QFont.Bold))
-        painter.setPen(QPen(QColor("#000000")))
-        painter.drawText(x-10, y-6, 20, 12, Qt.AlignCenter, "Ω/V")
-    
     def _draw_voltage_divider(self, painter, x, y, selected):
         """Draw voltage divider symbol"""
         color = QColor("#ff9800") if selected else QColor("#333333")
@@ -1629,8 +1928,8 @@ class CircuitCanvas(QWidget):
         """Draw connector/wire symbol"""
         color = QColor("#ff9800") if selected else QColor("#333333")
         painter.setPen(QPen(color, 2 if selected else 1.5))
-        painter.drawCircle(x-8, y, 6)
-        painter.drawCircle(x+8, y, 6)
+        painter.drawEllipse(x-14, y-6, 12, 12)
+        painter.drawEllipse(x+2, y-6, 12, 12)
         painter.drawLine(x-8, y, x+8, y)
     
     def _draw_wire(self, painter: QPainter, wire: Wire):

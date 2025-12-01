@@ -1,0 +1,684 @@
+{
+  "library_name": "Integrated Circuits",
+  "version": "3.0",
+  "category": "Semiconductors",
+  "description": "Comprehensive integrated circuits library with 8 IC types, each with full specifications, descriptions, and editable properties for circuit simulation",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "operational_amplifier",
+      "name": "Operational Amplifier (Op-Amp)",
+      "type": "IC",
+      "symbol": "U",
+      "description": "High-gain differential amplifier with feedback networks for precision analog circuits. Voltage gain 100,000+ (100dB) with rail-to-rail or single-supply operation. Gain-bandwidth product (GBW) 1MHz-100MHz determines frequency response. Used in filters, amplifiers, comparators, and precision measurement. Common types: LM358, TL072, OPA2134.",
+      "use_cases": "Signal amplification, filtering, precision measurement, audio circuits, sensor conditioning",
+      "editable_properties": {
+        "Open_Loop_Gain": {
+          "value": 100000,
+          "unit": "V/V",
+          "min": 1000,
+          "max": 1000000,
+          "step": 1000,
+          "description": "Voltage gain without feedback"
+        },
+        "Gain_Bandwidth_Product": {
+          "value": 1000000,
+          "unit": "Hz",
+          "min": 100000,
+          "max": 100000000,
+          "step": 100000,
+          "description": "GBW - determines closed-loop bandwidth"
+        },
+        "Input_Offset_Voltage": {
+          "value": 5,
+          "unit": "mV",
+          "min": 0.5,
+          "max": 100,
+          "step": 0.5,
+          "description": "Offset voltage at inputs - lower is better"
+        },
+        "Input_Bias_Current": {
+          "value": 80,
+          "unit": "nA",
+          "min": 1,
+          "max": 10000,
+          "step": 1,
+          "description": "Current required at input"
+        },
+        "Slew_Rate": {
+          "value": 0.5,
+          "unit": "V/μs",
+          "min": 0.01,
+          "max": 10,
+          "step": 0.05,
+          "description": "Maximum rate of output voltage change"
+        },
+        "Supply_Voltage_Single": {
+          "value": 9,
+          "unit": "V",
+          "min": 3,
+          "max": 30,
+          "step": 1,
+          "description": "Single supply voltage"
+        },
+        "Supply_Voltage_Dual": {
+          "value": 15,
+          "unit": "V",
+          "min": 3,
+          "max": 30,
+          "step": 1,
+          "description": "Dual supply ±voltage"
+        },
+        "Output_Swing": {
+          "value": 0.2,
+          "unit": "V",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "description": "Minimum distance to rail"
+        },
+        "Package": {
+          "value": "DIP8",
+          "unit": "type",
+          "options": ["DIP8", "SOIC8", "SMD", "DIP14"],
+          "description": "IC package type"
+        },
+        "Manufacturer": {
+          "value": "TI, Analog Devices, OPA",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.25,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "comparator_ic",
+      "name": "Voltage Comparator",
+      "type": "IC",
+      "symbol": "U",
+      "description": "Ultra-fast high-gain amplifier for digital signal comparison. Output is binary (high/low) based on which input is larger. Propagation delay <10ns enables high-speed level detection. Used for ADC input stages, window comparators, and precision thresholds. Common types: LM311, TL331, MAX9028.",
+      "use_cases": "Level detection, ADC comparators, window comparators, precision thresholds, binary output circuits",
+      "editable_properties": {
+        "Gain": {
+          "value": 200000,
+          "unit": "V/V",
+          "min": 10000,
+          "max": 1000000,
+          "step": 10000,
+          "description": "Open-loop gain"
+        },
+        "Propagation_Delay": {
+          "value": 4,
+          "unit": "ns",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Delay from input change to output"
+        },
+        "Input_Offset_Voltage": {
+          "value": 3,
+          "unit": "mV",
+          "min": 0.5,
+          "max": 50,
+          "step": 0.5,
+          "description": "Input offset voltage"
+        },
+        "Input_Bias_Current": {
+          "value": 50,
+          "unit": "nA",
+          "min": 1,
+          "max": 5000,
+          "step": 1,
+          "description": "Input bias current"
+        },
+        "Supply_Voltage_Single": {
+          "value": 5,
+          "unit": "V",
+          "min": 2,
+          "max": 15,
+          "step": 1,
+          "description": "Single supply operation"
+        },
+        "Supply_Voltage_Dual": {
+          "value": 15,
+          "unit": "V",
+          "min": 3,
+          "max": 30,
+          "step": 1,
+          "description": "Dual supply ±voltage"
+        },
+        "Output_Type": {
+          "value": "Open Drain",
+          "unit": "type",
+          "options": ["Open Drain", "Push-Pull", "CMOS"],
+          "description": "Output configuration"
+        },
+        "Max_Output_Current": {
+          "value": 10,
+          "unit": "mA",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Maximum output sink/source current"
+        },
+        "Manufacturer": {
+          "value": "TI, Analog Devices, Maxim",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.20,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "voltage_regulator",
+      "name": "Voltage Regulator (Linear)",
+      "type": "IC",
+      "symbol": "U",
+      "description": "Fixed or adjustable voltage regulation for clean power supplies. Dropout voltage 2-3V enables low-voltage operation. Current capability 100mA-3A. Output ripple <10mV over load range. Essential for powering logic, amplifiers, and sensitive circuits. Common types: 7805, LM317, AMS1117.",
+      "use_cases": "Power supply regulation, noise filtering, bias supply generation, low-current power sources",
+      "editable_properties": {
+        "Output_Voltage": {
+          "value": 5.0,
+          "unit": "V",
+          "min": 3.3,
+          "max": 24,
+          "step": 0.1,
+          "description": "Regulated output voltage"
+        },
+        "Max_Output_Current": {
+          "value": 1000,
+          "unit": "mA",
+          "min": 100,
+          "max": 5000,
+          "step": 100,
+          "description": "Maximum continuous output current"
+        },
+        "Dropout_Voltage": {
+          "value": 2.0,
+          "unit": "V",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.1,
+          "description": "Minimum input-output voltage difference"
+        },
+        "Line_Regulation": {
+          "value": 0.05,
+          "unit": "%",
+          "min": 0.01,
+          "max": 1,
+          "step": 0.01,
+          "description": "Output change for input change"
+        },
+        "Load_Regulation": {
+          "value": 0.1,
+          "unit": "%",
+          "min": 0.01,
+          "max": 2,
+          "step": 0.01,
+          "description": "Output change for load current change"
+        },
+        "Output_Ripple": {
+          "value": 5,
+          "unit": "mV",
+          "min": 0.5,
+          "max": 100,
+          "step": 0.5,
+          "description": "RMS noise and ripple"
+        },
+        "Supply_Voltage_Input": {
+          "value": 12,
+          "unit": "V",
+          "min": 7,
+          "max": 35,
+          "step": 1,
+          "description": "Input voltage range"
+        },
+        "Type": {
+          "value": "Fixed",
+          "unit": "type",
+          "options": ["Fixed", "Adjustable"],
+          "description": "Output voltage type"
+        },
+        "Manufacturer": {
+          "value": "TI, STMicroelectronics, Fairchild",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.30,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "logic_gate_ic",
+      "name": "Logic Gate IC (TTL/CMOS)",
+      "type": "IC",
+      "symbol": "U",
+      "description": "Digital logic integrated circuits implementing AND/OR/NOT/NAND/NOR gates. TTL operates 5V with better noise immunity. CMOS operates 3.3V-15V with lower power consumption. Propagation delay 5-50ns enables digital circuits up to tens of MHz. Used for digital logic and signal conditioning.",
+      "use_cases": "Digital logic, signal conditioning, frequency dividers, digital control, counter circuits",
+      "editable_properties": {
+        "Supply_Voltage": {
+          "value": 5.0,
+          "unit": "V",
+          "min": 2,
+          "max": 15,
+          "step": 0.5,
+          "description": "Operating supply voltage"
+        },
+        "Logic_Type": {
+          "value": "CMOS",
+          "unit": "type",
+          "options": ["TTL", "CMOS", "LS-TTL", "HC-CMOS", "HCT-CMOS"],
+          "description": "Logic family"
+        },
+        "Gate_Type": {
+          "value": "AND",
+          "unit": "type",
+          "options": ["AND", "OR", "NOT", "NAND", "NOR", "XOR"],
+          "description": "Logic function"
+        },
+        "Number_of_Gates": {
+          "value": 4,
+          "unit": "gates",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "description": "Number of gates per IC"
+        },
+        "Inputs_Per_Gate": {
+          "value": 2,
+          "unit": "inputs",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "description": "Inputs per gate"
+        },
+        "Propagation_Delay": {
+          "value": 10,
+          "unit": "ns",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Gate delay"
+        },
+        "Output_Current": {
+          "value": 20,
+          "unit": "mA",
+          "min": 5,
+          "max": 100,
+          "step": 5,
+          "description": "Maximum output current"
+        },
+        "Power_Consumption": {
+          "value": 20,
+          "unit": "mW",
+          "min": 1,
+          "max": 500,
+          "step": 5,
+          "description": "Total power at typical operation"
+        },
+        "Manufacturer": {
+          "value": "TI, NXP, STMicroelectronics",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.15,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "microcontroller",
+      "name": "Microcontroller (MCU)",
+      "type": "IC",
+      "symbol": "U",
+      "description": "Complete computer on a single chip with CPU, RAM, flash memory, and peripherals. 8-bit (Arduino) to 32-bit (STM32, ARM) architectures. Clock speed 1MHz-300MHz. GPIO pins, ADC, SPI, I2C, UART enable sensor interfacing and control. Essential for IoT, robotics, and automation.",
+      "use_cases": "IoT devices, robotics, automation, sensor data logging, system control, embedded applications",
+      "editable_properties": {
+        "Architecture": {
+          "value": "32-bit ARM",
+          "unit": "type",
+          "options": ["8-bit AVR", "8-bit PIC", "32-bit ARM", "32-bit MIPS"],
+          "description": "CPU architecture"
+        },
+        "Clock_Speed": {
+          "value": 72,
+          "unit": "MHz",
+          "min": 1,
+          "max": 300,
+          "step": 1,
+          "description": "Maximum clock frequency"
+        },
+        "Flash_Memory": {
+          "value": 256,
+          "unit": "kB",
+          "min": 1,
+          "max": 2000,
+          "step": 1,
+          "description": "Program memory"
+        },
+        "RAM": {
+          "value": 48,
+          "unit": "kB",
+          "min": 0.5,
+          "max": 512,
+          "step": 1,
+          "description": "RAM memory"
+        },
+        "GPIO_Pins": {
+          "value": 38,
+          "unit": "pins",
+          "min": 8,
+          "max": 144,
+          "step": 1,
+          "description": "General purpose I/O"
+        },
+        "ADC_Channels": {
+          "value": 10,
+          "unit": "channels",
+          "min": 0,
+          "max": 24,
+          "step": 1,
+          "description": "Analog to digital converter channels"
+        },
+        "PWM_Channels": {
+          "value": 6,
+          "unit": "channels",
+          "min": 0,
+          "max": 16,
+          "step": 1,
+          "description": "Pulse width modulation outputs"
+        },
+        "Interfaces": {
+          "value": "SPI/I2C/UART",
+          "unit": "list",
+          "description": "Communication interfaces"
+        },
+        "Manufacturer": {
+          "value": "STMicroelectronics, Atmel, NXP",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 2.00,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 50,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "555_timer_ic",
+      "name": "555 Timer IC (Astable/Monostable)",
+      "type": "IC",
+      "symbol": "U",
+      "description": "Iconic timer IC for pulse generation and timing applications. Can operate as astable (free-running oscillator) or monostable (one-shot). Frequency range 0.01Hz to >500kHz with 50% duty cycle adjustable. Accuracy ±5% at room temperature. Used in alarm circuits, PWM generators, and frequency dividers.",
+      "use_cases": "Oscillators, timing circuits, PWM generation, frequency dividers, alarm circuits, pulse generation",
+      "editable_properties": {
+        "Supply_Voltage": {
+          "value": 9.0,
+          "unit": "V",
+          "min": 4.5,
+          "max": 16,
+          "step": 0.5,
+          "description": "Operating supply voltage"
+        },
+        "Output_Frequency": {
+          "value": 1000,
+          "unit": "Hz",
+          "min": 0.01,
+          "max": 1000000,
+          "step": 1,
+          "description": "Oscillation frequency (astable mode)"
+        },
+        "Duty_Cycle": {
+          "value": 50,
+          "unit": "%",
+          "min": 50,
+          "max": 99,
+          "step": 1,
+          "description": "Pulse width percentage - minimum 50%"
+        },
+        "Timing_Accuracy": {
+          "value": 5,
+          "unit": "%",
+          "min": 1,
+          "max": 10,
+          "step": 0.5,
+          "description": "Frequency accuracy"
+        },
+        "Max_Output_Current": {
+          "value": 200,
+          "unit": "mA",
+          "min": 50,
+          "max": 500,
+          "step": 10,
+          "description": "Output sink/source current"
+        },
+        "Trigger_Current": {
+          "value": 0.5,
+          "unit": "μA",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Current to trigger timing"
+        },
+        "Operating_Modes": {
+          "value": "Astable/Monostable",
+          "unit": "list",
+          "description": "Free-running or one-shot operation"
+        },
+        "Temperature_Range": {
+          "value": 0,
+          "unit": "°C",
+          "min": -40,
+          "max": 70,
+          "step": 5,
+          "description": "Operating temperature minimum"
+        },
+        "Manufacturer": {
+          "value": "TI, NXP, Intersil",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.10,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 20,
+          "step": 0.05,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "usb_controller",
+      "name": "USB Controller / Bridge IC",
+      "type": "IC",
+      "symbol": "U",
+      "description": "Specialized controller for USB communication between embedded systems and computers. FT232, CH340, CP2102 types support serial UART conversion. Enables programming, data transfer, and power delivery over USB. Integral for Arduino boards and serial communication projects.",
+      "use_cases": "USB serial communication, microcontroller programming, data logging, computer interfacing",
+      "editable_properties": {
+        "Protocol": {
+          "value": "USB 2.0 Full Speed",
+          "unit": "type",
+          "options": ["USB 1.1 Low Speed", "USB 2.0 Full Speed", "USB 2.0 High Speed", "USB 3.0"],
+          "description": "USB specification"
+        },
+        "Interface": {
+          "value": "UART",
+          "unit": "type",
+          "options": ["UART", "SPI", "I2C", "Parallel"],
+          "description": "Internal interface type"
+        },
+        "Data_Rate": {
+          "value": 3000000,
+          "unit": "bps",
+          "min": 300,
+          "max": 12000000,
+          "step": 1000,
+          "description": "Maximum baud rate"
+        },
+        "USB_Current": {
+          "value": 500,
+          "unit": "mA",
+          "min": 100,
+          "max": 900,
+          "step": 100,
+          "description": "USB power supplied"
+        },
+        "Supply_Voltage": {
+          "value": 3.3,
+          "unit": "V",
+          "min": 2.7,
+          "max": 5.5,
+          "step": 0.3,
+          "description": "Core logic supply voltage"
+        },
+        "Buffer_Size": {
+          "value": 256,
+          "unit": "bytes",
+          "min": 64,
+          "max": 4096,
+          "step": 64,
+          "description": "Internal buffer for data storage"
+        },
+        "Latency": {
+          "value": 1,
+          "unit": "ms",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "description": "Transmission latency"
+        },
+        "Package": {
+          "value": "SSOP28",
+          "unit": "type",
+          "options": ["SSOP28", "QFN32", "LQFP48", "BGA"],
+          "description": "IC package type"
+        },
+        "Manufacturer": {
+          "value": "FTDI, WinChipHead, Silicon Labs",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 1.50,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 50,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "switching_regulator",
+      "name": "Switching Power Supply IC (SMPS)",
+      "type": "IC",
+      "symbol": "U",
+      "description": "High-efficiency DC-DC converter using high-frequency switching (100kHz-2MHz). Dropout voltage near zero enables efficient 5V→3.3V conversion. Current capability up to 50A+. Integration with external inductor/capacitor creates compact supplies. Types: buck (step-down), boost (step-up), buck-boost.",
+      "use_cases": "DC-DC conversion, battery-powered systems, efficient power supplies, portable electronics",
+      "editable_properties": {
+        "Topology": {
+          "value": "Buck",
+          "unit": "type",
+          "options": ["Buck", "Boost", "Buck-Boost", "Flyback"],
+          "description": "Converter topology"
+        },
+        "Input_Voltage": {
+          "value": 12,
+          "unit": "V",
+          "min": 2,
+          "max": 60,
+          "step": 1,
+          "description": "Input voltage range"
+        },
+        "Output_Voltage": {
+          "value": 5,
+          "unit": "V",
+          "min": 1,
+          "max": 50,
+          "step": 0.1,
+          "description": "Regulated output voltage"
+        },
+        "Max_Output_Current": {
+          "value": 5,
+          "unit": "A",
+          "min": 0.5,
+          "max": 100,
+          "step": 0.5,
+          "description": "Maximum output current"
+        },
+        "Switching_Frequency": {
+          "value": 500,
+          "unit": "kHz",
+          "min": 100,
+          "max": 2000,
+          "step": 50,
+          "description": "PWM switching frequency"
+        },
+        "Efficiency": {
+          "value": 0.92,
+          "unit": "ratio",
+          "min": 0.85,
+          "max": 0.98,
+          "step": 0.01,
+          "description": "Typical efficiency percentage"
+        },
+        "Output_Ripple": {
+          "value": 20,
+          "unit": "mV",
+          "min": 1,
+          "max": 500,
+          "step": 5,
+          "description": "Output voltage ripple"
+        },
+        "Soft_Start": {
+          "value": "Yes",
+          "unit": "feature",
+          "description": "Soft start to limit inrush current"
+        },
+        "Manufacturer": {
+          "value": "TI, Infineon, Analog Devices",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.80,
+          "unit": "USD",
+          "min": 0.2,
+          "max": 100,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    }
+  ]
+}

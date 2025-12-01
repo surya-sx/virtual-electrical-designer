@@ -18,6 +18,7 @@ class ComponentDefinition:
         
     def to_dict(self):
         return {
+            "id": self.name.lower().replace(" ", "_"),
             "name": self.name,
             "category": self.category,
             "description": self.description,
@@ -37,6 +38,7 @@ class ComponentLibraryManager:
         
         self._load_builtin_library()
         self._load_user_library()
+        self.load_extended_libraries()  # Load all JSON library files
         
     def _load_builtin_library(self):
         """Load built-in component library"""
@@ -160,6 +162,14 @@ class ComponentLibraryManager:
             categories.add(comp.category)
         return sorted(list(categories))
     
+    def get_categories_with_components(self) -> Dict[str, List[Dict]]:
+        """Get all categories with their components as dictionaries"""
+        result = {}
+        for category in self.get_all_categories():
+            components = self.list_components_by_category(category)
+            result[category] = [c.to_dict() for c in components]
+        return result
+    
     def load_extended_libraries(self, libraries_path: Optional[Path] = None):
         """Load extended component libraries from JSON files"""
         if libraries_path is None:
@@ -168,47 +178,46 @@ class ComponentLibraryManager:
         if not libraries_path.exists():
             return
         
-        # List of extended library files to load
-        extended_libs = [
-            "transistors.json",
-            "analog_ics_extended.json",
-            "digital_ics_extended.json",
-            "power_semiconductors_extended.json",
-            "passive_advanced_extended.json",
-        ]
-        
-        for lib_file in extended_libs:
-            lib_path = libraries_path / lib_file
-            if lib_path.exists():
-                self._load_extended_library(lib_path)
+        # Load all available library files except library_index.json
+        try:
+            for lib_file in libraries_path.iterdir():
+                if lib_file.suffix == '.json' and lib_file.name != 'library_index.json':
+                    self._load_extended_library(lib_file)
+        except Exception as e:
+            print(f"Error loading extended libraries: {e}")
     
     def _load_extended_library(self, lib_path: Path):
         """Load a single extended library JSON file"""
         try:
             with open(lib_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                
+            
+            # Get library metadata
+            library_category = data.get("category", "Other")
+            
+            # Load components from this library
             for comp_data in data.get("components", []):
-                # Create component definition
+                # Create component definition with library category
                 comp_def = ComponentDefinition(
                     comp_data.get("name", "Unknown"),
-                    comp_data.get("category", "Uncategorized"),
+                    library_category,  # Use library's category
                     comp_data.get("description", "")
                 )
                 
-                # Add parameters
-                comp_def.parameters = comp_data.get("parameters", {})
+                # Add parameters from editable_properties if available
+                if "editable_properties" in comp_data:
+                    for prop_name, prop_data in comp_data["editable_properties"].items():
+                        if isinstance(prop_data, dict):
+                            comp_def.parameters[prop_name] = prop_data.get("value", 0)
+                else:
+                    comp_def.parameters = comp_data.get("parameters", {})
                 
-                # Add ports/pins
-                pins = comp_data.get("pins", {})
-                if isinstance(pins, dict):
-                    comp_def.ports = [{"id": k, "name": v} for k, v in pins.items()]
-                elif isinstance(pins, int):
-                    comp_def.ports = [{"id": str(i), "name": f"P{i+1}"} for i in range(pins)]
+                # Add ports/pins - library files use editable_properties, so default to 2
+                comp_def.ports = [{"id": "1", "name": "P1"}, {"id": "2", "name": "P2"}]
                 
-                # Store with unique key
-                key = f"{comp_data.get('category', 'Other')}: {comp_def.name}"
-                self.user_components[key] = comp_def
+                # Store with unique key using component ID
+                comp_id = comp_data.get("id", comp_data.get("name", "").lower().replace(" ", "_"))
+                self.user_components[comp_id] = comp_def
                 
         except (json.JSONDecodeError, IOError, KeyError) as e:
             print(f"Error loading library {lib_path}: {str(e)}")

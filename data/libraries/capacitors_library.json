@@ -1,0 +1,728 @@
+{
+  "library_name": "Capacitors",
+  "version": "3.0",
+  "category": "Passive Components",
+  "description": "Comprehensive capacitor component library with 8 capacitor types, each with full specifications, descriptions, and editable properties for circuit simulation",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "ceramic_capacitor",
+      "name": "Ceramic Capacitor (Multi-Layer)",
+      "type": "Capacitor",
+      "symbol": "C",
+      "description": "Multi-layer ceramic capacitor (MLCC) with high volumetric efficiency. Available in X7R, Y5V, and Z5U grades for different temperature/voltage stability requirements. Range 1pF to 100μF with ESR 10-500mΩ. Most common capacitor for PCBs due to excellent cost/performance ratio and automated assembly compatibility. Suitable for bypass, coupling, and filtering.",
+      "use_cases": "Bypass decoupling, coupling, filtering, EMI suppression, high-frequency circuits",
+      "editable_properties": {
+        "Capacitance": {
+          "value": 100000,
+          "unit": "nF",
+          "min": 0.001,
+          "max": 100000,
+          "step": 0.01,
+          "description": "Capacitance in nanoFarads. Example: 100nF, 1000nF (1μF), 10000nF (10μF)"
+        },
+        "Voltage_Rating": {
+          "value": 50,
+          "unit": "V",
+          "min": 6.3,
+          "max": 1000,
+          "step": 1,
+          "description": "Voltage rating in Volts. Common: 6.3V, 10V, 16V, 25V, 50V, 100V, 250V, 500V, 1000V"
+        },
+        "Dielectric_Grade": {
+          "value": "X7R",
+          "unit": "grade",
+          "options": ["X7R", "Y5V", "Z5U", "C0G", "NP0"],
+          "description": "Temperature/voltage stability: X7R (±15% across temp), Y5V (±20%), Z5U (±20% compact)"
+        },
+        "Tolerance": {
+          "value": 10,
+          "unit": "%",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "description": "Capacitance tolerance percentage"
+        },
+        "Package_Type": {
+          "value": "0805",
+          "unit": "code",
+          "options": ["0402", "0603", "0805", "1206", "1210", "1812", "1825", "2220"],
+          "description": "SMD package size"
+        },
+        "ESR": {
+          "value": 200,
+          "unit": "mΩ",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "description": "Equivalent Series Resistance"
+        },
+        "ESL": {
+          "value": 0.5,
+          "unit": "nH",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "description": "Equivalent Series Inductance - critical for high-frequency bypass"
+        },
+        "Operating_Temp_Min": {
+          "value": -40,
+          "unit": "°C",
+          "min": -55,
+          "max": 0,
+          "step": 5,
+          "description": "Minimum operating temperature"
+        },
+        "Operating_Temp_Max": {
+          "value": 85,
+          "unit": "°C",
+          "min": 50,
+          "max": 150,
+          "step": 5,
+          "description": "Maximum operating temperature"
+        },
+        "Frequency": {
+          "value": 1000,
+          "unit": "MHz",
+          "min": 100,
+          "max": 1000,
+          "step": 100,
+          "description": "Operating frequency range"
+        },
+        "Manufacturer": {
+          "value": "Murata, Samsung, TDK",
+          "unit": "text",
+          "description": "Manufacturer name"
+        },
+        "Unit_Cost": {
+          "value": 0.01,
+          "unit": "USD",
+          "min": 0.002,
+          "max": 10,
+          "step": 0.01,
+          "description": "Cost per unit in USD"
+        }
+      }
+    },
+    {
+      "id": "electrolytic_capacitor",
+      "name": "Electrolytic Capacitor (Al/Ta)",
+      "type": "Capacitor",
+      "symbol": "C",
+      "description": "High-capacity electrolytic capacitor for bulk energy storage and filtering. Available in aluminum (common, low cost) and tantalum (compact, higher reliability) types. Range 1μF to 100,000μF with ESR 50-500mΩ. Larger physical size but excellent for power supply filtering, charge storage, and long time-constant circuits. Polarized - correct orientation required.",
+      "use_cases": "Power supply filtering, bulk energy storage, charge storage, power delivery, long time-constant circuits",
+      "editable_properties": {
+        "Capacitance": {
+          "value": 10000,
+          "unit": "μF",
+          "min": 1,
+          "max": 100000,
+          "step": 1,
+          "description": "Capacitance in microFarads. Example: 1μF, 10μF, 100μF, 1000μF"
+        },
+        "Voltage_Rating": {
+          "value": 25,
+          "unit": "V",
+          "min": 6.3,
+          "max": 500,
+          "step": 1,
+          "description": "Voltage rating. Common: 6.3V, 10V, 16V, 25V, 35V, 50V, 63V, 100V, 160V, 200V, 400V, 500V"
+        },
+        "Type": {
+          "value": "Aluminum",
+          "unit": "type",
+          "options": ["Aluminum", "Tantalum"],
+          "description": "Aluminum (common, cost-effective) or Tantalum (compact, reliable)"
+        },
+        "Polarity": {
+          "value": "Polarized",
+          "unit": "status",
+          "description": "This is a polarized capacitor - must be installed with correct polarity"
+        },
+        "ESR": {
+          "value": 200,
+          "unit": "mΩ",
+          "min": 50,
+          "max": 1000,
+          "step": 50,
+          "description": "Equivalent Series Resistance - affects ripple filtering"
+        },
+        "Package_Style": {
+          "value": "Radial",
+          "unit": "style",
+          "options": ["Radial", "Axial", "SMD"],
+          "description": "Radial (most common), Axial, or SMD mounting"
+        },
+        "Operating_Temp_Max": {
+          "value": 85,
+          "unit": "°C",
+          "min": 50,
+          "max": 150,
+          "step": 10,
+          "description": "Maximum operating temperature"
+        },
+        "Ripple_Current": {
+          "value": 1000,
+          "unit": "mA",
+          "min": 100,
+          "max": 10000,
+          "step": 100,
+          "description": "Allowable ripple current at 100kHz"
+        },
+        "Lifespan": {
+          "value": 2000,
+          "unit": "hours",
+          "min": 1000,
+          "max": 10000,
+          "step": 500,
+          "description": "Rated lifespan at maximum conditions"
+        },
+        "Manufacturer": {
+          "value": "Panasonic, Nichicon, Rubycon",
+          "unit": "text",
+          "description": "Manufacturer name"
+        },
+        "Unit_Cost": {
+          "value": 0.10,
+          "unit": "USD",
+          "min": 0.02,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "film_capacitor",
+      "name": "Film Capacitor (PP/PET/PS/PTFE)",
+      "type": "Capacitor",
+      "symbol": "C",
+      "description": "Non-polarized film capacitor with low ESR and excellent frequency response. Available with various dielectrics: polypropylene (general), polyester/PET (compact), polystyrene (precision audio), PTFE (high-temp). Range 1nF to 100μF with minimal dielectric loss. Superior for AC coupling, RF circuits, audio, and precision analog applications. No polarity concern.",
+      "use_cases": "AC coupling, RF circuits, audio applications, precision analog circuits, AC-DC conversion, EMI filtering",
+      "editable_properties": {
+        "Capacitance": {
+          "value": 100000,
+          "unit": "nF",
+          "min": 1,
+          "max": 100000,
+          "step": 1,
+          "description": "Capacitance in nanoFarads"
+        },
+        "Voltage_Rating": {
+          "value": 250,
+          "unit": "V",
+          "min": 50,
+          "max": 1000,
+          "step": 10,
+          "description": "Voltage rating"
+        },
+        "Dielectric_Material": {
+          "value": "Polypropylene",
+          "unit": "material",
+          "options": ["Polypropylene", "Polyester", "Polystyrene", "PTFE"],
+          "description": "PP (general), PET (compact), PS (precision audio), PTFE (high-temp)"
+        },
+        "Tolerance": {
+          "value": 5,
+          "unit": "%",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "description": "Tolerance percentage"
+        },
+        "ESR": {
+          "value": 50,
+          "unit": "mΩ",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "description": "Very low ESR for clean frequency response"
+        },
+        "Dissipation_Factor": {
+          "value": 0.5,
+          "unit": "%",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Low dielectric loss percentage"
+        },
+        "Operating_Temp_Max": {
+          "value": 100,
+          "unit": "°C",
+          "min": 70,
+          "max": 150,
+          "step": 10,
+          "description": "Maximum temperature"
+        },
+        "Frequency_Range": {
+          "value": 1000,
+          "unit": "MHz",
+          "min": 100,
+          "max": 1000,
+          "step": 100,
+          "description": "Usable frequency range"
+        },
+        "Polarity": {
+          "value": "Non-Polarized",
+          "unit": "status",
+          "description": "No polarity requirement - safe for AC or either DC polarity"
+        },
+        "Manufacturer": {
+          "value": "Wima, Vishay, TDK",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.05,
+          "unit": "USD",
+          "min": 0.01,
+          "max": 50,
+          "step": 0.05,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "tantalum_capacitor",
+      "name": "Tantalum Capacitor (MnO2/Polymer)",
+      "type": "Capacitor",
+      "symbol": "C",
+      "description": "Compact high-reliability capacitor for military/aerospace and sensitive circuits. Excellent for SMD applications with high volumetric efficiency. Two types: MnO2 (traditional, ultra-reliable) and Polymer (lower ESR, newer). Polarized with voltage derating requirements. Range 0.1μF to 220μF. MTBF often exceeds 1 million hours.",
+      "use_cases": "Military/aerospace, high-reliability circuits, medical devices, SMD bulk capacitance, critical filtering",
+      "editable_properties": {
+        "Capacitance": {
+          "value": 10,
+          "unit": "μF",
+          "min": 0.1,
+          "max": 220,
+          "step": 0.1,
+          "description": "Capacitance in microFarads"
+        },
+        "Voltage_Rating": {
+          "value": 25,
+          "unit": "V",
+          "min": 4,
+          "max": 125,
+          "step": 1,
+          "description": "Voltage rating - most are at 6.3V to 50V"
+        },
+        "Electrolyte_Type": {
+          "value": "MnO2",
+          "unit": "type",
+          "options": ["MnO2", "Polymer"],
+          "description": "MnO2 (ultra-reliable) or Polymer (lower ESR)"
+        },
+        "Polarity": {
+          "value": "Polarized",
+          "unit": "status",
+          "description": "Polarized - careful orientation required"
+        },
+        "Tolerance": {
+          "value": 20,
+          "unit": "%",
+          "min": 10,
+          "max": 20,
+          "step": 5,
+          "description": "Typical tolerance"
+        },
+        "ESR": {
+          "value": 100,
+          "unit": "mΩ",
+          "min": 20,
+          "max": 500,
+          "step": 20,
+          "description": "Lower for Polymer type"
+        },
+        "Voltage_Derating": {
+          "value": 50,
+          "unit": "%",
+          "min": 20,
+          "max": 50,
+          "step": 10,
+          "description": "Operating voltage should be 50% of rating for reliability"
+        },
+        "MTBF": {
+          "value": 1000000,
+          "unit": "hours",
+          "min": 100000,
+          "max": 10000000,
+          "step": 100000,
+          "description": "Mean time between failures"
+        },
+        "Package": {
+          "value": "SMD",
+          "unit": "type",
+          "options": ["SMD", "Through-hole", "Radial"],
+          "description": "Package style"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Kemet, AVX",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.15,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 50,
+          "step": 0.1,
+          "description": "Premium cost per unit"
+        }
+      }
+    },
+    {
+      "id": "mica_capacitor",
+      "name": "Mica Capacitor (Silver-Mica)",
+      "type": "Capacitor",
+      "symbol": "C",
+      "description": "Ultra-precision silver-mica capacitor for RF and measurement circuits. Exceptional stability (0.001% per year drift) with ultra-low distortion. Range 1pF to 10μF with Q>10,000 at 1MHz. Non-polarized, excellent for impedance matching, tuning circuits, and precision filters. Premium component for critical RF and audio applications.",
+      "use_cases": "RF impedance matching, oscillators, precision filters, audio impedance networks, tuning circuits, reference standards",
+      "editable_properties": {
+        "Capacitance": {
+          "value": 1000,
+          "unit": "pF",
+          "min": 1,
+          "max": 10000000,
+          "step": 1,
+          "description": "Capacitance in picoFarads"
+        },
+        "Voltage_Rating": {
+          "value": 500,
+          "unit": "V",
+          "min": 100,
+          "max": 5000,
+          "step": 50,
+          "description": "High voltage rating"
+        },
+        "Tolerance": {
+          "value": 1,
+          "unit": "%",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.5,
+          "description": "Ultra-tight precision tolerance"
+        },
+        "Q_Factor": {
+          "value": 10000,
+          "unit": "ratio",
+          "min": 1000,
+          "max": 50000,
+          "step": 1000,
+          "description": "Quality factor - higher is better for RF"
+        },
+        "Temperature_Coefficient": {
+          "value": 0.001,
+          "unit": "%/°C",
+          "min": 0.0001,
+          "max": 0.01,
+          "step": 0.0001,
+          "description": "Exceptional stability"
+        },
+        "Stability_Per_Year": {
+          "value": 0.001,
+          "unit": "%/year",
+          "min": 0.0001,
+          "max": 0.01,
+          "step": 0.0001,
+          "description": "Long-term drift - ultra-low"
+        },
+        "ESR": {
+          "value": 10,
+          "unit": "mΩ",
+          "min": 1,
+          "max": 100,
+          "step": 5,
+          "description": "Extremely low ESR"
+        },
+        "Polarity": {
+          "value": "Non-Polarized",
+          "unit": "status",
+          "description": "Non-polarized - safe for AC or DC"
+        },
+        "Operating_Frequency": {
+          "value": 1000,
+          "unit": "MHz",
+          "min": 1,
+          "max": 10000,
+          "step": 100,
+          "description": "Works up to very high frequencies"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Murata, Johanson",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.50,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 100,
+          "step": 0.5,
+          "description": "Premium cost"
+        }
+      }
+    },
+    {
+      "id": "supercapacitor",
+      "name": "Supercapacitor (EDLC/Hybrid/Li-ion)",
+      "type": "Capacitor",
+      "symbol": "C",
+      "description": "Ultracapacitor with enormous capacitance (0.1F to 5000F) for energy storage and backup power. Available as EDLC (electrochemical double-layer, low cost), Hybrid (improved stability), or Li-ion (highest density). Low cost per farad but higher ESR. Ideal for power backup, energy harvesting, peak power delivery, and supercapacitor-based systems.",
+      "use_cases": "Energy backup, peak power delivery, energy harvesting, hold-up circuits, power smoothing, solar systems",
+      "editable_properties": {
+        "Capacitance": {
+          "value": 100,
+          "unit": "F",
+          "min": 0.1,
+          "max": 5000,
+          "step": 1,
+          "description": "Enormous capacitance in Farads"
+        },
+        "Voltage_Rating": {
+          "value": 3.3,
+          "unit": "V",
+          "min": 2.7,
+          "max": 63,
+          "step": 0.1,
+          "description": "Maximum voltage - modules can be stacked"
+        },
+        "Type": {
+          "value": "EDLC",
+          "unit": "type",
+          "options": ["EDLC", "Hybrid", "Li-ion"],
+          "description": "EDLC (common), Hybrid (improved), Li-ion (high density)"
+        },
+        "ESR": {
+          "value": 50,
+          "unit": "mΩ",
+          "min": 5,
+          "max": 500,
+          "step": 5,
+          "description": "Equivalent series resistance - higher than ceramic"
+        },
+        "Leakage_Current": {
+          "value": 100,
+          "unit": "μA",
+          "min": 10,
+          "max": 10000,
+          "step": 10,
+          "description": "Self-discharge current at rated voltage"
+        },
+        "Max_Charge_Discharge_Current": {
+          "value": 1000,
+          "unit": "A",
+          "min": 100,
+          "max": 10000,
+          "step": 100,
+          "description": "Peak current capability"
+        },
+        "Cycle_Life": {
+          "value": 1000000,
+          "unit": "cycles",
+          "min": 100000,
+          "max": 10000000,
+          "step": 100000,
+          "description": "Number of charge/discharge cycles"
+        },
+        "Operating_Temp_Max": {
+          "value": 65,
+          "unit": "°C",
+          "min": 45,
+          "max": 85,
+          "step": 5,
+          "description": "Temperature limit"
+        },
+        "Polarity": {
+          "value": "Polarized",
+          "unit": "status",
+          "description": "Most are polarized - check orientation"
+        },
+        "Manufacturer": {
+          "value": "Maxwell, Ningbo, Cornell",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 1.00,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 100,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "variable_capacitor",
+      "name": "Variable Capacitor (Air Gap/Vacuum Tuning)",
+      "type": "Capacitor",
+      "symbol": "C",
+      "description": "Mechanically tuned capacitor for RF and oscillator circuits. Two types: air-gap (variable air dielectric) or vacuum (higher Q and power handling). Range 1pF to 1000pF with Q factor 100-1000+. Used for radio tuning, impedance matching adjustment, and oscillator frequency calibration. Requires mechanical control.",
+      "use_cases": "Radio tuning, oscillator frequency adjustment, impedance matching tuning, RF resonance circuits, manual circuit adjustment",
+      "editable_properties": {
+        "Capacitance_Min": {
+          "value": 10,
+          "unit": "pF",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Minimum capacitance (fully open)"
+        },
+        "Capacitance_Max": {
+          "value": 500,
+          "unit": "pF",
+          "min": 50,
+          "max": 1000,
+          "step": 10,
+          "description": "Maximum capacitance (fully meshed)"
+        },
+        "Capacitance_Current": {
+          "value": 250,
+          "unit": "pF",
+          "min": 10,
+          "max": 1000,
+          "step": 1,
+          "description": "Current capacitance value - tunable by adjusting plates"
+        },
+        "Type": {
+          "value": "Air-gap",
+          "unit": "type",
+          "options": ["Air-gap", "Vacuum"],
+          "description": "Air-gap (common, lower cost) or Vacuum (higher Q)"
+        },
+        "Voltage_Rating": {
+          "value": 500,
+          "unit": "V",
+          "min": 100,
+          "max": 5000,
+          "step": 100,
+          "description": "Maximum voltage"
+        },
+        "Q_Factor": {
+          "value": 500,
+          "unit": "ratio",
+          "min": 100,
+          "max": 1000,
+          "step": 50,
+          "description": "Quality factor - higher for better selectivity"
+        },
+        "Tuning_Range": {
+          "value": 10,
+          "unit": "ratio",
+          "min": 2,
+          "max": 50,
+          "step": 1,
+          "description": "Tuning ratio (max/min)"
+        },
+        "Mechanical_Life": {
+          "value": 100000,
+          "unit": "cycles",
+          "min": 10000,
+          "max": 1000000,
+          "step": 10000,
+          "description": "Number of mechanical adjustments"
+        },
+        "Manufacturer": {
+          "value": "Sprague, Johnson, Capacitor Industries",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 5.00,
+          "unit": "USD",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "paper_capacitor",
+      "name": "Paper Capacitor (Oil/Wax Impregnated)",
+      "type": "Capacitor",
+      "symbol": "C",
+      "description": "Vintage or high-voltage paper-dielectric capacitor. Oil-impregnated for high-voltage transmission and power systems. Wax-impregnated for general purpose or period-accurate restoration. Large physical size but excellent for high-voltage (up to 50kV) and high-power applications. Range 0.1μF to 100μF. Characteristic warm sound valued in vintage audio.",
+      "use_cases": "High-voltage power systems, vintage audio restoration, transmission line filtering, power factor correction, historical equipment",
+      "editable_properties": {
+        "Capacitance": {
+          "value": 1,
+          "unit": "μF",
+          "min": 0.1,
+          "max": 100,
+          "step": 0.1,
+          "description": "Capacitance in microFarads"
+        },
+        "Voltage_Rating": {
+          "value": 600,
+          "unit": "V",
+          "min": 250,
+          "max": 50000,
+          "step": 50,
+          "description": "Voltage rating - can be very high"
+        },
+        "Impregnant": {
+          "value": "Oil",
+          "unit": "type",
+          "options": ["Oil", "Wax"],
+          "description": "Oil (high-voltage) or Wax (vintage restoration)"
+        },
+        "Tolerance": {
+          "value": 20,
+          "unit": "%",
+          "min": 5,
+          "max": 20,
+          "step": 5,
+          "description": "Typical tolerance"
+        },
+        "ESR": {
+          "value": 500,
+          "unit": "mΩ",
+          "min": 100,
+          "max": 2000,
+          "step": 100,
+          "description": "Higher than modern capacitors"
+        },
+        "Dissipation_Factor": {
+          "value": 2,
+          "unit": "%",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.5,
+          "description": "Dielectric loss"
+        },
+        "Operating_Temp_Max": {
+          "value": 65,
+          "unit": "°C",
+          "min": 50,
+          "max": 100,
+          "step": 5,
+          "description": "Temperature limit"
+        },
+        "Physical_Size": {
+          "value": "Large",
+          "unit": "note",
+          "description": "Significantly larger than modern capacitors"
+        },
+        "Application_Note": {
+          "value": "Vintage audio restoration, power transmission, historical accuracy",
+          "unit": "note",
+          "description": "Special application notes"
+        },
+        "Manufacturer": {
+          "value": "Sprague, Aerovox, Cornell-Dubilier",
+          "unit": "text",
+          "description": "Original or reproduction manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 2.00,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 50,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    }
+  ]
+}

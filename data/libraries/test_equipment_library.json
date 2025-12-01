@@ -1,0 +1,643 @@
+{
+  "library_name": "Test & Measurement Equipment",
+  "version": "3.0",
+  "category": "Test Equipment",
+  "description": "Test and measurement instruments library with 8 essential measurement types",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "oscilloscope",
+      "name": "Oscilloscope",
+      "type": "Test Equipment",
+      "symbol": "SCOPE",
+      "description": "Digital oscilloscope for measuring and displaying electrical waveforms. 2-4 channel input with real-time waveform display. Bandwidth up to 500MHz. Sampling rate up to 1GSa/s. Features triggering, measurements, and waveform analysis like MATLAB/Simulink visualization.",
+      "use_cases": "Waveform analysis, signal debugging, circuit troubleshooting, transient measurement, frequency analysis, signal integrity testing",
+      "editable_properties": {
+        "Channels": {
+          "value": 4,
+          "unit": "channels",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "description": "Number of input channels"
+        },
+        "Bandwidth": {
+          "value": 500,
+          "unit": "MHz",
+          "min": 20,
+          "max": 6000,
+          "step": 50,
+          "description": "Analog bandwidth"
+        },
+        "Sample_Rate": {
+          "value": 1,
+          "unit": "GSa/s",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "description": "Maximum sampling rate"
+        },
+        "Record_Length": {
+          "value": 100000,
+          "unit": "points",
+          "min": 1000,
+          "max": 10000000,
+          "step": 1000,
+          "description": "Waveform memory depth"
+        },
+        "Vertical_Resolution": {
+          "value": 8,
+          "unit": "bits",
+          "min": 8,
+          "max": 16,
+          "step": 1,
+          "description": "ADC resolution"
+        },
+        "Input_Impedance": {
+          "value": 1,
+          "unit": "MΩ",
+          "min": 0.05,
+          "max": 10,
+          "step": 0.1,
+          "description": "Channel input impedance"
+        },
+        "Max_Input_Voltage": {
+          "value": 300,
+          "unit": "V",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "description": "Maximum safe input voltage"
+        },
+        "Display": {
+          "value": "7 inch Color LCD",
+          "unit": "type",
+          "options": ["3.5 inch LCD", "5 inch LCD", "7 inch Color LCD", "10 inch HDMI"],
+          "description": "Display type and size"
+        },
+        "Trigger_Types": {
+          "value": "Edge, Pulse, Video, Slope",
+          "unit": "text",
+          "description": "Available trigger modes"
+        },
+        "Measurements": {
+          "value": "Frequency, Period, Duty Cycle, RMS, Peak, Min/Max",
+          "unit": "text",
+          "description": "Automatic measurements"
+        },
+        "Manufacturer": {
+          "value": "Tektronix, Keysight, Rigol, Siglent",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 500.00,
+          "unit": "USD",
+          "min": 100,
+          "max": 5000,
+          "step": 100,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "function_generator",
+      "name": "Function Generator",
+      "type": "Test Equipment",
+      "symbol": "FGEN",
+      "description": "Arbitrary waveform generator producing sine, square, triangle, sawtooth, pulse waves. Frequency 1µHz-50MHz. Amplitude -10V to +10V. Used for circuit testing and simulation of input signals.",
+      "use_cases": "Signal source generation, circuit testing, frequency response testing, waveform synthesis",
+      "editable_properties": {
+        "Frequency_Range": {
+          "value": "1 µHz - 50 MHz",
+          "unit": "range",
+          "description": "Output frequency range"
+        },
+        "Output_Amplitude": {
+          "value": 10,
+          "unit": "V",
+          "min": 0.1,
+          "max": 50,
+          "step": 0.5,
+          "description": "Peak output voltage"
+        },
+        "Waveforms": {
+          "value": "Sine, Square, Triangle, Sawtooth, Pulse, Ramp, Noise",
+          "unit": "count",
+          "description": "Available waveform types"
+        },
+        "Channels": {
+          "value": 2,
+          "unit": "channels",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "description": "Number of output channels"
+        },
+        "Frequency_Accuracy": {
+          "value": 0.001,
+          "unit": "%",
+          "min": 0.0001,
+          "max": 0.1,
+          "step": 0.001,
+          "description": "Frequency accuracy"
+        },
+        "Duty_Cycle": {
+          "value": 50,
+          "unit": "%",
+          "min": 1,
+          "max": 99,
+          "step": 1,
+          "description": "Adjustable duty cycle for square waves"
+        },
+        "Modulation": {
+          "value": "AM, FM, PM, FSK, ASK",
+          "unit": "text",
+          "description": "Modulation types supported"
+        },
+        "Output_Impedance": {
+          "value": 50,
+          "unit": "Ω",
+          "min": 50,
+          "max": 600,
+          "step": 50,
+          "description": "Output impedance"
+        },
+        "Manufacturer": {
+          "value": "Rigol, Agilent, NI, Tektronix",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 300.00,
+          "unit": "USD",
+          "min": 50,
+          "max": 2000,
+          "step": 50,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "multimeter_digital",
+      "name": "Digital Multimeter",
+      "type": "Test Equipment",
+      "symbol": "DMM",
+      "description": "Digital multimeter for measuring voltage, current, and resistance. Voltage 0-1000V AC/DC. Current 0-10A. Resistance 0-40MΩ. Display resolution 3.5 to 4.5 digits. True RMS measurement capability.",
+      "use_cases": "Voltage measurement, current measurement, resistance measurement, circuit troubleshooting, component testing",
+      "editable_properties": {
+        "DC_Voltage_Range": {
+          "value": 1000,
+          "unit": "V",
+          "min": 100,
+          "max": 1500,
+          "step": 50,
+          "description": "Maximum DC voltage measurement"
+        },
+        "AC_Voltage_Range": {
+          "value": 1000,
+          "unit": "V",
+          "min": 100,
+          "max": 1500,
+          "step": 50,
+          "description": "Maximum AC voltage measurement"
+        },
+        "DC_Current_Range": {
+          "value": 10,
+          "unit": "A",
+          "min": 0.1,
+          "max": 20,
+          "step": 0.5,
+          "description": "Maximum DC current measurement"
+        },
+        "Resistance_Range": {
+          "value": 40,
+          "unit": "MΩ",
+          "min": 10,
+          "max": 100,
+          "step": 5,
+          "description": "Maximum resistance measurement"
+        },
+        "Display_Digits": {
+          "value": 4,
+          "unit": "digits",
+          "min": 3,
+          "max": 5,
+          "step": 1,
+          "description": "Display resolution (3.5 or 4.5 digits)"
+        },
+        "Accuracy_Voltage": {
+          "value": 0.5,
+          "unit": "%",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "description": "Voltage measurement accuracy"
+        },
+        "True_RMS": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "True RMS measurement for AC signals"
+        },
+        "Features": {
+          "value": "Continuity, Diode Test, Capacitance, Frequency",
+          "unit": "text",
+          "description": "Additional measurement features"
+        },
+        "Manufacturer": {
+          "value": "Fluke, Agilent, Extech, Mastech",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 80.00,
+          "unit": "USD",
+          "min": 20,
+          "max": 500,
+          "step": 20,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "spectrum_analyzer",
+      "name": "Spectrum Analyzer",
+      "type": "Test Equipment",
+      "symbol": "SA",
+      "description": "Frequency domain analyzer displaying frequency spectrum. Range 9kHz-6GHz. Resolution bandwidth 1Hz. Peak and average detection. Used for RF and EMI analysis.",
+      "use_cases": "RF analysis, frequency response measurement, EMI testing, harmonic analysis, signal identification",
+      "editable_properties": {
+        "Frequency_Range": {
+          "value": "9 kHz - 6 GHz",
+          "unit": "range",
+          "description": "Frequency measurement range"
+        },
+        "Resolution_Bandwidth": {
+          "value": 1,
+          "unit": "Hz",
+          "min": 0.1,
+          "max": 1000,
+          "step": 0.1,
+          "description": "Minimum RBW"
+        },
+        "Span": {
+          "value": 6000,
+          "unit": "MHz",
+          "min": 100,
+          "max": 6000,
+          "step": 100,
+          "description": "Maximum frequency span"
+        },
+        "Reference_Level": {
+          "value": 0,
+          "unit": "dBm",
+          "min": -200,
+          "max": 30,
+          "step": 10,
+          "description": "Maximum reference level"
+        },
+        "Sensitivity": {
+          "value": -150,
+          "unit": "dBm",
+          "min": -200,
+          "max": -100,
+          "step": 10,
+          "description": "Noise floor"
+        },
+        "Input_Impedance": {
+          "value": 50,
+          "unit": "Ω",
+          "description": "Standard RF impedance"
+        },
+        "Markers": {
+          "value": 10,
+          "unit": "count",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "description": "Number of frequency markers"
+        },
+        "Memory": {
+          "value": "Up to 1000 traces",
+          "unit": "traces",
+          "description": "Trace storage capacity"
+        },
+        "Manufacturer": {
+          "value": "Agilent, Rohde & Schwarz, Tektronix",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 1500.00,
+          "unit": "USD",
+          "min": 500,
+          "max": 10000,
+          "step": 200,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "power_supply_bench",
+      "name": "Bench Power Supply",
+      "type": "Test Equipment",
+      "symbol": "PSU",
+      "description": "Programmable DC power supply with multiple outputs. Output 0-30V, 0-10A per channel. Constant voltage and constant current modes. Short circuit protection. Used for circuit testing and prototyping.",
+      "use_cases": "Circuit power supply, component testing, prototype development, measurement support",
+      "editable_properties": {
+        "Channels": {
+          "value": 2,
+          "unit": "channels",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "description": "Number of independent channels"
+        },
+        "Output_Voltage": {
+          "value": 30,
+          "unit": "V",
+          "min": 12,
+          "max": 60,
+          "step": 5,
+          "description": "Maximum output voltage"
+        },
+        "Output_Current": {
+          "value": 10,
+          "unit": "A",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "description": "Maximum output current"
+        },
+        "Voltage_Accuracy": {
+          "value": 0.02,
+          "unit": "%",
+          "min": 0.01,
+          "max": 0.1,
+          "step": 0.01,
+          "description": "Voltage regulation accuracy"
+        },
+        "Current_Accuracy": {
+          "value": 0.05,
+          "unit": "%",
+          "min": 0.03,
+          "max": 0.2,
+          "step": 0.02,
+          "description": "Current regulation accuracy"
+        },
+        "Protection": {
+          "value": "OCP, OVP, OTP",
+          "unit": "text",
+          "description": "Built-in protections"
+        },
+        "Display": {
+          "value": "LED/LCD",
+          "unit": "type",
+          "options": ["LED", "LCD", "OLED"],
+          "description": "Display type"
+        },
+        "Programmable": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "Software programmable via USB/GPIB"
+        },
+        "Manufacturer": {
+          "value": "Agilent, TDK, Mean Well, BK Precision",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 200.00,
+          "unit": "USD",
+          "min": 50,
+          "max": 1000,
+          "step": 50,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "clamp_meter",
+      "name": "Clamp Meter (AC Current)",
+      "type": "Test Equipment",
+      "symbol": "CLAMP",
+      "description": "AC current clamp meter for non-invasive current measurement. Jaw opens 30-40mm. Range 0-2000A AC. Accuracy ±1-2%. Display 3.5 digits. Used for in-circuit current measurement without breaking the connection.",
+      "use_cases": "AC current measurement, power factor measurement, three-phase power analysis, load monitoring",
+      "editable_properties": {
+        "Current_Range": {
+          "value": 2000,
+          "unit": "A",
+          "min": 200,
+          "max": 3000,
+          "step": 100,
+          "description": "Maximum AC current measurement"
+        },
+        "Jaw_Opening": {
+          "value": 40,
+          "unit": "mm",
+          "min": 25,
+          "max": 60,
+          "step": 5,
+          "description": "Clamp jaw opening"
+        },
+        "AC_Voltage_Range": {
+          "value": 600,
+          "unit": "V",
+          "min": 200,
+          "max": 1000,
+          "step": 100,
+          "description": "AC voltage measurement range"
+        },
+        "Resistance_Range": {
+          "value": 20,
+          "unit": "MΩ",
+          "min": 5,
+          "max": 100,
+          "step": 5,
+          "description": "Resistance measurement range"
+        },
+        "Power_Factor": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "Power factor measurement capability"
+        },
+        "Frequency": {
+          "value": 50,
+          "unit": "Hz",
+          "min": 50,
+          "max": 60,
+          "step": 10,
+          "description": "Operating frequency"
+        },
+        "Display_Type": {
+          "value": "LCD 3.5 digits",
+          "unit": "type",
+          "description": "Display resolution"
+        },
+        "Accuracy": {
+          "value": 1.5,
+          "unit": "%",
+          "min": 0.5,
+          "max": 3,
+          "step": 0.5,
+          "description": "Current measurement accuracy"
+        },
+        "Manufacturer": {
+          "value": "Fluke, Hioki, Mastech, Extech",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 120.00,
+          "unit": "USD",
+          "min": 30,
+          "max": 500,
+          "step": 30,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "logic_analyzer",
+      "name": "Logic Analyzer",
+      "type": "Test Equipment",
+      "symbol": "LA",
+      "description": "Digital logic analyzer with 16-32 channels. Captures digital signals at frequencies up to 200MHz. Displays timing diagrams and decodes protocols (SPI, I2C, UART). Essential for digital circuit debugging.",
+      "use_cases": "Digital signal timing analysis, protocol debugging, SPI/I2C monitoring, microcontroller debugging",
+      "editable_properties": {
+        "Channels": {
+          "value": 32,
+          "unit": "channels",
+          "min": 8,
+          "max": 64,
+          "step": 8,
+          "description": "Number of input channels"
+        },
+        "Max_Frequency": {
+          "value": 200,
+          "unit": "MHz",
+          "min": 50,
+          "max": 1000,
+          "step": 50,
+          "description": "Maximum sampling frequency"
+        },
+        "Memory_Depth": {
+          "value": 256,
+          "unit": "ksamples",
+          "min": 64,
+          "max": 1000,
+          "step": 64,
+          "description": "Sample memory per channel"
+        },
+        "Input_Voltage": {
+          "value": "3.3V/5V",
+          "unit": "voltage",
+          "options": ["TTL 5V", "CMOS 3.3V", "Both"],
+          "description": "Logic voltage levels supported"
+        },
+        "Protocols": {
+          "value": "I2C, SPI, UART, CAN, 1-Wire",
+          "unit": "count",
+          "description": "Supported protocol decoding"
+        },
+        "Trigger_Types": {
+          "value": "Edge, Level, Pattern, State",
+          "unit": "text",
+          "description": "Available trigger options"
+        },
+        "Display": {
+          "value": "Timing Diagrams",
+          "unit": "type",
+          "description": "Waveform display capability"
+        },
+        "Software": {
+          "value": "Windows/Linux compatible",
+          "unit": "text",
+          "description": "Software platform support"
+        },
+        "Manufacturer": {
+          "value": "Saleae, Rigol, Kingst, PulseView",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 150.00,
+          "unit": "USD",
+          "min": 50,
+          "max": 1000,
+          "step": 50,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "lcr_meter",
+      "name": "LCR Meter (RLC Tester)",
+      "type": "Test Equipment",
+      "symbol": "LCR",
+      "description": "RLC parameter meter measuring inductance, capacitance, and resistance. Inductance 0.1µH-100H. Capacitance 1pF-10mF. Frequency 100Hz-100kHz. Used for component characterization and filter tuning.",
+      "use_cases": "Component testing, filter tuning, impedance measurement, quality factor measurement",
+      "editable_properties": {
+        "Inductance_Range": {
+          "value": "0.1 µH - 100 H",
+          "unit": "range",
+          "description": "Inductance measurement range"
+        },
+        "Capacitance_Range": {
+          "value": "1 pF - 10 mF",
+          "unit": "range",
+          "description": "Capacitance measurement range"
+        },
+        "Resistance_Range": {
+          "value": "0.01 Ω - 10 MΩ",
+          "unit": "range",
+          "description": "Resistance measurement range"
+        },
+        "Frequency": {
+          "value": "100 Hz - 100 kHz",
+          "unit": "range",
+          "description": "Measurement frequency range"
+        },
+        "Accuracy": {
+          "value": 0.1,
+          "unit": "%",
+          "min": 0.05,
+          "max": 1,
+          "step": 0.05,
+          "description": "Measurement accuracy"
+        },
+        "Quality_Factor": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "Q factor measurement"
+        },
+        "Measurement_Parameters": {
+          "value": "L, C, R, D, Q, ESR, Z",
+          "unit": "text",
+          "description": "Available parameters"
+        },
+        "Display_Digits": {
+          "value": 4,
+          "unit": "digits",
+          "min": 3,
+          "max": 5,
+          "step": 1,
+          "description": "Display resolution"
+        },
+        "Manufacturer": {
+          "value": "Agilent, Extech, APPA, GW Instek",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 250.00,
+          "unit": "USD",
+          "min": 100,
+          "max": 1000,
+          "step": 50,
+          "description": "Cost per unit"
+        }
+      }
+    }
+  ]
+}

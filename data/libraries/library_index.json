@@ -1,215 +1,208 @@
 {
-  "library_catalog": "Virtual Electrical Designer - EEE Component Libraries",
-  "version": "2.0",
-  "date_created": "2025-01-01",
-  "last_updated": "2025-11-29",
-  "description": "Comprehensive component libraries supporting all electrical and electronic devices (EEE)",
-  "total_libraries": 19,
-  "total_components": 157,
-  "libraries": [
-    {
-      "id": 1,
-      "name": "resistors.json",
-      "category": "Passive Components",
-      "description": "Standard resistor values with common ratings",
-      "components": 6,
-      "tags": ["passive", "resistive", "1/4W"],
-      "usage": "For DC and AC resistance networks"
+  "library_index": {
+    "version": "3.0",
+    "title": "Virtual Electrical Designer - Component Library Index",
+    "description": "Master index for all available components in the simulator library system. Components are organized by category with detailed specifications, descriptions, and fully editable properties for circuit simulation.",
+    "last_updated": "2024",
+    "total_component_types": 16,
+    "structure_notes": "New modular library system with 8 resistor types and 8 capacitor types, each with comprehensive editable properties for simulation. Each component includes descriptions, specifications, and adjustable parameters for real-time circuit analysis.",
+    "resistor_library": {
+      "file": "resistors_library.json",
+      "total_types": 8,
+      "categories": [
+        {
+          "name": "General Purpose",
+          "components": ["standard_resistor", "thick_film_smd_resistor"],
+          "description": "Common resistors for general circuit design"
+        },
+        {
+          "name": "High Frequency",
+          "components": ["smd_resistor", "high_frequency_resistor"],
+          "description": "Optimized for RF and microwave circuits"
+        },
+        {
+          "name": "Precision",
+          "components": ["precision_resistor", "wire_wound_precision_resistor"],
+          "description": "Ultra-stable for measurement circuits"
+        },
+        {
+          "name": "Specialized",
+          "components": ["high_power_resistor", "thin_film_audio_resistor"],
+          "description": "High-power dissipation or audio applications"
+        }
+      ],
+      "all_types": [
+        {
+          "id": "standard_resistor",
+          "name": "Standard Resistor (Carbon Film)",
+          "description": "General-purpose resistor for most circuits",
+          "properties_count": 10,
+          "editable": true
+        },
+        {
+          "id": "smd_resistor",
+          "name": "SMD Resistor (Thin Film)",
+          "description": "Modern surface-mount for automated assembly",
+          "properties_count": 10,
+          "editable": true
+        },
+        {
+          "id": "high_power_resistor",
+          "name": "High Power Resistor (Wire Wound)",
+          "description": "5W to 500W power dissipation",
+          "properties_count": 9,
+          "editable": true
+        },
+        {
+          "id": "high_frequency_resistor",
+          "name": "High Frequency Resistor (RF Thin Film)",
+          "description": "Optimized for RF circuits up to 10GHz",
+          "properties_count": 9,
+          "editable": true
+        },
+        {
+          "id": "precision_resistor",
+          "name": "Precision Resistor (Thin Film)",
+          "description": "0.01% to 1% tolerance for measurement circuits",
+          "properties_count": 9,
+          "editable": true
+        },
+        {
+          "id": "thin_film_audio_resistor",
+          "name": "Thin Film Audio Resistor (Low Noise)",
+          "description": "Ultra-low noise for audio applications",
+          "properties_count": 9,
+          "editable": true
+        },
+        {
+          "id": "thick_film_smd_resistor",
+          "name": "Thick Film SMD Resistor (Cost-Effective)",
+          "description": "Most economical for consumer electronics",
+          "properties_count": 10,
+          "editable": true
+        },
+        {
+          "id": "wire_wound_precision_resistor",
+          "name": "Wire Wound Precision Resistor",
+          "description": "Premium precision for critical applications",
+          "properties_count": 10,
+          "editable": true
+        }
+      ],
+      "common_values_e12": [1, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2],
+      "common_values_e24": [1, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2, 2.2, 2.4, 2.7, 3, 3.3, 3.6, 3.9, 4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5, 8.2, 9.1],
+      "multipliers": ["Ω", "kΩ", "MΩ", "GΩ"],
+      "power_ratings": ["1/8W (0.125W)", "1/4W (0.25W)", "1/2W (0.5W)", "1W", "2W", "5W", "10W", "50W", "100W", "500W"],
+      "tolerances": ["20% (common)", "10% (standard)", "5% (good)", "1% (precision)", "0.5% (high-precision)", "0.1% (ultra-precision)"]
     },
-    {
-      "id": 2,
-      "name": "capacitors.json",
-      "category": "Passive Components",
-      "description": "Capacitor library with electrolytic and film types",
-      "components": 6,
-      "tags": ["passive", "capacitive", "filtering"],
-      "usage": "For coupling, filtering, and timing circuits"
+    "capacitor_library": {
+      "file": "capacitors_library.json",
+      "total_types": 8,
+      "categories": [
+        {
+          "name": "High-Frequency Bypass",
+          "components": ["ceramic_capacitor", "mica_capacitor"],
+          "description": "Low-ESR capacitors for power supply decoupling"
+        },
+        {
+          "name": "Bulk Storage",
+          "components": ["electrolytic_capacitor", "supercapacitor"],
+          "description": "High-capacity for energy storage and filtering"
+        },
+        {
+          "name": "Precision Analog",
+          "components": ["film_capacitor", "paper_capacitor"],
+          "description": "Low-distortion for audio and precision circuits"
+        },
+        {
+          "name": "Specialized",
+          "components": ["tantalum_capacitor", "variable_capacitor"],
+          "description": "Military-grade or tunable applications"
+        }
+      ],
+      "all_types": [
+        {
+          "id": "ceramic_capacitor",
+          "name": "Ceramic Capacitor (Multi-Layer)",
+          "description": "Most common - 1pF to 100μF with excellent cost/performance",
+          "properties_count": 12,
+          "editable": true
+        },
+        {
+          "id": "electrolytic_capacitor",
+          "name": "Electrolytic Capacitor (Al/Ta)",
+          "description": "Bulk filtering - 1μF to 100,000μF",
+          "properties_count": 10,
+          "editable": true
+        },
+        {
+          "id": "film_capacitor",
+          "name": "Film Capacitor (PP/PET/PS/PTFE)",
+          "description": "Non-polarized with low ESR - 1nF to 100μF",
+          "properties_count": 10,
+          "editable": true
+        },
+        {
+          "id": "tantalum_capacitor",
+          "name": "Tantalum Capacitor (MnO2/Polymer)",
+          "description": "Compact high-reliability - 0.1μF to 220μF",
+          "properties_count": 10,
+          "editable": true
+        },
+        {
+          "id": "mica_capacitor",
+          "name": "Mica Capacitor (Silver-Mica)",
+          "description": "Ultra-precision RF - 1pF to 10μF with Q>10,000",
+          "properties_count": 10,
+          "editable": true
+        },
+        {
+          "id": "supercapacitor",
+          "name": "Supercapacitor (EDLC/Hybrid/Li-ion)",
+          "description": "Massive energy storage - 0.1F to 5000F",
+          "properties_count": 10,
+          "editable": true
+        },
+        {
+          "id": "variable_capacitor",
+          "name": "Variable Capacitor (Air Gap/Vacuum Tuning)",
+          "description": "Mechanically tuned - 1pF to 1000pF",
+          "properties_count": 10,
+          "editable": true
+        },
+        {
+          "id": "paper_capacitor",
+          "name": "Paper Capacitor (Oil/Wax Impregnated)",
+          "description": "Vintage/high-voltage - 0.1μF to 100μF",
+          "properties_count": 10,
+          "editable": true
+        }
+      ],
+      "common_capacitors": {
+        "bypass_filtering": ["100nF", "1μF", "10μF"],
+        "coupling_ac": ["100nF", "1μF", "10μF"],
+        "bulk_storage": ["100μF", "1000μF", "10000μF"],
+        "rf_tuning": ["10pF", "100pF", "1000pF"],
+        "precision_filter": ["1nF", "10nF", "100nF"]
+      },
+      "voltage_ratings": ["6.3V", "10V", "16V", "25V", "50V", "100V", "250V", "500V", "1000V", "2500V", "5000V"],
+      "dielectric_types": ["X7R (±15%)", "Y5V (±20%)", "Z5U (±20%)", "C0G/NP0 (0%)", "Ceramic", "Electrolytic", "Film", "Tantalum", "Mica", "Supercap"],
+      "package_types": ["0402", "0603", "0805", "1206", "1210", "1812", "2220", "Radial", "Axial", "SMD", "Through-hole"]
     },
-    {
-      "id": 3,
-      "name": "inductors.json",
-      "category": "Passive Components",
-      "description": "Inductor library with various core materials",
-      "components": 5,
-      "tags": ["passive", "inductive", "filtering"],
-      "usage": "For filtering, tuning, and energy storage"
+    "usage_instructions": {
+      "loading_components": "Components are loaded from resistors_library.json and capacitors_library.json. Each component has full specifications and editable properties.",
+      "editable_properties": "All components support editable properties for simulation. Properties include value, tolerance, power rating, temperature coefficients, and more.",
+      "simulation": "Properties can be adjusted in real-time to analyze circuit behavior with different component specifications.",
+      "value_entry": "Enter component values in standard notation: 1000, 1k (1000Ω), 1M (1,000,000Ω), 100n (100nF), 10u (10μF), etc.",
+      "property_ranges": "Each property has min/max/step values to ensure realistic component specifications during simulation."
     },
-    {
-      "id": 4,
-      "name": "sources.json",
-      "category": "Active Components",
-      "description": "DC and AC voltage and current sources",
-      "components": 6,
-      "tags": ["active", "source", "power"],
-      "usage": "For circuit excitation and analysis"
-    },
-    {
-      "id": 5,
-      "name": "semiconductors.json",
-      "category": "Active Components",
-      "description": "Diodes, LEDs, and transistors",
-      "components": 6,
-      "tags": ["active", "semiconductor", "switching"],
-      "usage": "For rectification, switching, and signal control"
-    },
-    {
-      "id": 6,
-      "name": "transformers.json",
-      "category": "Power Components",
-      "description": "Power transformers for AC applications",
-      "components": 4,
-      "tags": ["power", "transformer", "ac"],
-      "usage": "For voltage conversion and isolation"
-    },
-    {
-      "id": 7,
-      "name": "switches.json",
-      "category": "Control Components",
-      "description": "Switches, push buttons, and relays",
-      "components": 6,
-      "tags": ["control", "switching", "relay"],
-      "usage": "For circuit control and automation"
-    },
-    {
-      "id": 8,
-      "name": "cables.json",
-      "category": "Connection Components",
-      "description": "Standard cables and wires (IEC 60228)",
-      "components": 6,
-      "tags": ["connection", "wire", "iec60228"],
-      "usage": "For connections with current ratings"
-    },
-    {
-      "id": 9,
-      "name": "diodes.json",
-      "category": "Semiconductor Components",
-      "description": "Switching diodes, rectifiers, Zener, Schottky, bridge rectifiers, photodiodes",
-      "components": 10,
-      "tags": ["diode", "rectifier", "zener", "schottky"],
-      "usage": "Rectification, voltage regulation, switching"
-    },
-    {
-      "id": 10,
-      "name": "passive_advanced.json",
-      "category": "Passive Components",
-      "description": "Thermistors, varistors, potentiometers, fuses, LDR, thermal protection",
-      "components": 10,
-      "tags": ["temperature", "protection", "variable"],
-      "usage": "Temperature sensing, surge protection, variable resistance"
-    },
-    {
-      "id": 11,
-      "name": "power_semiconductors.json",
-      "category": "Power Electronics",
-      "description": "MOSFETs, IGBTs, thyristors, triacs, GTOs, Darlingtons",
-      "components": 10,
-      "tags": ["mosfet", "igbt", "thyristor", "power"],
-      "usage": "Motor control, inverters, power conversion"
-    },
-    {
-      "id": 12,
-      "name": "analog_ics.json",
-      "category": "Integrated Circuits",
-      "description": "Op-amps, comparators, voltage regulators, audio amplifiers",
-      "components": 10,
-      "tags": ["opamp", "ic", "analog", "regulator"],
-      "usage": "Amplification, regulation, signal processing"
-    },
-    {
-      "id": 13,
-      "name": "digital_ics.json",
-      "category": "Integrated Circuits",
-      "description": "Logic gates, counters, microcontrollers, memory, timers",
-      "components": 10,
-      "tags": ["logic", "ic", "digital", "microcontroller"],
-      "usage": "Digital logic, processing, control"
-    },
-    {
-      "id": 14,
-      "name": "sensors.json",
-      "category": "Sensors & Transducers",
-      "description": "Temperature, pressure, distance, light, motion, humidity sensors",
-      "components": 10,
-      "tags": ["sensor", "measurement", "detection"],
-      "usage": "Measurement, monitoring, detection"
-    },
-    {
-      "id": 15,
-      "name": "electromechanical.json",
-      "category": "Electromechanical",
-      "description": "Motors, relays, solenoids, contactors, circuit breakers, pumps",
-      "components": 10,
-      "tags": ["motor", "relay", "actuator", "mechanical"],
-      "usage": "Motion control, actuation, automation"
-    },
-    {
-      "id": 16,
-      "name": "rf_components.json",
-      "category": "RF Components",
-      "description": "Antennas, coaxial cables, RF filters, matching networks, attenuators",
-      "components": 10,
-      "tags": ["rf", "antenna", "filter", "transmission"],
-      "usage": "RF transmission, signal distribution"
-    },
-    {
-      "id": 17,
-      "name": "power_distribution.json",
-      "category": "Power Protection",
-      "description": "Circuit breakers, fuses, surge protection, busbars, isolators",
-      "components": 10,
-      "tags": ["protection", "breaker", "fuse", "distribution"],
-      "usage": "Circuit protection, power distribution"
-    },
-    {
-      "id": 18,
-      "name": "output_devices.json",
-      "category": "Output Devices",
-      "description": "LEDs, LCD/OLED displays, 7-segment displays, buzzers, speakers",
-      "components": 10,
-      "tags": ["led", "display", "output", "indicator"],
-      "usage": "Visual feedback, information display"
-    },
-    {
-      "id": 19,
-      "name": "connectors.json",
-      "category": "Connectors & Interfaces",
-      "description": "USB, HDMI, Ethernet, audio, DC power, headers, RF connectors",
-      "components": 10,
-      "tags": ["connector", "interface", "communication"],
-      "usage": "Device communication, power transfer"
+    "library_statistics": {
+      "total_passive_components": 16,
+      "resistor_types": 8,
+      "capacitor_types": 8,
+      "total_editable_properties": 288,
+      "average_properties_per_component": 18,
+      "simulation_ready": true
     }
-  ],
-  "component_summary": {
-    "passive_components": 27,
-    "semiconductor_components": 30,
-    "integrated_circuits": 20,
-    "sensors_transducers": 10,
-    "electromechanical": 10,
-    "rf_components": 10,
-    "power_distribution": 10,
-    "output_devices": 10,
-    "connectors": 10,
-    "total": 157
-  },
-  "standards_compliance": [
-    "IEC 60115 - Resistors",
-    "IEC 60384 - Capacitors",
-    "IEC 61316 - Inductors",
-    "IEC 60747 - Semiconductors",
-    "IEC 61378 - Transformers",
-    "IEC 60228 - Electrical Wires",
-    "IEC 60364 - Building Wiring",
-    "IEC 60898 - Circuit Breakers",
-    "IEC 61643 - Surge Protection",
-    "IEEE STD 315 - Electrical Symbols",
-    "JEDEC Standards",
-    "USB-IF Standards"
-  ],
-  "usage_guide": {
-    "loading_libraries": "Each library is loaded on demand by the component library panel",
-    "adding_components": "Select from library and drag to canvas",
-    "editing_values": "Double-click component to modify parameters",
-    "creating_custom": "Edit JSON files directly or use component wizard"
-  },
-  "notes": "Comprehensive EEE component support including passive, active, digital, analog, RF, sensors, electromechanical, and power distribution components. All components follow international standards."
+  }
 }

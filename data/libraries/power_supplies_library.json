@@ -1,0 +1,662 @@
+{
+  "library_name": "Power Supplies & Voltage Regulators",
+  "version": "3.0",
+  "category": "Power Management",
+  "description": "Comprehensive power supply and voltage regulator library with 8 essential types",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "ldo_voltage_regulator",
+      "name": "LDO Voltage Regulator",
+      "type": "Power Supply",
+      "symbol": "U",
+      "description": "Low-Dropout linear regulator providing low noise regulated voltage. Input voltage must be 0.3-2V above output. Low quiescent current (typical 50-100µA). Excellent for battery-powered and noise-sensitive applications. Available in 1.2V-12V outputs.",
+      "use_cases": "Battery-powered devices, noise-sensitive analog circuits, microcontroller power, sensor circuits",
+      "editable_properties": {
+        "Output_Voltage": {
+          "value": 3.3,
+          "unit": "V",
+          "min": 1.2,
+          "max": 12,
+          "step": 0.1,
+          "description": "Fixed output voltage"
+        },
+        "Output_Current": {
+          "value": 500,
+          "unit": "mA",
+          "min": 100,
+          "max": 3000,
+          "step": 100,
+          "description": "Maximum output current"
+        },
+        "Input_Voltage_Min": {
+          "value": 3.6,
+          "unit": "V",
+          "min": 2,
+          "max": 10,
+          "step": 0.5,
+          "description": "Minimum input voltage"
+        },
+        "Input_Voltage_Max": {
+          "value": 6,
+          "unit": "V",
+          "min": 5,
+          "max": 40,
+          "step": 1,
+          "description": "Maximum input voltage"
+        },
+        "Dropout_Voltage": {
+          "value": 0.3,
+          "unit": "V",
+          "min": 0.1,
+          "max": 1,
+          "step": 0.1,
+          "description": "Input to output voltage difference"
+        },
+        "Quiescent_Current": {
+          "value": 75,
+          "unit": "µA",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "description": "No-load supply current"
+        },
+        "Output_Noise": {
+          "value": 50,
+          "unit": "µVrms",
+          "min": 20,
+          "max": 200,
+          "step": 10,
+          "description": "Noise at output"
+        },
+        "Package": {
+          "value": "SOT-23",
+          "unit": "type",
+          "options": ["SOT-23", "TO-220", "TSOT-23-5", "BGA"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "TI, STMicroelectronics, NXP",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.40,
+          "unit": "USD",
+          "min": 0.2,
+          "max": 10,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "buck_converter",
+      "name": "Buck Converter (Step-Down)",
+      "type": "Power Supply",
+      "symbol": "U",
+      "description": "Switching regulator stepping down higher voltage to lower voltage with high efficiency (85-95%). Operates at frequencies 200kHz-2.4MHz. Essential for battery charging and powering lower voltage circuits from higher supply. Lower ripple with inductor-capacitor filtering.",
+      "use_cases": "Battery charging, power supply voltage stepping, high-current power delivery, portable devices",
+      "editable_properties": {
+        "Input_Voltage": {
+          "value": 12,
+          "unit": "V",
+          "min": 4,
+          "max": 60,
+          "step": 1,
+          "description": "Input supply voltage"
+        },
+        "Output_Voltage": {
+          "value": 5,
+          "unit": "V",
+          "min": 0.6,
+          "max": 40,
+          "step": 0.1,
+          "description": "Regulated output voltage"
+        },
+        "Output_Current": {
+          "value": 3,
+          "unit": "A",
+          "min": 0.5,
+          "max": 30,
+          "step": 1,
+          "description": "Maximum output current"
+        },
+        "Switching_Frequency": {
+          "value": 500,
+          "unit": "kHz",
+          "min": 100,
+          "max": 2400,
+          "step": 100,
+          "description": "Operating frequency"
+        },
+        "Efficiency": {
+          "value": 92,
+          "unit": "%",
+          "min": 75,
+          "max": 98,
+          "step": 1,
+          "description": "Power conversion efficiency"
+        },
+        "Output_Ripple": {
+          "value": 30,
+          "unit": "mVpp",
+          "min": 10,
+          "max": 200,
+          "step": 10,
+          "description": "Peak-to-peak output ripple"
+        },
+        "Soft_Start": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "Soft-start feature"
+        },
+        "Package": {
+          "value": "DFN-8",
+          "unit": "type",
+          "options": ["DFN-8", "TSSOP", "TO-263", "BGA"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "TI, Maxim, Renesas",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 1.50,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 30,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "boost_converter",
+      "name": "Boost Converter (Step-Up)",
+      "type": "Power Supply",
+      "symbol": "U",
+      "description": "Switching regulator stepping up lower voltage to higher voltage. Typical efficiency 80-90%. Essential for single-cell battery to 5V or 12V conversion. Provides regulated higher voltage from batteries or renewable sources.",
+      "use_cases": "Single-cell battery to 5V/12V, renewable energy, high voltage from low source, LED drivers",
+      "editable_properties": {
+        "Input_Voltage": {
+          "value": 5,
+          "unit": "V",
+          "min": 1,
+          "max": 20,
+          "step": 0.5,
+          "description": "Input voltage range"
+        },
+        "Output_Voltage": {
+          "value": 12,
+          "unit": "V",
+          "min": 5,
+          "max": 60,
+          "step": 1,
+          "description": "Boosted output voltage"
+        },
+        "Output_Current": {
+          "value": 2,
+          "unit": "A",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.5,
+          "description": "Maximum output current"
+        },
+        "Switching_Frequency": {
+          "value": 600,
+          "unit": "kHz",
+          "min": 200,
+          "max": 2000,
+          "step": 100,
+          "description": "Switching frequency"
+        },
+        "Efficiency": {
+          "value": 85,
+          "unit": "%",
+          "min": 70,
+          "max": 95,
+          "step": 1,
+          "description": "Power efficiency"
+        },
+        "Voltage_Rise_Time": {
+          "value": 500,
+          "unit": "ms",
+          "min": 100,
+          "max": 2000,
+          "step": 100,
+          "description": "Time to reach full output"
+        },
+        "Short_Circuit_Protection": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "Output short protection"
+        },
+        "Package": {
+          "value": "DFN-8",
+          "unit": "type",
+          "options": ["DFN-8", "SOT-23", "TSSOP", "BGA"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "TI, Maxim, NXP",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 1.25,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 25,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "dual_output_supply",
+      "name": "Dual Output Power Supply",
+      "type": "Power Supply",
+      "symbol": "U",
+      "description": "Provides dual regulated outputs: positive and negative rails (e.g., ±12V, ±15V). Essential for analog circuits, op-amps, and audio amplifiers. Can source and sink current. Excellent supply rejection ratio (PSRR > 60dB).",
+      "use_cases": "Audio amplifiers, op-amp circuits, dual-polarity supply, analog signal processing",
+      "editable_properties": {
+        "Positive_Output": {
+          "value": 12,
+          "unit": "V",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "description": "Positive rail voltage"
+        },
+        "Negative_Output": {
+          "value": -12,
+          "unit": "V",
+          "min": -30,
+          "max": -1,
+          "step": 1,
+          "description": "Negative rail voltage"
+        },
+        "Output_Current": {
+          "value": 1,
+          "unit": "A",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "description": "Per rail current"
+        },
+        "Input_Voltage": {
+          "value": 24,
+          "unit": "V",
+          "min": 12,
+          "max": 60,
+          "step": 3,
+          "description": "Single supply input"
+        },
+        "Line_Regulation": {
+          "value": 0.05,
+          "unit": "%",
+          "min": 0.01,
+          "max": 0.5,
+          "step": 0.01,
+          "description": "Output change with line variation"
+        },
+        "Load_Regulation": {
+          "value": 0.1,
+          "unit": "%",
+          "min": 0.01,
+          "max": 1,
+          "step": 0.05,
+          "description": "Output change with load"
+        },
+        "Output_Noise": {
+          "value": 100,
+          "unit": "µVrms",
+          "min": 50,
+          "max": 500,
+          "step": 50,
+          "description": "Peak noise on outputs"
+        },
+        "Package": {
+          "value": "DIP-8",
+          "unit": "type",
+          "options": ["DIP-8", "SOIC-8", "TO-220", "Module"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "LM, TI, National Semi",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 3.50,
+          "unit": "USD",
+          "min": 1,
+          "max": 50,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "isolated_dc_dc_converter",
+      "name": "Isolated DC-DC Converter",
+      "type": "Power Supply",
+      "symbol": "U",
+      "description": "Provides galvanic isolation between input and output using transformer. Isolation voltage up to 5kV. Typical efficiency 75-85%. Essential for noise-critical and safety-critical applications. Allows different ground references.",
+      "use_cases": "Medical equipment, industrial drives, noise-critical circuits, isolated power distribution",
+      "editable_properties": {
+        "Input_Voltage": {
+          "value": 12,
+          "unit": "V",
+          "min": 5,
+          "max": 48,
+          "step": 1,
+          "description": "Input voltage"
+        },
+        "Output_Voltage": {
+          "value": 5,
+          "unit": "V",
+          "min": 3.3,
+          "max": 24,
+          "step": 0.5,
+          "description": "Output voltage"
+        },
+        "Output_Current": {
+          "value": 500,
+          "unit": "mA",
+          "min": 100,
+          "max": 5000,
+          "step": 100,
+          "description": "Maximum output current"
+        },
+        "Isolation_Voltage": {
+          "value": 3000,
+          "unit": "VDC",
+          "min": 500,
+          "max": 6000,
+          "step": 500,
+          "description": "Input-output isolation rating"
+        },
+        "Switching_Frequency": {
+          "value": 500,
+          "unit": "kHz",
+          "min": 100,
+          "max": 1000,
+          "step": 100,
+          "description": "Operating frequency"
+        },
+        "Efficiency": {
+          "value": 80,
+          "unit": "%",
+          "min": 70,
+          "max": 90,
+          "step": 1,
+          "description": "Conversion efficiency"
+        },
+        "Leakage_Current": {
+          "value": 1,
+          "unit": "mA",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.5,
+          "description": "Isolation leakage current"
+        },
+        "Package": {
+          "value": "DIP-8",
+          "unit": "type",
+          "options": ["DIP-8", "Module", "SMD", "Potted"],
+          "description": "Package style"
+        },
+        "Manufacturer": {
+          "value": "Analog Devices, TI, Vicor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 8.00,
+          "unit": "USD",
+          "min": 3,
+          "max": 100,
+          "step": 1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "power_distribution_module",
+      "name": "Power Distribution Module (PDM)",
+      "type": "Power Supply",
+      "symbol": "U",
+      "description": "Integrated power management with multiple outputs, protection, and monitoring. Combines buck converters, LDO regulators, load switches, and monitoring. Simplifies PCB design. Typical configurations: 3.3V/5V/12V with 2-4A per output.",
+      "use_cases": "Embedded systems, IoT devices, microcontroller boards, multi-rail power systems",
+      "editable_properties": {
+        "Input_Voltage": {
+          "value": 12,
+          "unit": "V",
+          "min": 5,
+          "max": 48,
+          "step": 1,
+          "description": "Supply voltage"
+        },
+        "Output_Rails": {
+          "value": 3,
+          "unit": "count",
+          "min": 2,
+          "max": 6,
+          "step": 1,
+          "description": "Number of regulated outputs"
+        },
+        "Total_Current": {
+          "value": 10,
+          "unit": "A",
+          "min": 2,
+          "max": 30,
+          "step": 1,
+          "description": "Total output current"
+        },
+        "Rail_Voltages": {
+          "value": "3.3V, 5V, 12V",
+          "unit": "voltage",
+          "description": "Available output voltages"
+        },
+        "Efficiency": {
+          "value": 88,
+          "unit": "%",
+          "min": 80,
+          "max": 95,
+          "step": 1,
+          "description": "Overall efficiency"
+        },
+        "Protection_Features": {
+          "value": "OCP, OVP, OTP, UVP",
+          "unit": "text",
+          "description": "Built-in protections"
+        },
+        "Monitoring": {
+          "value": "I2C Interface",
+          "unit": "interface",
+          "options": ["No", "I2C", "SPI", "Analog"],
+          "description": "Digital monitoring"
+        },
+        "Package": {
+          "value": "BGA",
+          "unit": "type",
+          "options": ["BGA", "Module", "SMD"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "TI, Intersil, Analog Devices",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 15.00,
+          "unit": "USD",
+          "min": 5,
+          "max": 100,
+          "step": 1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "charging_circuit",
+      "name": "Battery Charging Circuit",
+      "type": "Power Supply",
+      "symbol": "U",
+      "description": "Dedicated lithium-ion/LiPo battery charger IC. Manages CC-CV (constant current/constant voltage) charging profile. Supports 1-4 cell configurations. Built-in protections: overcharge, overdischarge, over-current. Integration with fuel gauge for capacity monitoring.",
+      "use_cases": "Smartphone charging, portable power banks, battery management, drone batteries",
+      "editable_properties": {
+        "Battery_Chemistry": {
+          "value": "Li-ion",
+          "unit": "type",
+          "options": ["Li-ion", "LiPo", "NiMH", "Lead-Acid"],
+          "description": "Battery type supported"
+        },
+        "Cell_Count": {
+          "value": 1,
+          "unit": "cells",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "description": "Maximum cells in series"
+        },
+        "Charging_Current": {
+          "value": 2,
+          "unit": "A",
+          "min": 0.5,
+          "max": 10,
+          "step": 0.5,
+          "description": "Maximum charge current"
+        },
+        "Termination_Voltage": {
+          "value": 4.2,
+          "unit": "V",
+          "min": 4.1,
+          "max": 4.35,
+          "step": 0.05,
+          "description": "Final charge voltage per cell"
+        },
+        "Charging_Time": {
+          "value": 2.5,
+          "unit": "hours",
+          "min": 0.5,
+          "max": 10,
+          "step": 0.5,
+          "description": "Typical charge time"
+        },
+        "Thermal_Management": {
+          "value": "NTC Thermistor",
+          "unit": "type",
+          "options": ["None", "NTC Thermistor", "JEITA"],
+          "description": "Temperature protection"
+        },
+        "Status_Output": {
+          "value": "Charging/Done LEDs",
+          "unit": "interface",
+          "description": "Status indication"
+        },
+        "Package": {
+          "value": "TSSOP-28",
+          "unit": "type",
+          "options": ["DIP-8", "TSSOP-28", "BGA", "Module"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "TI, Linear Tech, NXP",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 2.00,
+          "unit": "USD",
+          "min": 0.8,
+          "max": 25,
+          "step": 0.2,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "switching_power_supply",
+      "name": "Switching Power Supply (SMPS)",
+      "type": "Power Supply",
+      "symbol": "U",
+      "description": "Industrial-grade switched-mode power supply with high efficiency (90-95%) and compact size. Typically 100-500W with PFC (Power Factor Correction). Supports worldwide AC input 85-264VAC. Heavy-duty for 24/7 operation in industrial environments.",
+      "use_cases": "Industrial equipment, rack-mount systems, server PSUs, industrial control systems",
+      "editable_properties": {
+        "Input_Voltage_AC": {
+          "value": 115,
+          "unit": "VAC",
+          "min": 85,
+          "max": 264,
+          "step": 1,
+          "description": "AC input voltage range"
+        },
+        "Output_Voltage": {
+          "value": 12,
+          "unit": "V",
+          "min": 3.3,
+          "max": 48,
+          "step": 1,
+          "description": "DC output voltage"
+        },
+        "Power_Rating": {
+          "value": 500,
+          "unit": "W",
+          "min": 50,
+          "max": 2000,
+          "step": 50,
+          "description": "Total power rating"
+        },
+        "Output_Current": {
+          "value": 41.7,
+          "unit": "A",
+          "min": 5,
+          "max": 166,
+          "step": 5,
+          "description": "Maximum output current"
+        },
+        "Efficiency": {
+          "value": 92,
+          "unit": "%",
+          "min": 85,
+          "max": 97,
+          "step": 1,
+          "description": "Power conversion efficiency"
+        },
+        "PFC": {
+          "value": "Active",
+          "unit": "type",
+          "options": ["No", "Passive", "Active"],
+          "description": "Power factor correction"
+        },
+        "Protection": {
+          "value": "OCP, OVP, UVP, OTP",
+          "unit": "text",
+          "description": "Safety protections"
+        },
+        "Package": {
+          "value": "Enclosed Module",
+          "unit": "type",
+          "description": "Industrial package"
+        },
+        "Manufacturer": {
+          "value": "Mean Well, Seasonic, Corsair",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 120.00,
+          "unit": "USD",
+          "min": 30,
+          "max": 500,
+          "step": 10,
+          "description": "Cost per unit"
+        }
+      }
+    }
+  ]
+}

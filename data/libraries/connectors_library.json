@@ -1,0 +1,661 @@
+{
+  "library_name": "Connectors",
+  "version": "3.0",
+  "category": "Connectors & Hardware",
+  "description": "Comprehensive connector library with 8 connector types for power, signal, and data transmission",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "usb_type_a_connector",
+      "name": "USB Type-A Connector",
+      "type": "Connector",
+      "symbol": "J",
+      "description": "Standard USB 2.0/3.0 connector for computers and peripherals. Rectangular form factor with 4-9 pins depending on version. Power delivery up to 15W (USB 2.0) or 100W (USB 3.0/3.1). Host-side connector found on computers, hubs, and chargers.",
+      "use_cases": "Computer peripherals, hubs, charging cables, data transfer, power delivery",
+      "editable_properties": {
+        "USB_Version": {
+          "value": "2.0",
+          "unit": "version",
+          "options": ["1.1", "2.0", "3.0", "3.1", "3.2"],
+          "description": "USB specification version"
+        },
+        "Pin_Count": {
+          "value": 4,
+          "unit": "pins",
+          "min": 4,
+          "max": 9,
+          "step": 1,
+          "description": "Number of pins"
+        },
+        "Data_Rate": {
+          "value": 480,
+          "unit": "Mbps",
+          "min": 1.5,
+          "max": 20000,
+          "step": 1,
+          "description": "Maximum data transfer rate"
+        },
+        "Power_Delivery": {
+          "value": 2.5,
+          "unit": "W",
+          "min": 2.5,
+          "max": 100,
+          "step": 2.5,
+          "description": "Maximum power delivery"
+        },
+        "Voltage_Rating": {
+          "value": 5,
+          "unit": "V",
+          "min": 5,
+          "max": 20,
+          "step": 5,
+          "description": "Operating voltage"
+        },
+        "Current_Rating": {
+          "value": 500,
+          "unit": "mA",
+          "min": 100,
+          "max": 3000,
+          "step": 100,
+          "description": "Maximum current"
+        },
+        "Contact_Resistance": {
+          "value": 50,
+          "unit": "mΩ",
+          "min": 10,
+          "max": 200,
+          "step": 10,
+          "description": "Electrical resistance"
+        },
+        "Cycle_Life": {
+          "value": 1500,
+          "unit": "cycles",
+          "min": 500,
+          "max": 10000,
+          "step": 500,
+          "description": "Insert/remove cycles rated"
+        },
+        "Manufacturer": {
+          "value": "Amphenol, TE Connectivity, Molex",
+          "unit": "text",
+          "description": "Connector manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.50,
+          "unit": "USD",
+          "min": 0.2,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "barrel_jack_connector",
+      "name": "Barrel Jack (DC Power)",
+      "type": "Connector",
+      "symbol": "J",
+      "description": "Cylindrical connector for DC power delivery. Outer diameter 2.1-5.5mm accommodates various plug sizes. Current ratings 1-3A. Polarized for correct polarity. Standard for wall adapters, batteries, and equipment power inputs.",
+      "use_cases": "Power supplies, wall adapters, battery connections, DC power distribution",
+      "editable_properties": {
+        "Outer_Diameter": {
+          "value": 5.5,
+          "unit": "mm",
+          "min": 2.1,
+          "max": 5.5,
+          "step": 0.5,
+          "description": "Outer barrel diameter"
+        },
+        "Inner_Diameter": {
+          "value": 2.1,
+          "unit": "mm",
+          "min": 1.3,
+          "max": 3.5,
+          "step": 0.3,
+          "description": "Inner pin diameter"
+        },
+        "Length": {
+          "value": 11,
+          "unit": "mm",
+          "min": 8,
+          "max": 15,
+          "step": 1,
+          "description": "Connector length"
+        },
+        "Voltage_Rating": {
+          "value": 48,
+          "unit": "V",
+          "min": 12,
+          "max": 500,
+          "step": 12,
+          "description": "Maximum voltage"
+        },
+        "Current_Rating": {
+          "value": 3,
+          "unit": "A",
+          "min": 1,
+          "max": 10,
+          "step": 0.5,
+          "description": "Maximum current"
+        },
+        "Contact_Resistance": {
+          "value": 100,
+          "unit": "mΩ",
+          "min": 50,
+          "max": 500,
+          "step": 50,
+          "description": "Electrical resistance"
+        },
+        "Gender": {
+          "value": "Female (Jack)",
+          "unit": "type",
+          "options": ["Male (Plug)", "Female (Jack)"],
+          "description": "Connector gender"
+        },
+        "Shielding": {
+          "value": "No",
+          "unit": "status",
+          "options": ["No", "Yes"],
+          "description": "EMI shielding"
+        },
+        "Manufacturer": {
+          "value": "TrustFire, Switchcraft, Hirose",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.30,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 20,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "db9_serial_connector",
+      "name": "DB-9 Serial Connector (RS-232)",
+      "type": "Connector",
+      "symbol": "J",
+      "description": "Historic 9-pin D-subminiature connector for serial RS-232 communication. Standard on older computers and test equipment. Supports asynchronous serial up to 115.2kbps. Largely replaced by USB but still used in industrial equipment.",
+      "use_cases": "Legacy serial communication, industrial equipment, test instruments, serial debugging",
+      "editable_properties": {
+        "Pin_Count": {
+          "value": 9,
+          "unit": "pins",
+          "min": 9,
+          "max": 9,
+          "step": 1,
+          "description": "Number of pins"
+        },
+        "Data_Rate": {
+          "value": 115200,
+          "unit": "bps",
+          "min": 300,
+          "max": 921600,
+          "step": 1000,
+          "description": "Baud rate"
+        },
+        "Voltage_Levels": {
+          "value": "±12V",
+          "unit": "voltage",
+          "description": "RS-232 signal levels"
+        },
+        "Gender": {
+          "value": "Male",
+          "unit": "type",
+          "options": ["Male", "Female"],
+          "description": "Connector gender"
+        },
+        "Shielding": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "Metal shell shielding"
+        },
+        "Backshell": {
+          "value": "Screwed",
+          "unit": "type",
+          "options": ["Molded", "Screwed", "Clip"],
+          "description": "Strain relief type"
+        },
+        "Contact_Resistance": {
+          "value": 50,
+          "unit": "mΩ",
+          "min": 20,
+          "max": 200,
+          "step": 10,
+          "description": "Contact resistance"
+        },
+        "Cycle_Life": {
+          "value": 5000,
+          "unit": "cycles",
+          "min": 1000,
+          "max": 10000,
+          "step": 500,
+          "description": "Mating cycles"
+        },
+        "Manufacturer": {
+          "value": "Amphenol, Assmann, TE Connectivity",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.75,
+          "unit": "USD",
+          "min": 0.3,
+          "max": 30,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "xt60_connector",
+      "name": "XT60 Connector (LiPo Battery)",
+      "type": "Connector",
+      "symbol": "J",
+      "description": "High-current battery connector for LiPo batteries in drones and RC applications. 60A continuous rating with 50-60V capacity. Gold-plated contacts minimize resistance. Polarized design prevents reverse polarity. Standard on hobby batteries.",
+      "use_cases": "LiPo batteries, drone power, RC vehicle batteries, high-current applications",
+      "editable_properties": {
+        "Current_Rating": {
+          "value": 60,
+          "unit": "A",
+          "min": 30,
+          "max": 120,
+          "step": 10,
+          "description": "Continuous current rating"
+        },
+        "Voltage_Rating": {
+          "value": 60,
+          "unit": "V",
+          "min": 12,
+          "max": 100,
+          "step": 5,
+          "description": "Maximum voltage"
+        },
+        "Contact_Resistance": {
+          "value": 5,
+          "unit": "mΩ",
+          "min": 2,
+          "max": 20,
+          "step": 1,
+          "description": "Ultra-low resistance"
+        },
+        "Gender": {
+          "value": "Male/Female Pair",
+          "unit": "type",
+          "description": "Polarized pair"
+        },
+        "Plating": {
+          "value": "Gold",
+          "unit": "material",
+          "options": ["Gold", "Nickel", "Copper"],
+          "description": "Contact plating"
+        },
+        "Wire_Gauge": {
+          "value": 10,
+          "unit": "AWG",
+          "min": 10,
+          "max": 14,
+          "step": 1,
+          "description": "Recommended wire size"
+        },
+        "Cycle_Life": {
+          "value": 5000,
+          "unit": "cycles",
+          "min": 1000,
+          "max": 10000,
+          "step": 500,
+          "description": "Connect/disconnect cycles"
+        },
+        "Application": {
+          "value": "Lithium Polymer Battery",
+          "unit": "type",
+          "description": "Specialized for LiPo"
+        },
+        "Manufacturer": {
+          "value": "Amass, Castle Creations, SOARLLE",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.25,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "rj45_ethernet_connector",
+      "name": "RJ45 Ethernet Connector",
+      "type": "Connector",
+      "symbol": "J",
+      "description": "Standard network connector for Ethernet CAT5/CAT6/CAT7 cables. 8-pin modular connector. Data rates up to 10 Gbps (CAT6A). Power over Ethernet (PoE) supplies 15-95W. Widely used in networking, IP cameras, and IoT devices.",
+      "use_cases": "Network connections, Ethernet, IP cameras, industrial IoT, PoE powered devices",
+      "editable_properties": {
+        "Pin_Count": {
+          "value": 8,
+          "unit": "pins",
+          "min": 8,
+          "max": 8,
+          "step": 1,
+          "description": "Number of pins"
+        },
+        "Category": {
+          "value": "CAT6",
+          "unit": "type",
+          "options": ["CAT5", "CAT5e", "CAT6", "CAT6A", "CAT7"],
+          "description": "Cable category"
+        },
+        "Data_Rate": {
+          "value": 1000,
+          "unit": "Mbps",
+          "min": 100,
+          "max": 10000,
+          "step": 100,
+          "description": "Maximum data rate"
+        },
+        "Distance": {
+          "value": 100,
+          "unit": "m",
+          "min": 50,
+          "max": 300,
+          "step": 10,
+          "description": "Maximum cable length"
+        },
+        "PoE_Support": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "Power over Ethernet capable"
+        },
+        "PoE_Power": {
+          "value": 30,
+          "unit": "W",
+          "min": 15,
+          "max": 95,
+          "step": 15,
+          "description": "Maximum PoE power delivery"
+        },
+        "Gender": {
+          "value": "Female",
+          "unit": "type",
+          "options": ["Male", "Female"],
+          "description": "Connector gender"
+        },
+        "Shielding": {
+          "value": "STP",
+          "unit": "type",
+          "options": ["UTP", "STP", "FTP"],
+          "description": "Shielding type"
+        },
+        "Manufacturer": {
+          "value": "Amphenol, CommScope, Molex",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.20,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 20,
+          "step": 0.05,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "sma_rf_connector",
+      "name": "SMA RF Connector",
+      "type": "Connector",
+      "symbol": "J",
+      "description": "Subminiature-A connector for RF/microwave applications up to 18GHz. Threaded coupling for reliable connections. Low VSWR (<1.25:1) and excellent shielding. Standard for antennas, RF cables, and test equipment.",
+      "use_cases": "RF antennas, microwave circuits, WiFi modules, test equipment, RF cables",
+      "editable_properties": {
+        "Frequency_Range": {
+          "value": 18000,
+          "unit": "MHz",
+          "min": 1000,
+          "max": 18000,
+          "step": 1000,
+          "description": "Maximum operating frequency"
+        },
+        "Impedance": {
+          "value": 50,
+          "unit": "Ω",
+          "min": 50,
+          "max": 75,
+          "step": 25,
+          "description": "Characteristic impedance"
+        },
+        "VSWR": {
+          "value": 1.2,
+          "unit": "ratio",
+          "min": 1.05,
+          "max": 1.5,
+          "step": 0.05,
+          "description": "Voltage standing wave ratio"
+        },
+        "Insertion_Loss": {
+          "value": 0.3,
+          "unit": "dB",
+          "min": 0.1,
+          "max": 1.0,
+          "step": 0.1,
+          "description": "Signal loss at frequency"
+        },
+        "Gender": {
+          "value": "Female",
+          "unit": "type",
+          "options": ["Male", "Female"],
+          "description": "Connector gender"
+        },
+        "Coupling": {
+          "value": "Threaded",
+          "unit": "type",
+          "options": ["Threaded", "Push-on", "Snap"],
+          "description": "Coupling mechanism"
+        },
+        "Current_Rating": {
+          "value": 5,
+          "unit": "A",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "description": "Maximum current"
+        },
+        "Phase_Stability": {
+          "value": 0.5,
+          "unit": "°",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "description": "Phase change over temperature"
+        },
+        "Manufacturer": {
+          "value": "Amphenol, Hirose, TE Connectivity",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 1.00,
+          "unit": "USD",
+          "min": 0.3,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "header_pin_connector",
+      "name": "Header Pin Connector",
+      "type": "Connector",
+      "symbol": "J",
+      "description": "Right-angle or straight pin headers for breadboard and PCB interconnection. Single or dual row with 2.54mm pitch. Supports 0.1A at 5V per pin. Ideal for prototyping and development boards.",
+      "use_cases": "Breadboard prototyping, development boards, jumper connections, PCB interfacing",
+      "editable_properties": {
+        "Pin_Count": {
+          "value": 16,
+          "unit": "pins",
+          "min": 2,
+          "max": 64,
+          "step": 2,
+          "description": "Number of pins"
+        },
+        "Pitch": {
+          "value": 2.54,
+          "unit": "mm",
+          "min": 1.27,
+          "max": 5.08,
+          "step": 0.25,
+          "description": "Pin spacing"
+        },
+        "Orientation": {
+          "value": "Straight",
+          "unit": "type",
+          "options": ["Straight", "Right-Angle"],
+          "description": "Pin orientation"
+        },
+        "Pin_Length": {
+          "value": 11,
+          "unit": "mm",
+          "min": 3,
+          "max": 15,
+          "step": 1,
+          "description": "Pin length above header"
+        },
+        "Current_Per_Pin": {
+          "value": 1,
+          "unit": "A",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Maximum current per pin"
+        },
+        "Voltage_Rating": {
+          "value": 5,
+          "unit": "V",
+          "min": 3.3,
+          "max": 48,
+          "step": 3.3,
+          "description": "Rated voltage"
+        },
+        "Contact_Resistance": {
+          "value": 30,
+          "unit": "mΩ",
+          "min": 10,
+          "max": 100,
+          "step": 10,
+          "description": "Pin contact resistance"
+        },
+        "Material": {
+          "value": "Tin-Plated Copper",
+          "unit": "material",
+          "description": "Pin material"
+        },
+        "Manufacturer": {
+          "value": "JST, TE Connectivity, Molex",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.10,
+          "unit": "USD",
+          "min": 0.02,
+          "max": 10,
+          "step": 0.05,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "screw_terminal_connector",
+      "name": "Screw Terminal Connector",
+      "type": "Connector",
+      "symbol": "J",
+      "description": "Spring-clamp or screw-terminal for robust secure connections. No soldering required - wire strips and secures via screw. Current ratings 8-30A depending on gauge. Ideal for power distribution, industrial, and outdoor installations.",
+      "use_cases": "Power distribution, industrial wiring, outdoor installations, no-solder connections",
+      "editable_properties": {
+        "Position_Count": {
+          "value": 4,
+          "unit": "positions",
+          "min": 2,
+          "max": 24,
+          "step": 2,
+          "description": "Number of screw terminals"
+        },
+        "Wire_Gauge": {
+          "value": 16,
+          "unit": "AWG",
+          "min": 24,
+          "max": 8,
+          "step": 1,
+          "description": "Wire gauge range"
+        },
+        "Current_Rating": {
+          "value": 15,
+          "unit": "A",
+          "min": 5,
+          "max": 50,
+          "step": 5,
+          "description": "Maximum current per terminal"
+        },
+        "Voltage_Rating": {
+          "value": 300,
+          "unit": "V",
+          "min": 12,
+          "max": 1000,
+          "step": 50,
+          "description": "Maximum voltage"
+        },
+        "Contact_Resistance": {
+          "value": 5,
+          "unit": "mΩ",
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "description": "Contact resistance"
+        },
+        "Spring_Type": {
+          "value": "Screw Clamp",
+          "unit": "type",
+          "options": ["Screw Clamp", "Spring Clamp", "Push-Wire"],
+          "description": "Clamping mechanism"
+        },
+        "Pitch": {
+          "value": 5.08,
+          "unit": "mm",
+          "min": 2.54,
+          "max": 10,
+          "step": 1.27,
+          "description": "Terminal spacing"
+        },
+        "Torque_Spec": {
+          "value": 0.8,
+          "unit": "Nm",
+          "min": 0.4,
+          "max": 2,
+          "step": 0.1,
+          "description": "Recommended screw torque"
+        },
+        "Manufacturer": {
+          "value": "Phoenix Contact, Weidmuller, Euroclip",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.15,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 20,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,637 @@
+{
+  "library_name": "Resistors",
+  "version": "3.0",
+  "category": "Passive Components",
+  "description": "Comprehensive resistor component library with 8 resistor types, each with full specifications, descriptions, and editable properties for circuit simulation",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "standard_resistor",
+      "name": "Standard Resistor (Carbon Film)",
+      "type": "Resistor",
+      "symbol": "R",
+      "description": "General-purpose carbon film or metal film resistor. Used in most circuits for impedance control, pull-up/pull-down, and current limiting. Available in ±5% tolerance with power ratings from 1/8W to 2W. Suitable for prototyping, student projects, and non-critical applications. Operating frequency up to 100MHz.",
+      "use_cases": "Pull-up/pull-down resistors, LED current limiting, impedance matching, general circuit impedance, voltage dividers",
+      "editable_properties": {
+        "Resistance": {
+          "value": 1000,
+          "unit": "Ω",
+          "min": 0.1,
+          "max": 10000000,
+          "step": 1,
+          "description": "Resistance in Ohms. Enter values like: 100 (100Ω), 1000 (1kΩ), 10000 (10kΩ), 100000 (100kΩ), 1000000 (1MΩ)"
+        },
+        "Tolerance": {
+          "value": 5,
+          "unit": "%",
+          "min": 0.5,
+          "max": 20,
+          "step": 0.5,
+          "description": "Manufacturing tolerance percentage. Typical: 1%, 5%, 10%, 20%"
+        },
+        "Power_Rating": {
+          "value": 0.25,
+          "unit": "W",
+          "min": 0.125,
+          "max": 10,
+          "step": 0.125,
+          "description": "Maximum power dissipation in Watts. Common: 0.125W (1/8), 0.25W (1/4), 0.5W (1/2), 1W, 2W"
+        },
+        "Package_Type": {
+          "value": "0805",
+          "unit": "code",
+          "options": ["0402", "0603", "0805", "1206", "1210", "RADIAL_5MM", "AXIAL"],
+          "description": "Package size for SMD (0603, 0805, 1206, 1210) or Through-hole (RADIAL, AXIAL)"
+        },
+        "Temperature_Coefficient": {
+          "value": 100,
+          "unit": "ppm/°C",
+          "min": 50,
+          "max": 200,
+          "step": 10,
+          "description": "Resistance change per degree Celsius. Lower = better stability"
+        },
+        "Operating_Temp_Min": {
+          "value": -40,
+          "unit": "°C",
+          "min": -60,
+          "max": 0,
+          "step": 5,
+          "description": "Minimum operating temperature"
+        },
+        "Operating_Temp_Max": {
+          "value": 85,
+          "unit": "°C",
+          "min": 50,
+          "max": 150,
+          "step": 5,
+          "description": "Maximum operating temperature"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Yageo, Panasonic",
+          "unit": "text",
+          "description": "Manufacturer name"
+        },
+        "Part_Number": {
+          "value": "ERJ-6ENF1001V",
+          "unit": "text",
+          "description": "Part number for ordering"
+        },
+        "Unit_Cost": {
+          "value": 0.01,
+          "unit": "USD",
+          "min": 0.001,
+          "max": 10,
+          "step": 0.01,
+          "description": "Cost per unit in USD"
+        }
+      }
+    },
+    {
+      "id": "smd_resistor",
+      "name": "SMD Resistor (Thin Film)",
+      "type": "Resistor",
+      "symbol": "R",
+      "description": "Surface-mount thin film resistor optimized for modern automated assembly. Features ±1% tolerance, extremely low ESR/ESL, and supports frequencies up to 1000MHz. Ideal for compact PCBs, high-speed digital circuits, and automated production. Available in packages 0402 to 2512. Lower inductance than through-hole resistors.",
+      "use_cases": "Modern PCBs, automated assembly, high-speed digital circuits, compact designs, RF applications",
+      "editable_properties": {
+        "Resistance": {
+          "value": 1000,
+          "unit": "Ω",
+          "min": 0.1,
+          "max": 10000000,
+          "step": 1,
+          "description": "Resistance in Ohms"
+        },
+        "Tolerance": {
+          "value": 1,
+          "unit": "%",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "description": "Manufacturing tolerance percentage. SMD typical: 0.1%, 0.5%, 1%"
+        },
+        "Power_Rating": {
+          "value": 0.125,
+          "unit": "W",
+          "min": 0.0625,
+          "max": 1,
+          "step": 0.0625,
+          "description": "Power dissipation. SMD typical: 1/16W, 1/8W, 1/4W"
+        },
+        "Package_Type": {
+          "value": "0805",
+          "unit": "code",
+          "options": ["0402", "0603", "0805", "1206", "1210", "1812", "2512"],
+          "description": "SMD package size"
+        },
+        "ESR": {
+          "value": 50,
+          "unit": "mΩ",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "description": "Equivalent Series Resistance - very low for SMD"
+        },
+        "Frequency": {
+          "value": 1000,
+          "unit": "MHz",
+          "min": 100,
+          "max": 1000,
+          "step": 100,
+          "description": "Usable frequency range"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Yageo, Panasonic",
+          "unit": "text",
+          "description": "Manufacturer name"
+        },
+        "Part_Number": {
+          "value": "RC0805JR-071KL",
+          "unit": "text",
+          "description": "Part number"
+        },
+        "Unit_Cost": {
+          "value": 0.02,
+          "unit": "USD",
+          "min": 0.005,
+          "max": 10,
+          "step": 0.01,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "high_power_resistor",
+      "name": "High Power Resistor (Wire Wound)",
+      "type": "Resistor",
+      "symbol": "R",
+      "description": "Wire wound resistor for high-power applications. Supports 5W to 500W+ dissipation with excellent thermal characteristics. Low temperature coefficient (20-50 ppm/°C) makes them suitable for precision and audio applications. Ideal for power supplies, load banks, motor control circuits, and brake resistors. Wide value range 0.1Ω to 100kΩ.",
+      "use_cases": "Power supplies, motor control, load testing, brake resistors, audio amplifiers, thermal dissipation",
+      "editable_properties": {
+        "Resistance": {
+          "value": 10,
+          "unit": "Ω",
+          "min": 0.1,
+          "max": 100000,
+          "step": 0.1,
+          "description": "Resistance in Ohms"
+        },
+        "Power_Rating": {
+          "value": 5,
+          "unit": "W",
+          "min": 1,
+          "max": 500,
+          "step": 1,
+          "description": "Power dissipation in Watts. Requires heatsinking above 5W"
+        },
+        "Tolerance": {
+          "value": 5,
+          "unit": "%",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "description": "Manufacturing tolerance"
+        },
+        "Temperature_Coefficient": {
+          "value": 30,
+          "unit": "ppm/°C",
+          "min": 20,
+          "max": 100,
+          "step": 5,
+          "description": "Excellent stability for precision applications"
+        },
+        "Operating_Temp_Max": {
+          "value": 150,
+          "unit": "°C",
+          "min": 100,
+          "max": 200,
+          "step": 10,
+          "description": "High temperature operation capability"
+        },
+        "Thermal_Resistance": {
+          "value": 50,
+          "unit": "°C/W",
+          "min": 10,
+          "max": 200,
+          "step": 10,
+          "description": "Thermal resistance - lower needs heatsinking"
+        },
+        "Max_Peak_Current": {
+          "value": 100,
+          "unit": "A",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "description": "Maximum transient current"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Ohmite, ARCOL",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.50,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 100,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "high_frequency_resistor",
+      "name": "High Frequency Resistor (RF Thin Film)",
+      "type": "Resistor",
+      "symbol": "R",
+      "description": "RF thin film resistor optimized for microwave and RF circuits. Characteristic impedance 50Ω or 75Ω with ultra-low ESL. Supports frequencies up to 10GHz with excellent VSWR and return loss characteristics. Critical for impedance matching, antenna circuits, and RF amplifier biasing. Extremely low parasitic inductance and capacitance.",
+      "use_cases": "RF circuits, microwave, antenna matching, 50Ω networks, RF amplifier biasing, transmission line termination",
+      "editable_properties": {
+        "Resistance": {
+          "value": 50,
+          "unit": "Ω",
+          "min": 25,
+          "max": 150,
+          "step": 1,
+          "description": "Characteristic impedance - typically 50Ω or 75Ω"
+        },
+        "Characteristic_Impedance": {
+          "value": 50,
+          "unit": "Ω",
+          "options": ["50", "75"],
+          "description": "RF impedance matching - select 50Ω or 75Ω"
+        },
+        "Frequency": {
+          "value": 10000,
+          "unit": "MHz",
+          "min": 100,
+          "max": 10000,
+          "step": 100,
+          "description": "Operating frequency up to 10GHz"
+        },
+        "VSWR": {
+          "value": 1.1,
+          "unit": "ratio",
+          "min": 1.01,
+          "max": 1.5,
+          "step": 0.01,
+          "description": "Voltage standing wave ratio - lower is better"
+        },
+        "Return_Loss": {
+          "value": 25,
+          "unit": "dB",
+          "min": 10,
+          "max": 50,
+          "step": 1,
+          "description": "Return loss in dB - higher is better"
+        },
+        "Tolerance": {
+          "value": 1,
+          "unit": "%",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.5,
+          "description": "Precision tolerance"
+        },
+        "Power_Rating": {
+          "value": 0.5,
+          "unit": "W",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "description": "Power handling"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Susumu, Stackpole",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.15,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "precision_resistor",
+      "name": "Precision Resistor (Thin Film)",
+      "type": "Resistor",
+      "symbol": "R",
+      "description": "High-precision thin film resistor for measurement and control circuits. Offers ultra-tight tolerance (0.01% to 1%) with excellent temperature stability (5-100 ppm/°C). Long-term stability better than 0.5% per year. Ideal for DAC/ADC circuits, precision amplifiers, medical devices, and aerospace applications. Frequency response to 1000MHz.",
+      "use_cases": "Measurement circuits, DAC/ADC networks, precision amplifiers, medical devices, aerospace, instrumentation",
+      "editable_properties": {
+        "Resistance": {
+          "value": 10000,
+          "unit": "Ω",
+          "min": 1,
+          "max": 10000000,
+          "step": 0.1,
+          "description": "Resistance value with high precision"
+        },
+        "Tolerance": {
+          "value": 0.1,
+          "unit": "%",
+          "min": 0.01,
+          "max": 1,
+          "step": 0.01,
+          "description": "Ultra-tight tolerance - 0.01% to 1%"
+        },
+        "Temperature_Coefficient": {
+          "value": 25,
+          "unit": "ppm/°C",
+          "min": 5,
+          "max": 100,
+          "step": 5,
+          "description": "Excellent temperature stability"
+        },
+        "Power_Rating": {
+          "value": 0.25,
+          "unit": "W",
+          "min": 0.125,
+          "max": 2,
+          "step": 0.125,
+          "description": "Power dissipation"
+        },
+        "Long_Term_Stability": {
+          "value": 0.5,
+          "unit": "%/year",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "description": "Annual capacitance drift"
+        },
+        "Noise_Figure": {
+          "value": -15,
+          "unit": "dB",
+          "min": -20,
+          "max": 0,
+          "step": 1,
+          "description": "Low noise performance"
+        },
+        "Frequency": {
+          "value": 1000,
+          "unit": "MHz",
+          "min": 100,
+          "max": 1000,
+          "step": 100,
+          "description": "Frequency response"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Susumu, Caddock",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.25,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "thin_film_audio_resistor",
+      "name": "Thin Film Audio Resistor (Low Noise)",
+      "type": "Resistor",
+      "symbol": "R",
+      "description": "Ultra-low noise thin film resistor specifically designed for audio applications. Features noise figure of -20dB with exceptional frequency stability. Tantalum Nitride film provides superior frequency response and minimal distortion. Ideal for microphone preamps, filter networks, instrumentation circuits, and oscillators. Exceptional audio transparency.",
+      "use_cases": "Audio amplifiers, microphone preamps, filter networks, instrumentation, oscillators, sensitive analog circuits",
+      "editable_properties": {
+        "Resistance": {
+          "value": 10000,
+          "unit": "Ω",
+          "min": 1,
+          "max": 10000000,
+          "step": 0.1,
+          "description": "Resistance value"
+        },
+        "Tolerance": {
+          "value": 0.5,
+          "unit": "%",
+          "min": 0.05,
+          "max": 5,
+          "step": 0.05,
+          "description": "Precision tolerance"
+        },
+        "Noise_Figure": {
+          "value": -20,
+          "unit": "dB",
+          "min": -25,
+          "max": -10,
+          "step": 1,
+          "description": "Ultra-low noise for audio - lower is better"
+        },
+        "Temperature_Coefficient": {
+          "value": 50,
+          "unit": "ppm/°C",
+          "min": 25,
+          "max": 100,
+          "step": 5,
+          "description": "Frequency stability"
+        },
+        "Power_Rating": {
+          "value": 0.25,
+          "unit": "W",
+          "min": 0.125,
+          "max": 2,
+          "step": 0.125,
+          "description": "Power dissipation"
+        },
+        "Frequency_Stability": {
+          "value": -20,
+          "unit": "ppm/decade",
+          "min": -50,
+          "max": 0,
+          "step": 5,
+          "description": "Frequency coefficient"
+        },
+        "Humidity_Stability": {
+          "value": 0.2,
+          "unit": "%",
+          "min": 0.1,
+          "max": 1,
+          "step": 0.1,
+          "description": "Humidity effect on resistance"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Susumu, Caddock",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.10,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 30,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "thick_film_smd_resistor",
+      "name": "Thick Film SMD Resistor (Cost-Effective)",
+      "type": "Resistor",
+      "symbol": "R",
+      "description": "Cost-effective cermet thick film resistor for consumer electronics and digital circuits. Most economical resistor type at ~$0.005 per unit. Suitable for non-critical applications where cost is priority. RoHS compliant and compatible with standard solder reflow processes. Typical frequencies to 1000MHz. Volume pricing enables mass-production applications.",
+      "use_cases": "Consumer electronics, digital circuits, cost-sensitive applications, high-volume production, automated assembly",
+      "editable_properties": {
+        "Resistance": {
+          "value": 10000,
+          "unit": "Ω",
+          "min": 0.1,
+          "max": 10000000,
+          "step": 1,
+          "description": "Resistance value"
+        },
+        "Tolerance": {
+          "value": 1,
+          "unit": "%",
+          "min": 0.5,
+          "max": 10,
+          "step": 0.5,
+          "description": "Tolerance percentage"
+        },
+        "Power_Rating": {
+          "value": 0.125,
+          "unit": "W",
+          "min": 0.0625,
+          "max": 1,
+          "step": 0.0625,
+          "description": "Power dissipation"
+        },
+        "Package_Type": {
+          "value": "0805",
+          "unit": "code",
+          "options": ["0402", "0603", "0805", "1206", "1210", "1812", "2512"],
+          "description": "SMD package"
+        },
+        "Temperature_Coefficient": {
+          "value": 100,
+          "unit": "ppm/°C",
+          "min": 50,
+          "max": 500,
+          "step": 50,
+          "description": "Temperature stability"
+        },
+        "RoHS_Compliant": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "Lead-free and RoHS certified"
+        },
+        "Solder_Reflow": {
+          "value": "Compatible",
+          "unit": "status",
+          "description": "Standard reflow compatible"
+        },
+        "Manufacturer": {
+          "value": "Yageo, Panasonic, Samsung",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.005,
+          "unit": "USD",
+          "min": 0.001,
+          "max": 0.05,
+          "step": 0.001,
+          "description": "Ultra-low cost per unit"
+        }
+      }
+    },
+    {
+      "id": "wire_wound_precision_resistor",
+      "name": "Wire Wound Precision Resistor",
+      "type": "Resistor",
+      "symbol": "R",
+      "description": "Premium precision resistor combining wire-wound construction with tight tolerance (0.1% to 1%) and exceptional stability (20 ppm/°C or better). Ideal for precision audio, test equipment, and instrumentation. Supports 0.5W to 200W+ with excellent thermal handling. MTBF exceeds 10 million hours. Most comprehensive property set for advanced circuit design.",
+      "use_cases": "Precision audio, test equipment, instrumentation, high-reliability circuits, aerospace, military applications",
+      "editable_properties": {
+        "Resistance": {
+          "value": 100,
+          "unit": "Ω",
+          "min": 0.1,
+          "max": 100000,
+          "step": 0.1,
+          "description": "Resistance value"
+        },
+        "Tolerance": {
+          "value": 0.1,
+          "unit": "%",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Precision tolerance"
+        },
+        "Power_Rating": {
+          "value": 1,
+          "unit": "W",
+          "min": 0.5,
+          "max": 200,
+          "step": 0.5,
+          "description": "Power dissipation"
+        },
+        "Temperature_Coefficient": {
+          "value": 20,
+          "unit": "ppm/°C",
+          "min": 5,
+          "max": 50,
+          "step": 5,
+          "description": "Excellent stability"
+        },
+        "Self_Inductance": {
+          "value": 0.5,
+          "unit": "μH",
+          "min": 0.01,
+          "max": 10,
+          "step": 0.1,
+          "description": "Self inductance - affects high-frequency response"
+        },
+        "Max_Peak_Current": {
+          "value": 100,
+          "unit": "A",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "description": "Transient current capability"
+        },
+        "Short_Circuit_Current": {
+          "value": 500,
+          "unit": "A",
+          "min": 100,
+          "max": 5000,
+          "step": 100,
+          "description": "Extreme current handling"
+        },
+        "MTBF": {
+          "value": 10000000,
+          "unit": "hours",
+          "min": 1000000,
+          "max": 100000000,
+          "step": 1000000,
+          "description": "Mean time between failures"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Caddock, ARCOL",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 1.00,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 100,
+          "step": 0.5,
+          "description": "Premium cost per unit"
+        }
+      }
+    }
+  ]
+}

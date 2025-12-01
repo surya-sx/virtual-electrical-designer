@@ -3,7 +3,7 @@ Organized Toolbar for Virtual Electrical Designer & Simulator
 Organized sections: File, Edit, Drawing, Simulation, View, Tools
 """
 
-from PySide6.QtWidgets import QToolBar, QSpinBox, QDoubleSpinBox, QLabel, QComboBox
+from PySide6.QtWidgets import QToolBar, QSpinBox, QDoubleSpinBox, QLabel, QComboBox, QWidget
 from PySide6.QtGui import QIcon, QFont
 from PySide6.QtCore import Qt, Signal, QSize
 
@@ -67,47 +67,61 @@ class Toolbar(QToolBar):
         super().__init__("Toolbar")
         self.setObjectName("Toolbar")
         self.setMovable(False)
-        self.setIconSize(QSize(20, 20))
+        self.setIconSize(QSize(22, 22))
         self.setFloatable(False)
         
-        # Clean, simple styling
+        # Enhanced styling with light pastel theme
         self.setStyleSheet("""
             QToolBar {
-                background: #f5f5f5;
-                border-bottom: 1px solid #d0d0d0;
-                spacing: 5px;
-                padding: 5px;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                          stop:0 #ffffff, stop:1 #f8f8f8);
+                border-bottom: 2px solid #e0d5f5;
+                spacing: 8px;
+                padding: 6px 8px;
             }
             QToolButton {
                 background: transparent;
                 border: 1px solid transparent;
-                border-radius: 3px;
-                padding: 3px 5px;
-                margin: 1px;
-                font-size: 11px;
+                border-radius: 4px;
+                padding: 4px 6px;
+                margin: 2px;
+                font-size: 10px;
+                font-weight: 500;
+                color: #444;
             }
             QToolButton:hover {
-                background: #e3f2fd;
-                border: 1px solid #90caf9;
+                background: #f0e8f8;
+                border: 1px solid #d4c5f9;
             }
             QToolButton:pressed {
-                background: #bbdefb;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                          stop:0 #d4c5f9, stop:1 #c9b8f5);
+                border: 1px solid #c9b8f5;
             }
             QToolButton:checked {
-                background: #64b5f6;
-                color: white;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                          stop:0 #d4c5f9, stop:1 #c9b8f5);
+                color: #333;
+                border: 1px solid #c9b8f5;
             }
             QLabel {
-                font-size: 10px;
+                font-size: 9px;
                 font-weight: bold;
-                color: #1976d2;
-                margin: 0px 8px;
+                color: #999;
+                margin: 0px 2px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
             QSpinBox, QDoubleSpinBox, QComboBox {
                 font-size: 10px;
-                padding: 2px;
-                border: 1px solid #bbb;
-                border-radius: 2px;
+                padding: 3px;
+                border: 1px solid #d4c5f9;
+                border-radius: 3px;
+                background-color: #ffffff;
+                color: #444;
+            }
+            QSpinBox:focus, QDoubleSpinBox:focus, QComboBox:focus {
+                border: 2px solid #c9b8f5;
             }
         """)
         
@@ -127,7 +141,7 @@ class Toolbar(QToolBar):
         self.save_action = self.addAction(icon("document-save"), "Save")
         self.save_action.setToolTip("Save Project (Ctrl+S)")
         self.save_action.setShortcut("Ctrl+S")
-        self.addSeparator()
+        self._add_spacer()
         
         # EDIT SECTION
         self.addWidget(self._make_label("EDIT"))
@@ -165,7 +179,7 @@ class Toolbar(QToolBar):
         self.duplicate_action.setToolTip("Duplicate (Ctrl+D)")
         self.duplicate_action.setShortcut("Ctrl+D")
         self.duplicate_action.setEnabled(False)
-        self.addSeparator()
+        self._add_spacer()
         
         # DRAWING SECTION
         self.addWidget(self._make_label("DRAWING"))
@@ -196,7 +210,7 @@ class Toolbar(QToolBar):
         self.line_width_spinbox.setFixedWidth(50)
         self.line_width_spinbox.setToolTip("Wire/line thickness")
         self.addWidget(self.line_width_spinbox)
-        self.addSeparator()
+        self._add_spacer()
         
         # SIMULATION SECTION
         self.addWidget(self._make_label("SIMULATION"))
@@ -240,7 +254,7 @@ class Toolbar(QToolBar):
         self.sim_type_combo.setFixedWidth(80)
         self.sim_type_combo.setToolTip("Simulation type")
         self.addWidget(self.sim_type_combo)
-        self.addSeparator()
+        self._add_spacer()
         
         # VIEW SECTION
         self.addWidget(self._make_label("VIEW"))
@@ -258,8 +272,8 @@ class Toolbar(QToolBar):
         self.grid_toggle_action = self.addAction(icon("view-grid"), "Grid")
         self.grid_toggle_action.setToolTip("Toggle Grid")
         self.grid_toggle_action.setCheckable(True)
-        self.grid_toggle_action.setChecked(True)
-        self.addSeparator()
+        self.grid_toggle_action.setCheckable(True)
+        self._add_spacer()
         
         # TOOLS SECTION
         self.addWidget(self._make_label("TOOLS"))
@@ -346,14 +360,26 @@ class Toolbar(QToolBar):
         self.duplicate_action.setEnabled(False)
     
     def _make_label(self, text: str):
-        """Create a section label"""
+        """Create a section label with improved styling"""
         label = QLabel(text)
         font = QFont()
-        font.setPointSize(9)
+        font.setPointSize(8)
         font.setBold(True)
         label.setFont(font)
-        label.setStyleSheet("color: #1976d2;")
+        label.setStyleSheet("""
+            color: #b0a0c0;
+            margin-left: 12px;
+            margin-right: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        """)
         return label
+    
+    def _add_spacer(self, width=12):
+        """Add a spacer widget between sections"""
+        spacer = QWidget()
+        spacer.setFixedWidth(width)
+        self.addWidget(spacer)
     
     def _connect_signals(self):
         """Connect toolbar actions to signals"""

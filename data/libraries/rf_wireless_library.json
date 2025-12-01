@@ -1,0 +1,675 @@
+{
+  "library_name": "RF & Wireless Components",
+  "version": "3.0",
+  "category": "RF & Communications",
+  "description": "RF and wireless module library with 8 essential communication components",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "wifi_module",
+      "name": "WiFi Module (802.11)",
+      "type": "RF Component",
+      "symbol": "U",
+      "description": "Integrated WiFi module supporting 802.11b/g/n (2.4GHz). Built-in TCP/IP stack and crypto accelerator. Low power modes for battery applications. Typical: 150Mbps, -82dBm sensitivity. UART or SPI interface to host MCU.",
+      "use_cases": "IoT devices, smart home, WiFi sensors, network-enabled products, WiFi bridges",
+      "editable_properties": {
+        "Standard": {
+          "value": "802.11 b/g/n",
+          "unit": "standard",
+          "options": ["802.11 b/g/n", "802.11 ac", "802.11 ax"],
+          "description": "WiFi standard supported"
+        },
+        "Frequency": {
+          "value": 2.4,
+          "unit": "GHz",
+          "min": 2.4,
+          "max": 5,
+          "step": 0.6,
+          "description": "Operating frequency"
+        },
+        "Data_Rate": {
+          "value": 150,
+          "unit": "Mbps",
+          "min": 11,
+          "max": 1200,
+          "step": 10,
+          "description": "Maximum data rate"
+        },
+        "Sensitivity": {
+          "value": -82,
+          "unit": "dBm",
+          "min": -95,
+          "max": -60,
+          "step": 1,
+          "description": "Receiver sensitivity"
+        },
+        "Transmit_Power": {
+          "value": 20,
+          "unit": "dBm",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "description": "Max TX power"
+        },
+        "Interface": {
+          "value": "UART/SPI",
+          "unit": "type",
+          "options": ["UART", "SPI", "I2C", "USB"],
+          "description": "Host communication interface"
+        },
+        "Antenna": {
+          "value": "PCB Trace",
+          "unit": "type",
+          "options": ["PCB Trace", "External", "Hybrid"],
+          "description": "Antenna type"
+        },
+        "Package": {
+          "value": "QFN-32",
+          "unit": "type",
+          "options": ["QFN-32", "BGA", "Module"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Espressif, Realtek, Qualcomm",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 8.00,
+          "unit": "USD",
+          "min": 3,
+          "max": 50,
+          "step": 1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "ble_module",
+      "name": "Bluetooth Low Energy (BLE) Module",
+      "type": "RF Component",
+      "symbol": "U",
+      "description": "Ultra-low power Bluetooth 5.0+ module. Range up to 240m (with 4dBi antenna). Peak current 10mA TX, 4mA RX, 1µA sleep. Essential for wearables and battery-powered IoT. ARM Cortex-M4 with peripherals integrated.",
+      "use_cases": "Wearable devices, fitness trackers, hearing aids, medical sensors, beacon networks",
+      "editable_properties": {
+        "Bluetooth_Version": {
+          "value": "5.0",
+          "unit": "version",
+          "options": ["4.2", "5.0", "5.1", "5.3"],
+          "description": "Bluetooth specification"
+        },
+        "Frequency": {
+          "value": 2.4,
+          "unit": "GHz",
+          "min": 2.4,
+          "max": 2.48,
+          "step": 0.01,
+          "description": "ISM band frequency"
+        },
+        "Range": {
+          "value": 240,
+          "unit": "m",
+          "min": 20,
+          "max": 400,
+          "step": 20,
+          "description": "Maximum range (LoS)"
+        },
+        "TX_Power": {
+          "value": 4,
+          "unit": "dBm",
+          "min": -20,
+          "max": 10,
+          "step": 1,
+          "description": "Transmit power"
+        },
+        "RX_Sensitivity": {
+          "value": -95,
+          "unit": "dBm",
+          "min": -100,
+          "max": -70,
+          "step": 1,
+          "description": "Receiver sensitivity"
+        },
+        "Current_TX": {
+          "value": 10,
+          "unit": "mA",
+          "min": 5,
+          "max": 30,
+          "step": 1,
+          "description": "Transmit current"
+        },
+        "Current_Sleep": {
+          "value": 1,
+          "unit": "µA",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.5,
+          "description": "Sleep mode current"
+        },
+        "Package": {
+          "value": "QFN-48",
+          "unit": "type",
+          "options": ["QFN-48", "BGA-48", "Module"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Nordic Semi, TI, NXP",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 5.50,
+          "unit": "USD",
+          "min": 2,
+          "max": 30,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "rf_transceiver",
+      "name": "RF Transceiver (ISM Band)",
+      "type": "RF Component",
+      "symbol": "U",
+      "description": "Ultra-low power ISM band (868/915MHz) transceiver. Range up to 1km with external antenna. Current: 30mA TX, 15mA RX, 2µA standby. Supports LoRaWAN, ZigBee, and proprietary protocols. Excellent for long-range IoT.",
+      "use_cases": "Long-range IoT, LoRa networks, smart meters, environmental sensors, agricultural IoT",
+      "editable_properties": {
+        "Frequency_Band": {
+          "value": 868,
+          "unit": "MHz",
+          "min": 315,
+          "max": 2400,
+          "step": 100,
+          "description": "Operating frequency"
+        },
+        "Maximum_Range": {
+          "value": 1000,
+          "unit": "m",
+          "min": 100,
+          "max": 15000,
+          "step": 100,
+          "description": "LoS range"
+        },
+        "TX_Power": {
+          "value": 20,
+          "unit": "dBm",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "description": "Transmit power"
+        },
+        "RX_Sensitivity": {
+          "value": -139,
+          "unit": "dBm",
+          "min": -145,
+          "max": -100,
+          "step": 1,
+          "description": "Sensitivity at 1% PER"
+        },
+        "Data_Rate": {
+          "value": 50,
+          "unit": "kbps",
+          "min": 0.3,
+          "max": 250,
+          "step": 10,
+          "description": "Configurable data rate"
+        },
+        "Current_TX": {
+          "value": 30,
+          "unit": "mA",
+          "min": 15,
+          "max": 100,
+          "step": 5,
+          "description": "TX current"
+        },
+        "Current_Sleep": {
+          "value": 2,
+          "unit": "µA",
+          "min": 0.5,
+          "max": 10,
+          "step": 0.5,
+          "description": "Sleep current"
+        },
+        "Package": {
+          "value": "QFN-48",
+          "unit": "type",
+          "options": ["QFN-48", "BGA", "Module"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Semtech, TI, Microchip",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 12.00,
+          "unit": "USD",
+          "min": 5,
+          "max": 50,
+          "step": 1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "nfc_rfid_module",
+      "name": "NFC/RFID Module",
+      "type": "RF Component",
+      "symbol": "U",
+      "description": "13.56MHz NFC Type 1-4 and ISO14443A/B reader/writer. Typical range 5-10cm. Built-in antenna matching and load modulation. Supports Mifare, ultralight, NDEF. I2C interface to host MCU.",
+      "use_cases": "Contactless payments, access control, inventory tracking, smart tags, ticketing systems",
+      "editable_properties": {
+        "Frequency": {
+          "value": 13.56,
+          "unit": "MHz",
+          "min": 13.56,
+          "max": 13.56,
+          "step": 0.01,
+          "description": "Operating frequency"
+        },
+        "Range": {
+          "value": 7,
+          "unit": "cm",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "description": "Read/write range"
+        },
+        "Standard": {
+          "value": "ISO14443A/B",
+          "unit": "standard",
+          "options": ["ISO14443A", "ISO14443B", "ISO15693", "Multi-type"],
+          "description": "NFC standard"
+        },
+        "TX_Power": {
+          "value": 2,
+          "unit": "W",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.5,
+          "description": "Transmit power"
+        },
+        "Read_Speed": {
+          "value": 848,
+          "unit": "kbps",
+          "min": 106,
+          "max": 848,
+          "step": 100,
+          "description": "Bit rate"
+        },
+        "Antenna": {
+          "value": "Built-in",
+          "unit": "type",
+          "options": ["Built-in", "External", "Tunable"],
+          "description": "Antenna configuration"
+        },
+        "Interface": {
+          "value": "I2C/SPI",
+          "unit": "type",
+          "options": ["UART", "SPI", "I2C", "USB"],
+          "description": "Host interface"
+        },
+        "Package": {
+          "value": "QFN-32",
+          "unit": "type",
+          "options": ["QFN-32", "LGA", "Module"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "NXP, Broadcom, STMicroelectronics",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 6.00,
+          "unit": "USD",
+          "min": 2,
+          "max": 25,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "cellular_modem",
+      "name": "Cellular Modem (4G/LTE)",
+      "type": "RF Component",
+      "symbol": "U",
+      "description": "Industrial-grade 4G LTE modem supporting CAT-M1 and NB-IoT. Global bands 1-71. Typical: 10Mbps DL, 5Mbps UL. Dual SIM support. GPS/GNSS integrated. TCP/UDP/PPP protocols.",
+      "use_cases": "Industrial IoT, GPS tracking, remote monitoring, vehicle telematics, emergency alerts",
+      "editable_properties": {
+        "LTE_Category": {
+          "value": "CAT-M1",
+          "unit": "type",
+          "options": ["CAT-1", "CAT-4", "CAT-6", "CAT-M1", "NB-IoT"],
+          "description": "LTE category"
+        },
+        "Download_Speed": {
+          "value": 10,
+          "unit": "Mbps",
+          "min": 0.2,
+          "max": 600,
+          "step": 5,
+          "description": "Maximum downlink speed"
+        },
+        "Upload_Speed": {
+          "value": 5,
+          "unit": "Mbps",
+          "min": 0.2,
+          "max": 150,
+          "step": 1,
+          "description": "Maximum uplink speed"
+        },
+        "Bands_Supported": {
+          "value": "Bands 1-71",
+          "unit": "count",
+          "description": "Global LTE bands"
+        },
+        "GPS": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "Built-in GNSS"
+        },
+        "Dual_SIM": {
+          "value": "Yes",
+          "unit": "status",
+          "description": "Dual SIM support"
+        },
+        "Current_TX": {
+          "value": 500,
+          "unit": "mA",
+          "min": 100,
+          "max": 2000,
+          "step": 50,
+          "description": "Transmit current"
+        },
+        "Current_Sleep": {
+          "value": 50,
+          "unit": "µA",
+          "min": 10,
+          "max": 200,
+          "step": 10,
+          "description": "Sleep current"
+        },
+        "Package": {
+          "value": "LGA-120",
+          "unit": "type",
+          "options": ["LGA-120", "Module", "BGA"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Quectel, Cinterion, u-blox",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 45.00,
+          "unit": "USD",
+          "min": 20,
+          "max": 150,
+          "step": 5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "rf_amplifier",
+      "name": "RF Power Amplifier",
+      "type": "RF Component",
+      "symbol": "U",
+      "description": "Wideband RF power amplifier 2.4GHz for WiFi/Bluetooth. Gain 16-32dB. Output power 30dBm. Flat gain across band. Input/output impedance 50Ω.",
+      "use_cases": "WiFi signal boosting, long-range WiFi, Bluetooth range extension, RF testing",
+      "editable_properties": {
+        "Frequency": {
+          "value": 2.4,
+          "unit": "GHz",
+          "min": 0.5,
+          "max": 6,
+          "step": 0.5,
+          "description": "Center frequency"
+        },
+        "Gain": {
+          "value": 24,
+          "unit": "dB",
+          "min": 10,
+          "max": 50,
+          "step": 1,
+          "description": "Linear gain"
+        },
+        "Output_Power": {
+          "value": 30,
+          "unit": "dBm",
+          "min": 20,
+          "max": 50,
+          "step": 1,
+          "description": "Maximum output power"
+        },
+        "Noise_Figure": {
+          "value": 6,
+          "unit": "dB",
+          "min": 2,
+          "max": 15,
+          "step": 0.5,
+          "description": "Noise figure"
+        },
+        "Bandwidth": {
+          "value": 500,
+          "unit": "MHz",
+          "min": 50,
+          "max": 4000,
+          "step": 50,
+          "description": "3dB bandwidth"
+        },
+        "Supply_Voltage": {
+          "value": 5,
+          "unit": "V",
+          "min": 3.3,
+          "max": 24,
+          "step": 1,
+          "description": "Supply voltage"
+        },
+        "Current_Consumption": {
+          "value": 500,
+          "unit": "mA",
+          "min": 100,
+          "max": 2000,
+          "step": 50,
+          "description": "Supply current"
+        },
+        "Package": {
+          "value": "QFN-16",
+          "unit": "type",
+          "options": ["QFN-16", "DFN-8", "SOT-89"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Skyworks, Qorvo, Broadcom",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 3.50,
+          "unit": "USD",
+          "min": 1,
+          "max": 30,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "gps_module",
+      "name": "GPS/GNSS Module",
+      "type": "RF Component",
+      "symbol": "U",
+      "description": "Multi-constellation GNSS receiver (GPS, GLONASS, Galileo, BeiDou). Acquisition time <1s cold start, <100ms warm. Accuracy ±5m CEP. UART interface. Built-in antenna with LNA.",
+      "use_cases": "Vehicle tracking, asset location, surveying, timing references, drone navigation",
+      "editable_properties": {
+        "Constellations": {
+          "value": "GPS/GLONASS/Galileo/BeiDou",
+          "unit": "count",
+          "description": "Supported systems"
+        },
+        "Accuracy": {
+          "value": 5,
+          "unit": "m",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "description": "Position accuracy CEP"
+        },
+        "Update_Rate": {
+          "value": 10,
+          "unit": "Hz",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Fix update rate"
+        },
+        "Cold_Start": {
+          "value": 35,
+          "unit": "s",
+          "min": 1,
+          "max": 120,
+          "step": 5,
+          "description": "Cold start time"
+        },
+        "Warm_Start": {
+          "value": 5,
+          "unit": "s",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "description": "Warm start time"
+        },
+        "Hot_Start": {
+          "value": 0.1,
+          "unit": "s",
+          "min": 0.05,
+          "max": 1,
+          "step": 0.05,
+          "description": "Hot start time"
+        },
+        "Current_Active": {
+          "value": 40,
+          "unit": "mA",
+          "min": 10,
+          "max": 200,
+          "step": 10,
+          "description": "Active current"
+        },
+        "Current_Backup": {
+          "value": 10,
+          "unit": "µA",
+          "min": 1,
+          "max": 100,
+          "step": 5,
+          "description": "Backup current"
+        },
+        "Package": {
+          "value": "QFN-48",
+          "unit": "type",
+          "options": ["QFN-48", "LGA", "Module"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "u-blox, SiRF, Quectel",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 25.00,
+          "unit": "USD",
+          "min": 10,
+          "max": 100,
+          "step": 2,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "rf_switch",
+      "name": "RF Switch (SPDT)",
+      "type": "RF Component",
+      "symbol": "U",
+      "description": "Single-Pole-Double-Throw RF switch for antenna diversity or TX/RX switching. <1ns switching time. Insertion loss 0.5dB. Isolation 30dB. GaAs MMIC technology. Logic control input 0-3.3V.",
+      "use_cases": "Antenna switching, TX/RX multiplexing, RF routing, diversity systems, MIMO switches",
+      "editable_properties": {
+        "Type": {
+          "value": "SPDT",
+          "unit": "type",
+          "options": ["SPDT", "SPST", "DPDT"],
+          "description": "Switch topology"
+        },
+        "Frequency": {
+          "value": 2.4,
+          "unit": "GHz",
+          "min": 0.1,
+          "max": 6,
+          "step": 0.5,
+          "description": "Operating frequency"
+        },
+        "Insertion_Loss": {
+          "value": 0.5,
+          "unit": "dB",
+          "min": 0.3,
+          "max": 2,
+          "step": 0.1,
+          "description": "Through loss"
+        },
+        "Isolation": {
+          "value": 30,
+          "unit": "dB",
+          "min": 20,
+          "max": 50,
+          "step": 5,
+          "description": "Port-to-port isolation"
+        },
+        "Switching_Time": {
+          "value": 1,
+          "unit": "ns",
+          "min": 0.5,
+          "max": 100,
+          "step": 5,
+          "description": "Switch transition time"
+        },
+        "Power_Handling": {
+          "value": 32,
+          "unit": "dBm",
+          "min": 20,
+          "max": 50,
+          "step": 5,
+          "description": "Input power rating"
+        },
+        "Control_Voltage": {
+          "value": 3.3,
+          "unit": "V",
+          "min": 2.5,
+          "max": 5,
+          "step": 0.5,
+          "description": "Control logic voltage"
+        },
+        "Package": {
+          "value": "SOT-6",
+          "unit": "type",
+          "options": ["SOT-6", "SOT-23", "QFN-6"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Skyworks, Qorvo, Mini-Circuits",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 1.50,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 20,
+          "step": 0.2,
+          "description": "Cost per unit"
+        }
+      }
+    }
+  ]
+}

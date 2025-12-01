@@ -6,6 +6,9 @@ from PySide6.QtWidgets import (
     QPushButton, QLabel, QDoubleSpinBox, QSpinBox, QLineEdit, QComboBox
 )
 from PySide6.QtCore import Qt, Signal
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class InspectorPanel(QWidget):
@@ -18,6 +21,16 @@ class InspectorPanel(QWidget):
         super().__init__()
         layout = QVBoxLayout()
         self.setLayout(layout)
+        
+        # Title label
+        title_label = QLabel("Component Inspector")
+        title_label.setStyleSheet("font-weight: bold; font-size: 12px; padding: 5px;")
+        layout.addWidget(title_label)
+        
+        # Status label
+        self.status_label = QLabel("No component selected")
+        self.status_label.setStyleSheet("color: #666; font-size: 10px; padding: 5px;")
+        layout.addWidget(self.status_label)
         
         # Tabbed interface
         self.tabs = QTabWidget()
@@ -60,6 +73,7 @@ class InspectorPanel(QWidget):
         table.setHorizontalHeaderLabels(["Property", "Value"])
         table.horizontalHeader().setStretchLastSection(True)
         table.setSelectionBehavior(QTableWidget.SelectRows)
+        table.setMinimumHeight(150)  # Ensure minimum height
         table.itemChanged.connect(self._on_item_changed)
         return table
     
@@ -67,6 +81,17 @@ class InspectorPanel(QWidget):
         """Set properties for inspection"""
         self.current_component = component_id
         self.component_tab.setRowCount(0)
+        
+        # Update status label
+        if properties:
+            comp_name = properties.get("Name", "Unknown")
+            comp_type = properties.get("Type", "Unknown")
+            self.status_label.setText(f"Selected: {comp_name} ({comp_type})")
+        else:
+            self.status_label.setText("No properties available")
+        
+        if not properties:
+            return
         
         for row, (key, value) in enumerate(properties.items()):
             self.component_tab.insertRow(row)
@@ -129,6 +154,7 @@ class InspectorPanel(QWidget):
         self.circuit_tab.setRowCount(0)
         self.simulation_tab.setRowCount(0)
         self.current_component = None
+        self.status_label.setText("No component selected")
     
     def _on_item_changed(self, item: QTableWidgetItem):
         """Handle property value changes"""

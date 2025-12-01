@@ -1,0 +1,693 @@
+{
+  "library_name": "Inductors",
+  "version": "3.0",
+  "category": "Passive Components",
+  "description": "Comprehensive inductor component library with 8 inductor types, each with full specifications, descriptions, and editable properties for circuit simulation",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "air_core_inductor",
+      "name": "Air Core Inductor",
+      "type": "Inductor",
+      "symbol": "L",
+      "description": "Simple air-core inductor with minimal magnetic coupling. Used in RF and high-frequency circuits where low loss is critical. No ferrous material means linear inductance across wide frequency ranges. Low Q factor compared to ferrite cores but excellent for impedance matching and RF applications. Range 1nH to 1000μH.",
+      "use_cases": "RF circuits, high-frequency impedance matching, oscillator tanks, low-loss applications",
+      "editable_properties": {
+        "Inductance": {
+          "value": 1000,
+          "unit": "nH",
+          "min": 1,
+          "max": 1000000,
+          "step": 1,
+          "description": "Inductance in nanoHenries. Examples: 1nH, 100nH (0.1μH), 10000nH (10μH)"
+        },
+        "DC_Resistance": {
+          "value": 50,
+          "unit": "mΩ",
+          "min": 1,
+          "max": 1000,
+          "step": 1,
+          "description": "Wire resistance at DC"
+        },
+        "Q_Factor": {
+          "value": 150,
+          "unit": "ratio",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "description": "Quality factor at 1MHz - higher is better"
+        },
+        "Frequency": {
+          "value": 1000,
+          "unit": "MHz",
+          "min": 1,
+          "max": 10000,
+          "step": 100,
+          "description": "Operating frequency range"
+        },
+        "Tolerance": {
+          "value": 5,
+          "unit": "%",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "description": "Inductance tolerance"
+        },
+        "Wire_Diameter": {
+          "value": 0.5,
+          "unit": "mm",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Wire diameter for calculation"
+        },
+        "Max_Current": {
+          "value": 500,
+          "unit": "mA",
+          "min": 10,
+          "max": 10000,
+          "step": 10,
+          "description": "Maximum continuous current"
+        },
+        "Manufacturer": {
+          "value": "Coilcraft, Murata, Würth",
+          "unit": "text",
+          "description": "Manufacturer name"
+        },
+        "Unit_Cost": {
+          "value": 0.15,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "ferrite_core_inductor",
+      "name": "Ferrite Core Inductor",
+      "type": "Inductor",
+      "symbol": "L",
+      "description": "Inductor with ferrite core providing high inductance in compact form. Excellent for power supply filtering, EMI suppression, and energy storage up to 100kHz. High permeability ferrite material allows smaller physical size. Saturation and core loss considerations at high currents. Range 1μH to 10mH.",
+      "use_cases": "Power supply filtering, EMI suppression, energy storage, noise filtering, compact designs",
+      "editable_properties": {
+        "Inductance": {
+          "value": 10000,
+          "unit": "nH",
+          "min": 1000,
+          "max": 10000000,
+          "step": 100,
+          "description": "Inductance in nanoHenries"
+        },
+        "Core_Material": {
+          "value": "Ferrite",
+          "unit": "material",
+          "options": ["Ferrite 43", "Ferrite 61", "Ferrite 77"],
+          "description": "Ferrite type affects frequency response"
+        },
+        "DC_Resistance": {
+          "value": 100,
+          "unit": "mΩ",
+          "min": 10,
+          "max": 5000,
+          "step": 10,
+          "description": "Wire resistance at DC"
+        },
+        "Q_Factor": {
+          "value": 80,
+          "unit": "ratio",
+          "min": 20,
+          "max": 300,
+          "step": 10,
+          "description": "Quality factor - lower than air core due to core loss"
+        },
+        "Saturation_Current": {
+          "value": 2000,
+          "unit": "mA",
+          "min": 100,
+          "max": 50000,
+          "step": 100,
+          "description": "Current where inductance starts decreasing"
+        },
+        "Operating_Frequency": {
+          "value": 100,
+          "unit": "kHz",
+          "min": 1,
+          "max": 1000,
+          "step": 10,
+          "description": "Optimal frequency range"
+        },
+        "Tolerance": {
+          "value": 10,
+          "unit": "%",
+          "min": 5,
+          "max": 20,
+          "step": 1,
+          "description": "Inductance tolerance"
+        },
+        "Temperature_Coefficient": {
+          "value": 500,
+          "unit": "ppm/°C",
+          "min": 100,
+          "max": 2000,
+          "step": 100,
+          "description": "Inductance change per °C"
+        },
+        "Manufacturer": {
+          "value": "Murata, TDK, Würth",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.20,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 100,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "power_inductor",
+      "name": "Power Inductor (High Current)",
+      "type": "Inductor",
+      "symbol": "L",
+      "description": "Rugged inductor designed for high-current applications in power conversion and switching supplies. Supports 5A to 100A+ continuous current with low DCR. Features ferrite or iron powder cores optimized for energy storage. Critical component in buck/boost converters and filter networks. Range 0.1μH to 100μH.",
+      "use_cases": "Buck converters, boost converters, switching power supplies, filter networks, high-current energy storage",
+      "editable_properties": {
+        "Inductance": {
+          "value": 10000,
+          "unit": "nH",
+          "min": 100,
+          "max": 100000000,
+          "step": 100,
+          "description": "Inductance value"
+        },
+        "DC_Resistance": {
+          "value": 50,
+          "unit": "mΩ",
+          "min": 5,
+          "max": 1000,
+          "step": 5,
+          "description": "Very low DCR for efficient power transfer"
+        },
+        "Saturation_Current": {
+          "value": 50000,
+          "unit": "mA",
+          "min": 1000,
+          "max": 200000,
+          "step": 500,
+          "description": "Current at 30% inductance drop"
+        },
+        "Operating_Current": {
+          "value": 20000,
+          "unit": "mA",
+          "min": 1000,
+          "max": 200000,
+          "step": 500,
+          "description": "Rated continuous current"
+        },
+        "Switching_Frequency": {
+          "value": 200,
+          "unit": "kHz",
+          "min": 50,
+          "max": 2000,
+          "step": 50,
+          "description": "Optimal switching frequency"
+        },
+        "Core_Material": {
+          "value": "Iron Powder",
+          "unit": "material",
+          "options": ["Iron Powder", "Ferrite", "Sendust"],
+          "description": "Core type for power delivery"
+        },
+        "Temperature_Rise": {
+          "value": 40,
+          "unit": "°C",
+          "min": 10,
+          "max": 100,
+          "step": 5,
+          "description": "Temperature rise at rated current"
+        },
+        "Efficiency": {
+          "value": 0.95,
+          "unit": "ratio",
+          "min": 0.85,
+          "max": 0.99,
+          "step": 0.01,
+          "description": "Energy transfer efficiency"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Würth, Coilcraft",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.50,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 200,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "rf_choke",
+      "name": "RF Choke (High Frequency Filter)",
+      "type": "Inductor",
+      "symbol": "L",
+      "description": "Inductor optimized for RF filtering and impedance matching in high-frequency circuits. Broadband impedance from 10MHz to 10GHz with excellent isolation. Critical for EMI suppression, RF feed networks, and antenna circuits. Compact SMD packages. Range 1nH to 1000nH.",
+      "use_cases": "RF filtering, EMI suppression, antenna feed networks, impedance matching, isolation networks",
+      "editable_properties": {
+        "Inductance": {
+          "value": 100,
+          "unit": "nH",
+          "min": 1,
+          "max": 10000,
+          "step": 1,
+          "description": "Inductance in nanoHenries"
+        },
+        "Impedance_At_Frequency": {
+          "value": 500,
+          "unit": "Ω",
+          "min": 10,
+          "max": 10000,
+          "step": 10,
+          "description": "Impedance at operating frequency"
+        },
+        "Operating_Frequency": {
+          "value": 2000,
+          "unit": "MHz",
+          "min": 10,
+          "max": 10000,
+          "step": 100,
+          "description": "Center operating frequency"
+        },
+        "Q_Factor": {
+          "value": 200,
+          "unit": "ratio",
+          "min": 50,
+          "max": 500,
+          "step": 10,
+          "description": "Quality factor at operating frequency"
+        },
+        "Package_Type": {
+          "value": "0603",
+          "unit": "code",
+          "options": ["0402", "0603", "0805", "1206"],
+          "description": "SMD package"
+        },
+        "Max_Impedance": {
+          "value": 5000,
+          "unit": "Ω",
+          "min": 100,
+          "max": 50000,
+          "step": 100,
+          "description": "Maximum impedance across frequency"
+        },
+        "DC_Resistance": {
+          "value": 10,
+          "unit": "Ω",
+          "min": 0.1,
+          "max": 100,
+          "step": 0.1,
+          "description": "Resistance at DC"
+        },
+        "Max_Current": {
+          "value": 500,
+          "unit": "mA",
+          "min": 10,
+          "max": 5000,
+          "step": 10,
+          "description": "Maximum current"
+        },
+        "Manufacturer": {
+          "value": "Murata, TDK, Würth",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.10,
+          "unit": "USD",
+          "min": 0.02,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "film_inductor",
+      "name": "Film Inductor (Planar)",
+      "type": "Inductor",
+      "symbol": "L",
+      "description": "Flat planar inductor manufactured on PCB or film substrate. Ultra-low profile and excellent integration with planar circuits. Minimal parasitic coupling. Used in thin-form-factor designs and RF circuits. Range 1nH to 10μH with excellent frequency response to 5GHz.",
+      "use_cases": "Thin-form designs, RF impedance matching, integrated circuits, planar filters, high-frequency coupling",
+      "editable_properties": {
+        "Inductance": {
+          "value": 1000,
+          "unit": "nH",
+          "min": 1,
+          "max": 10000000,
+          "step": 1,
+          "description": "Inductance value"
+        },
+        "Profile_Height": {
+          "value": 0.5,
+          "unit": "mm",
+          "min": 0.2,
+          "max": 2,
+          "step": 0.1,
+          "description": "Ultra-low profile"
+        },
+        "Substrate": {
+          "value": "Polyimide",
+          "unit": "material",
+          "options": ["Polyimide", "FR-4", "LTCC", "Rogers"],
+          "description": "Substrate material"
+        },
+        "Q_Factor": {
+          "value": 120,
+          "unit": "ratio",
+          "min": 30,
+          "max": 300,
+          "step": 10,
+          "description": "Quality factor"
+        },
+        "Operating_Frequency": {
+          "value": 5000,
+          "unit": "MHz",
+          "min": 100,
+          "max": 10000,
+          "step": 100,
+          "description": "Operating range"
+        },
+        "DC_Resistance": {
+          "value": 5,
+          "unit": "Ω",
+          "min": 0.1,
+          "max": 100,
+          "step": 0.1,
+          "description": "DC resistance"
+        },
+        "Current_Rating": {
+          "value": 100,
+          "unit": "mA",
+          "min": 10,
+          "max": 5000,
+          "step": 10,
+          "description": "Maximum current"
+        },
+        "Coupling_Factor": {
+          "value": 0.3,
+          "unit": "ratio",
+          "min": 0,
+          "max": 1,
+          "step": 0.1,
+          "description": "Magnetic coupling to adjacent components"
+        },
+        "Manufacturer": {
+          "value": "Coilcraft, Murata, Würth",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.25,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 100,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "variable_inductor",
+      "name": "Variable Inductor (Adjustable Coil)",
+      "type": "Inductor",
+      "symbol": "L",
+      "description": "Adjustable inductor with variable core position or movable slug. Allows fine-tuning of circuit resonance and impedance matching. Mechanical adjustment enables circuit optimization without component replacement. Used in radio tuning, impedance matching networks, and frequency calibration. Range 0.1μH to 100μH.",
+      "use_cases": "Radio tuning, impedance matching adjustment, resonance tuning, filter calibration, circuit optimization",
+      "editable_properties": {
+        "Inductance_Min": {
+          "value": 1000,
+          "unit": "nH",
+          "min": 100,
+          "max": 100000,
+          "step": 100,
+          "description": "Minimum inductance"
+        },
+        "Inductance_Max": {
+          "value": 100000,
+          "unit": "nH",
+          "min": 1000,
+          "max": 10000000,
+          "step": 1000,
+          "description": "Maximum inductance"
+        },
+        "Inductance_Current": {
+          "value": 50000,
+          "unit": "nH",
+          "min": 1000,
+          "max": 10000000,
+          "step": 1000,
+          "description": "Current inductance - tunable"
+        },
+        "Tuning_Range": {
+          "value": 10,
+          "unit": "ratio",
+          "min": 2,
+          "max": 100,
+          "step": 1,
+          "description": "Max/min inductance ratio"
+        },
+        "DC_Resistance": {
+          "value": 100,
+          "unit": "mΩ",
+          "min": 10,
+          "max": 2000,
+          "step": 10,
+          "description": "Wire resistance"
+        },
+        "Q_Factor": {
+          "value": 100,
+          "unit": "ratio",
+          "min": 20,
+          "max": 300,
+          "step": 10,
+          "description": "Quality factor"
+        },
+        "Adjustment_Type": {
+          "value": "Slug",
+          "unit": "type",
+          "options": ["Slug", "Powdered Iron", "Variable Core"],
+          "description": "Adjustment mechanism"
+        },
+        "Max_Current": {
+          "value": 1000,
+          "unit": "mA",
+          "min": 100,
+          "max": 10000,
+          "step": 100,
+          "description": "Maximum current"
+        },
+        "Mechanical_Turns": {
+          "value": 10,
+          "unit": "turns",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "description": "Mechanical adjustment range"
+        },
+        "Manufacturer": {
+          "value": "Coilcraft, Würth, Johnson",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.75,
+          "unit": "USD",
+          "min": 0.2,
+          "max": 200,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "common_mode_choke",
+      "name": "Common Mode Choke (Coupled Inductors)",
+      "type": "Inductor",
+      "symbol": "L",
+      "description": "Pair of coupled inductors wound on same core for differential/common-mode filtering. Passes differential signals while suppressing common-mode noise. Essential for power supply EMI filtering, twisted-pair filtering, and balanced line noise suppression. Typical inductance 1mH to 1H.",
+      "use_cases": "Power supply EMI filtering, twisted-pair filtering, differential signal filtering, noise suppression",
+      "editable_properties": {
+        "Inductance_Per_Winding": {
+          "value": 10000000,
+          "unit": "nH",
+          "min": 1000000,
+          "max": 1000000000,
+          "step": 100000,
+          "description": "Inductance per winding at 1kHz"
+        },
+        "Common_Mode_Impedance": {
+          "value": 1000,
+          "unit": "Ω",
+          "min": 10,
+          "max": 10000,
+          "step": 10,
+          "description": "Impedance for common-mode signals"
+        },
+        "Differential_Impedance": {
+          "value": 10,
+          "unit": "Ω",
+          "min": 0.1,
+          "max": 100,
+          "step": 0.1,
+          "description": "Impedance for differential signals"
+        },
+        "Coupling_Factor": {
+          "value": 0.99,
+          "unit": "ratio",
+          "min": 0.9,
+          "max": 1.0,
+          "step": 0.01,
+          "description": "Magnetic coupling between windings"
+        },
+        "DC_Resistance": {
+          "value": 1000,
+          "unit": "mΩ",
+          "min": 100,
+          "max": 10000,
+          "step": 100,
+          "description": "Per-winding DC resistance"
+        },
+        "Max_Common_Mode_Current": {
+          "value": 10000,
+          "unit": "mA",
+          "min": 100,
+          "max": 100000,
+          "step": 100,
+          "description": "Maximum safe common-mode current"
+        },
+        "Frequency_Range": {
+          "value": 1000,
+          "unit": "kHz",
+          "min": 1,
+          "max": 100000,
+          "step": 100,
+          "description": "Operating frequency"
+        },
+        "Attenuation": {
+          "value": 60,
+          "unit": "dB",
+          "min": 20,
+          "max": 100,
+          "step": 5,
+          "description": "Common-mode noise attenuation"
+        },
+        "Manufacturer": {
+          "value": "Würth, Coilcraft, Murata",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 1.00,
+          "unit": "USD",
+          "min": 0.2,
+          "max": 500,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "toroidal_inductor",
+      "name": "Toroidal Inductor (Ring Core)",
+      "type": "Inductor",
+      "symbol": "L",
+      "description": "High-quality inductor with toroidal core providing excellent electromagnetic shielding and minimal radiated EMI. Superior Q factor and low external magnetic field compared to other core shapes. Ideal for audio circuits and applications sensitive to EMI. Range 1μH to 100mH with frequencies to 100kHz.",
+      "use_cases": "Audio circuits, low-EMI applications, precision filters, power supplies, shielded designs",
+      "editable_properties": {
+        "Inductance": {
+          "value": 1000000,
+          "unit": "nH",
+          "min": 1000,
+          "max": 100000000,
+          "step": 1000,
+          "description": "Inductance value"
+        },
+        "DC_Resistance": {
+          "value": 200,
+          "unit": "mΩ",
+          "min": 10,
+          "max": 5000,
+          "step": 10,
+          "description": "Very low DCR for audio quality"
+        },
+        "Q_Factor": {
+          "value": 250,
+          "unit": "ratio",
+          "min": 50,
+          "max": 500,
+          "step": 10,
+          "description": "Excellent quality factor"
+        },
+        "Core_Material": {
+          "value": "Ferrite",
+          "unit": "material",
+          "options": ["Ferrite", "Iron Powder", "Permalloy"],
+          "description": "Toroidal core material"
+        },
+        "Operating_Frequency": {
+          "value": 100,
+          "unit": "kHz",
+          "min": 1,
+          "max": 1000,
+          "step": 10,
+          "description": "Optimal frequency range"
+        },
+        "Saturation_Current": {
+          "value": 5000,
+          "unit": "mA",
+          "min": 100,
+          "max": 50000,
+          "step": 100,
+          "description": "Saturation current"
+        },
+        "EMI_Shielding": {
+          "value": 80,
+          "unit": "dB",
+          "min": 40,
+          "max": 120,
+          "step": 10,
+          "description": "EMI suppression effectiveness"
+        },
+        "External_Field": {
+          "value": 0.05,
+          "unit": "G",
+          "min": 0.01,
+          "max": 1,
+          "step": 0.05,
+          "description": "External magnetic field at 10cm"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Würth, Coilcraft",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.75,
+          "unit": "USD",
+          "min": 0.2,
+          "max": 200,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    }
+  ]
+}

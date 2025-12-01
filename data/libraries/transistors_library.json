@@ -1,0 +1,705 @@
+{
+  "library_name": "Transistors",
+  "version": "3.0",
+  "category": "Semiconductors",
+  "description": "Comprehensive transistor component library with 8 transistor types, each with full specifications, descriptions, and editable properties for circuit simulation",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "bjt_npn_transistor",
+      "name": "BJT NPN Transistor (General Purpose)",
+      "type": "Transistor",
+      "symbol": "Q",
+      "description": "Bipolar junction transistor NPN type for amplification and switching. Fast switching <100ns with moderate power handling 100mW-1W. High current gain (hFE) 100-300 enables low-power circuits. Saturates at low collector voltage (~0.2V). Ideal for small-signal and low-power applications. Common types: 2N2222, 2N3904.",
+      "use_cases": "Low-power amplification, switching circuits, logic gates, signal conditioning, oscillators",
+      "editable_properties": {
+        "VBE_Forward": {
+          "value": 0.7,
+          "unit": "V",
+          "min": 0.5,
+          "max": 1.0,
+          "step": 0.05,
+          "description": "Base-emitter forward voltage"
+        },
+        "hFE_Current_Gain": {
+          "value": 200,
+          "unit": "ratio",
+          "min": 50,
+          "max": 1000,
+          "step": 10,
+          "description": "DC current gain (β)"
+        },
+        "Max_Collector_Current": {
+          "value": 500,
+          "unit": "mA",
+          "min": 10,
+          "max": 10000,
+          "step": 10,
+          "description": "Maximum collector current"
+        },
+        "Max_Collector_Voltage": {
+          "value": 40,
+          "unit": "V",
+          "min": 5,
+          "max": 500,
+          "step": 5,
+          "description": "Maximum collector-emitter voltage"
+        },
+        "Collector_Saturation_Voltage": {
+          "value": 0.2,
+          "unit": "V",
+          "min": 0.1,
+          "max": 1.0,
+          "step": 0.05,
+          "description": "VCE(sat) when fully saturated"
+        },
+        "fT_Transition_Frequency": {
+          "value": 200,
+          "unit": "MHz",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "description": "Transition frequency for amplification"
+        },
+        "Switching_Time": {
+          "value": 50,
+          "unit": "ns",
+          "min": 5,
+          "max": 1000,
+          "step": 5,
+          "description": "Turn-on/off time"
+        },
+        "Power_Dissipation": {
+          "value": 0.5,
+          "unit": "W",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "description": "Maximum power rating"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Fairchild, ON Semiconductor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.05,
+          "unit": "USD",
+          "min": 0.01,
+          "max": 50,
+          "step": 0.05,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "bjt_pnp_transistor",
+      "name": "BJT PNP Transistor",
+      "type": "Transistor",
+      "symbol": "Q",
+      "description": "Bipolar junction transistor PNP type complementary to NPN. Conducts with negative base current. Used in push-pull amplifier stages and high-side switching. Similar performance to NPN versions with opposite polarity. Common types: 2N2907, 2N3906.",
+      "use_cases": "Complementary switching, push-pull amplifiers, high-side drivers, emitter followers",
+      "editable_properties": {
+        "VBE_Forward": {
+          "value": -0.7,
+          "unit": "V",
+          "min": -1.0,
+          "max": -0.5,
+          "step": 0.05,
+          "description": "Base-emitter voltage (negative for PNP)"
+        },
+        "hFE_Current_Gain": {
+          "value": 150,
+          "unit": "ratio",
+          "min": 50,
+          "max": 1000,
+          "step": 10,
+          "description": "DC current gain"
+        },
+        "Max_Collector_Current": {
+          "value": 500,
+          "unit": "mA",
+          "min": 10,
+          "max": 10000,
+          "step": 10,
+          "description": "Maximum collector current (magnitude)"
+        },
+        "Max_Emitter_Voltage": {
+          "value": 40,
+          "unit": "V",
+          "min": 5,
+          "max": 500,
+          "step": 5,
+          "description": "Maximum emitter-collector voltage"
+        },
+        "Collector_Saturation_Voltage": {
+          "value": -0.2,
+          "unit": "V",
+          "min": -1.0,
+          "max": -0.1,
+          "step": 0.05,
+          "description": "VEC(sat) when saturated"
+        },
+        "fT_Transition_Frequency": {
+          "value": 150,
+          "unit": "MHz",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "description": "Transition frequency"
+        },
+        "Switching_Time": {
+          "value": 100,
+          "unit": "ns",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "description": "Turn-on/off time"
+        },
+        "Power_Dissipation": {
+          "value": 0.5,
+          "unit": "W",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "description": "Maximum power rating"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Fairchild, ON Semiconductor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.05,
+          "unit": "USD",
+          "min": 0.01,
+          "max": 50,
+          "step": 0.05,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "mosfet_nmos",
+      "name": "MOSFET N-Channel (NMOS)",
+      "type": "Transistor",
+      "symbol": "Q",
+      "description": "Metal-oxide-semiconductor field-effect transistor N-channel type. Voltage-controlled switch with very high input impedance. On-resistance (RDS(on)) 1mΩ-1Ω enables low-loss switching. Fast switching <10ns. Power handling 50W-200W. Essential for low-side switching and high-efficiency power conversion. Common types: 2N7000, IRF540.",
+      "use_cases": "Power switching, MOSFET drivers, low-side switches, high-frequency switching, power conversion",
+      "editable_properties": {
+        "VGS_Threshold": {
+          "value": 2.0,
+          "unit": "V",
+          "min": 0.5,
+          "max": 10,
+          "step": 0.1,
+          "description": "Gate-source threshold voltage"
+        },
+        "RDS_On": {
+          "value": 100,
+          "unit": "mΩ",
+          "min": 1,
+          "max": 10000,
+          "step": 1,
+          "description": "On-state resistance (very low)"
+        },
+        "Max_Drain_Current": {
+          "value": 40,
+          "unit": "A",
+          "min": 0.1,
+          "max": 500,
+          "step": 0.1,
+          "description": "Maximum drain current"
+        },
+        "Max_Drain_Source_Voltage": {
+          "value": 500,
+          "unit": "V",
+          "min": 20,
+          "max": 3000,
+          "step": 20,
+          "description": "Blocking voltage"
+        },
+        "Input_Capacitance": {
+          "value": 1000,
+          "unit": "pF",
+          "min": 100,
+          "max": 10000,
+          "step": 100,
+          "description": "Gate capacitance"
+        },
+        "Switching_Speed": {
+          "value": 5,
+          "unit": "ns",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Switch turn-on/off time"
+        },
+        "Power_Dissipation": {
+          "value": 150,
+          "unit": "W",
+          "min": 1,
+          "max": 500,
+          "step": 5,
+          "description": "Maximum power rating"
+        },
+        "Temperature_Coefficient": {
+          "value": 0.003,
+          "unit": "%/°C",
+          "min": 0.001,
+          "max": 0.01,
+          "step": 0.001,
+          "description": "RDS(on) temperature drift (positive)"
+        },
+        "Manufacturer": {
+          "value": "Infineon, Vishay, ON Semiconductor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.30,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 200,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "mosfet_pmos",
+      "name": "MOSFET P-Channel (PMOS)",
+      "type": "Transistor",
+      "symbol": "Q",
+      "description": "Metal-oxide-semiconductor field-effect transistor P-channel type. Voltage-controlled with high input impedance. Conducts with negative gate voltage. Low on-resistance enables high-side switching. Used in complementary pairs with NMOS for push-pull drivers. Power handling 50W-200W.",
+      "use_cases": "High-side switching, complementary logic, push-pull drivers, power distribution switches",
+      "editable_properties": {
+        "VGS_Threshold": {
+          "value": -2.0,
+          "unit": "V",
+          "min": -10,
+          "max": -0.5,
+          "step": 0.1,
+          "description": "Gate-source threshold (negative)"
+        },
+        "RDS_On": {
+          "value": 150,
+          "unit": "mΩ",
+          "min": 1,
+          "max": 10000,
+          "step": 1,
+          "description": "On-state resistance"
+        },
+        "Max_Source_Current": {
+          "value": 30,
+          "unit": "A",
+          "min": 0.1,
+          "max": 500,
+          "step": 0.1,
+          "description": "Maximum source current"
+        },
+        "Max_Source_Drain_Voltage": {
+          "value": 500,
+          "unit": "V",
+          "min": 20,
+          "max": 3000,
+          "step": 20,
+          "description": "Blocking voltage"
+        },
+        "Input_Capacitance": {
+          "value": 1200,
+          "unit": "pF",
+          "min": 100,
+          "max": 10000,
+          "step": 100,
+          "description": "Gate capacitance"
+        },
+        "Switching_Speed": {
+          "value": 8,
+          "unit": "ns",
+          "min": 2,
+          "max": 100,
+          "step": 2,
+          "description": "Switch turn-on/off time"
+        },
+        "Power_Dissipation": {
+          "value": 100,
+          "unit": "W",
+          "min": 1,
+          "max": 500,
+          "step": 5,
+          "description": "Maximum power rating"
+        },
+        "Temperature_Coefficient": {
+          "value": 0.003,
+          "unit": "%/°C",
+          "min": 0.001,
+          "max": 0.01,
+          "step": 0.001,
+          "description": "RDS(on) temperature drift"
+        },
+        "Manufacturer": {
+          "value": "Infineon, Vishay, ON Semiconductor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.35,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 200,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "igbt_transistor",
+      "name": "IGBT (Insulated Gate Bipolar Transistor)",
+      "type": "Transistor",
+      "symbol": "Q",
+      "description": "Combines MOSFET's gate control with BJT's low on-resistance for high-power switching. Superior to MOSFET for >150V applications with higher current density. Power handling 10W-5kW. Switching frequency 1kHz-20kHz. Essential for motor drives, welders, and industrial power conversion.",
+      "use_cases": "Motor drives, industrial power supplies, welders, high-voltage switching, high-current applications",
+      "editable_properties": {
+        "VGE_Threshold": {
+          "value": 4.0,
+          "unit": "V",
+          "min": 2,
+          "max": 8,
+          "step": 0.2,
+          "description": "Gate-emitter threshold voltage"
+        },
+        "VCE_Sat": {
+          "value": 1.5,
+          "unit": "V",
+          "min": 0.5,
+          "max": 3,
+          "step": 0.1,
+          "description": "Collector-emitter saturation voltage"
+        },
+        "Max_Collector_Current": {
+          "value": 100,
+          "unit": "A",
+          "min": 1,
+          "max": 1000,
+          "step": 1,
+          "description": "Maximum continuous collector current"
+        },
+        "Max_Collector_Voltage": {
+          "value": 1200,
+          "unit": "V",
+          "min": 100,
+          "max": 6500,
+          "step": 100,
+          "description": "Maximum blocking voltage"
+        },
+        "Input_Capacitance": {
+          "value": 5000,
+          "unit": "pF",
+          "min": 500,
+          "max": 50000,
+          "step": 500,
+          "description": "Gate capacitance"
+        },
+        "Switching_Frequency": {
+          "value": 10,
+          "unit": "kHz",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "description": "Typical switching frequency"
+        },
+        "Power_Dissipation": {
+          "value": 1000,
+          "unit": "W",
+          "min": 10,
+          "max": 5000,
+          "step": 50,
+          "description": "Maximum power (with heatsink)"
+        },
+        "Temperature_Coefficient": {
+          "value": 0.002,
+          "unit": "%/°C",
+          "min": 0.001,
+          "max": 0.01,
+          "step": 0.001,
+          "description": "VCE(sat) temperature drift"
+        },
+        "Manufacturer": {
+          "value": "Infineon, ABB, Mitsubishi",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 2.00,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 500,
+          "step": 0.5,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "jfet_transistor",
+      "name": "JFET N-Channel (Junction FET)",
+      "type": "Transistor",
+      "symbol": "Q",
+      "description": "Junction field-effect transistor with high input impedance and excellent noise characteristics. Lower transconductance than MOSFET but simpler construction. Depletion-mode operation (normally-on). Used in low-noise preamplifiers, switches, and analog circuits. Less popular than MOSFET but valued for audio.",
+      "use_cases": "Low-noise preamplifiers, audio circuits, analog switches, sensitive measurement circuits",
+      "editable_properties": {
+        "VGS_Pinch_Off": {
+          "value": -5.0,
+          "unit": "V",
+          "min": -20,
+          "max": -0.5,
+          "step": 0.5,
+          "description": "Gate-source pinch-off voltage"
+        },
+        "IDSS_Zero_Gate_Current": {
+          "value": 50,
+          "unit": "mA",
+          "min": 1,
+          "max": 500,
+          "step": 1,
+          "description": "Drain current at VGS=0"
+        },
+        "Max_Drain_Current": {
+          "value": 50,
+          "unit": "mA",
+          "min": 1,
+          "max": 500,
+          "step": 1,
+          "description": "Maximum drain current"
+        },
+        "Max_Drain_Source_Voltage": {
+          "value": 30,
+          "unit": "V",
+          "min": 10,
+          "max": 300,
+          "step": 5,
+          "description": "Blocking voltage"
+        },
+        "Input_Resistance": {
+          "value": 1000,
+          "unit": "GΩ",
+          "min": 100,
+          "max": 10000,
+          "step": 100,
+          "description": "Extremely high input impedance"
+        },
+        "Noise_Figure": {
+          "value": 0.5,
+          "unit": "dB",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Very low noise for audio"
+        },
+        "Power_Dissipation": {
+          "value": 0.5,
+          "unit": "W",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "description": "Low power rating"
+        },
+        "Temperature_Coefficient": {
+          "value": 0.05,
+          "unit": "%/°C",
+          "min": 0.01,
+          "max": 0.2,
+          "step": 0.01,
+          "description": "Current drift with temperature"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Central Semiconductor, Microchip",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.15,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 50,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "triac_transistor",
+      "name": "TRIAC (Triode for AC)",
+      "type": "Transistor",
+      "symbol": "Q",
+      "description": "Bidirectional thyristor for AC power control. Conducts in both directions when triggered. Used for AC motor speed control, lighting dimmers, and heater control. Gate triggering is simple but requires careful gate current control. Power rating 0.5A-50A at 50-600V.",
+      "use_cases": "AC power control, motor speed control, lighting dimmers, heater control, AC switching",
+      "editable_properties": {
+        "Max_Gate_Trigger_Current": {
+          "value": 5,
+          "unit": "mA",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Gate current to trigger conduction"
+        },
+        "Max_Holding_Current": {
+          "value": 100,
+          "unit": "mA",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "description": "Minimum current to maintain conduction"
+        },
+        "Max_RMS_Current": {
+          "value": 25,
+          "unit": "A",
+          "min": 0.5,
+          "max": 100,
+          "step": 0.5,
+          "description": "Maximum RMS current rating"
+        },
+        "Max_Peak_Voltage": {
+          "value": 400,
+          "unit": "V",
+          "min": 50,
+          "max": 1200,
+          "step": 50,
+          "description": "Peak blocking voltage"
+        },
+        "On_State_Voltage": {
+          "value": 1.5,
+          "unit": "V",
+          "min": 0.5,
+          "max": 3,
+          "step": 0.1,
+          "description": "Voltage when conducting"
+        },
+        "Turn_Off_Time": {
+          "value": 50,
+          "unit": "μs",
+          "min": 10,
+          "max": 200,
+          "step": 10,
+          "description": "Time to turn off after gate pulse"
+        },
+        "Power_Dissipation": {
+          "value": 50,
+          "unit": "W",
+          "min": 1,
+          "max": 500,
+          "step": 5,
+          "description": "Maximum power dissipation"
+        },
+        "Gate_Pulse_Width": {
+          "value": 10,
+          "unit": "μs",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Recommended gate pulse width"
+        },
+        "Manufacturer": {
+          "value": "Vishay, STMicroelectronics, ON Semiconductor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.50,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 100,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "thyristor_scr",
+      "name": "SCR (Silicon Controlled Rectifier)",
+      "type": "Transistor",
+      "symbol": "Q",
+      "description": "Unidirectional thyristor for DC or rectified AC power control. Once triggered by gate pulse, conducts until current drops below holding current. Used for DC motor control, industrial switching, and phase control. More stable than TRIAC for DC. Power rating 0.5A-100A+ at 50-1200V.",
+      "use_cases": "DC motor control, industrial power switching, DC power regulation, phase control circuits",
+      "editable_properties": {
+        "Gate_Trigger_Voltage": {
+          "value": 1.5,
+          "unit": "V",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.1,
+          "description": "Gate voltage to trigger"
+        },
+        "Gate_Trigger_Current": {
+          "value": 10,
+          "unit": "mA",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Gate current to trigger"
+        },
+        "Max_Holding_Current": {
+          "value": 50,
+          "unit": "mA",
+          "min": 5,
+          "max": 500,
+          "step": 5,
+          "description": "Minimum current to maintain conduction"
+        },
+        "Max_RMS_Current": {
+          "value": 50,
+          "unit": "A",
+          "min": 0.5,
+          "max": 200,
+          "step": 1,
+          "description": "Maximum RMS current rating"
+        },
+        "Max_Peak_Voltage": {
+          "value": 1200,
+          "unit": "V",
+          "min": 50,
+          "max": 3000,
+          "step": 100,
+          "description": "Peak blocking voltage"
+        },
+        "On_State_Voltage": {
+          "value": 1.2,
+          "unit": "V",
+          "min": 0.5,
+          "max": 2,
+          "step": 0.1,
+          "description": "Forward voltage when conducting"
+        },
+        "Turn_Off_Time": {
+          "value": 30,
+          "unit": "μs",
+          "min": 5,
+          "max": 100,
+          "step": 5,
+          "description": "Time until blocks after current stops"
+        },
+        "Power_Dissipation": {
+          "value": 100,
+          "unit": "W",
+          "min": 1,
+          "max": 1000,
+          "step": 10,
+          "description": "Maximum power dissipation"
+        },
+        "Manufacturer": {
+          "value": "Vishay, STMicroelectronics, ON Semiconductor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.40,
+          "unit": "USD",
+          "min": 0.1,
+          "max": 100,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    }
+  ]
+}

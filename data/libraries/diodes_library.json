@@ -1,0 +1,701 @@
+{
+  "library_name": "Diodes",
+  "version": "3.0",
+  "category": "Semiconductors",
+  "description": "Comprehensive diode component library with 8 diode types, each with full specifications, descriptions, and editable properties for circuit simulation",
+  "total_types": 8,
+  "components": [
+    {
+      "id": "silicon_rectifier_diode",
+      "name": "Silicon Rectifier Diode (General Purpose)",
+      "type": "Diode",
+      "symbol": "D",
+      "description": "Standard silicon rectifier diode for general-purpose rectification and power conversion. Forward voltage ~0.7V with excellent current handling up to 10A. Suitable for AC-DC conversion, clamping, and protection circuits. Fast recovery time <1μs. Available in DO-41 (axial) and SMD packages. Cost-effective for all applications.",
+      "use_cases": "Rectification, power supplies, clamping circuits, protection, reverse-polarity protection",
+      "editable_properties": {
+        "Forward_Voltage": {
+          "value": 0.7,
+          "unit": "V",
+          "min": 0.3,
+          "max": 1.5,
+          "step": 0.1,
+          "description": "Forward voltage drop at rated current"
+        },
+        "Reverse_Recovery_Time": {
+          "value": 0.5,
+          "unit": "μs",
+          "min": 0.05,
+          "max": 5,
+          "step": 0.05,
+          "description": "Time to block after reverse bias"
+        },
+        "Max_Forward_Current": {
+          "value": 1000,
+          "unit": "mA",
+          "min": 100,
+          "max": 50000,
+          "step": 100,
+          "description": "Maximum average forward current"
+        },
+        "Max_Reverse_Voltage": {
+          "value": 1000,
+          "unit": "V",
+          "min": 50,
+          "max": 5000,
+          "step": 50,
+          "description": "Peak reverse voltage rating"
+        },
+        "Reverse_Leakage_Current": {
+          "value": 100,
+          "unit": "μA",
+          "min": 1,
+          "max": 10000,
+          "step": 1,
+          "description": "Leakage current at maximum reverse voltage"
+        },
+        "Junction_Capacitance": {
+          "value": 50,
+          "unit": "pF",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "description": "Capacitance at rated reverse voltage"
+        },
+        "Operating_Temp_Max": {
+          "value": 175,
+          "unit": "°C",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "description": "Maximum junction temperature"
+        },
+        "Package": {
+          "value": "DO-41",
+          "unit": "type",
+          "options": ["DO-41", "SMD", "Surface Mount", "Through-hole"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Fairchild, ON Semiconductor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.02,
+          "unit": "USD",
+          "min": 0.005,
+          "max": 10,
+          "step": 0.01,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "fast_recovery_diode",
+      "name": "Fast Recovery Diode",
+      "type": "Diode",
+      "symbol": "D",
+      "description": "High-speed diode with fast reverse recovery time <100ns for switching power supplies and DC-DC converters. Lower forward voltage than standard rectifiers with excellent thermal performance. Critical for high-frequency switching (>10kHz). Available up to 10A and 1000V.",
+      "use_cases": "Switching power supplies, DC-DC converters, high-frequency rectification, synchronous switching",
+      "editable_properties": {
+        "Forward_Voltage": {
+          "value": 0.55,
+          "unit": "V",
+          "min": 0.3,
+          "max": 1.2,
+          "step": 0.05,
+          "description": "Forward voltage at rated current"
+        },
+        "Reverse_Recovery_Time": {
+          "value": 30,
+          "unit": "ns",
+          "min": 5,
+          "max": 100,
+          "step": 5,
+          "description": "Ultra-fast recovery for switching"
+        },
+        "Max_Forward_Current": {
+          "value": 3000,
+          "unit": "mA",
+          "min": 100,
+          "max": 50000,
+          "step": 100,
+          "description": "Maximum forward current"
+        },
+        "Max_Reverse_Voltage": {
+          "value": 1000,
+          "unit": "V",
+          "min": 50,
+          "max": 3000,
+          "step": 50,
+          "description": "Peak reverse voltage"
+        },
+        "Switching_Frequency": {
+          "value": 100,
+          "unit": "kHz",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "description": "Optimal switching frequency"
+        },
+        "Reverse_Leakage_Current": {
+          "value": 50,
+          "unit": "μA",
+          "min": 1,
+          "max": 1000,
+          "step": 1,
+          "description": "Leakage current"
+        },
+        "Thermal_Resistance": {
+          "value": 50,
+          "unit": "°C/W",
+          "min": 10,
+          "max": 200,
+          "step": 10,
+          "description": "Heat dissipation capability"
+        },
+        "Package": {
+          "value": "DO-41",
+          "unit": "type",
+          "options": ["DO-41", "SMD", "TO-220", "Surface Mount"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Infineon, STMicroelectronics",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.05,
+          "unit": "USD",
+          "min": 0.01,
+          "max": 50,
+          "step": 0.05,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "schottky_diode",
+      "name": "Schottky Diode (Low Voltage Drop)",
+      "type": "Diode",
+      "symbol": "D",
+      "description": "Metal-semiconductor junction diode with ultra-low forward voltage (0.2-0.4V) and fast switching. Ideal for power supplies, solar panels, and high-efficiency rectification. Lower switching losses than silicon diodes. Typically 20-200V reverse voltage rating. Critical for energy-harvesting and battery-charging circuits.",
+      "use_cases": "Low-voltage power supplies, solar panels, battery charging, high-efficiency rectification, clamping",
+      "editable_properties": {
+        "Forward_Voltage": {
+          "value": 0.35,
+          "unit": "V",
+          "min": 0.2,
+          "max": 0.6,
+          "step": 0.05,
+          "description": "Ultra-low forward voltage"
+        },
+        "Max_Forward_Current": {
+          "value": 5000,
+          "unit": "mA",
+          "min": 100,
+          "max": 100000,
+          "step": 100,
+          "description": "Maximum forward current"
+        },
+        "Max_Reverse_Voltage": {
+          "value": 100,
+          "unit": "V",
+          "min": 20,
+          "max": 200,
+          "step": 5,
+          "description": "Peak reverse voltage - typically low"
+        },
+        "Reverse_Leakage_Current": {
+          "value": 1000,
+          "unit": "μA",
+          "min": 100,
+          "max": 100000,
+          "step": 100,
+          "description": "Higher leakage than silicon - temperature dependent"
+        },
+        "Reverse_Recovery_Time": {
+          "value": 5,
+          "unit": "ns",
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "description": "Extremely fast recovery"
+        },
+        "Junction_Capacitance": {
+          "value": 100,
+          "unit": "pF",
+          "min": 20,
+          "max": 500,
+          "step": 10,
+          "description": "Moderate junction capacitance"
+        },
+        "Operating_Temp_Max": {
+          "value": 150,
+          "unit": "°C",
+          "min": 100,
+          "max": 200,
+          "step": 5,
+          "description": "Maximum temperature"
+        },
+        "Efficiency_Gain": {
+          "value": 1.5,
+          "unit": "%",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.1,
+          "description": "Efficiency improvement over silicon"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Infineon, ON Semiconductor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.08,
+          "unit": "USD",
+          "min": 0.02,
+          "max": 50,
+          "step": 0.05,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "zener_diode",
+      "name": "Zener Diode (Voltage Regulation)",
+      "type": "Diode",
+      "symbol": "D",
+      "description": "Specialized diode for voltage regulation and protection. Operates in reverse-bias region with stable voltage drop across wide current range. Available 2.7V to 200V with power ratings 250mW to 50W. Essential for overvoltage protection, voltage references, and bias networks. Temperature coefficient typically ±0.05%/°C for precision types.",
+      "use_cases": "Voltage regulation, overvoltage protection, voltage references, bias networks, transient suppression",
+      "editable_properties": {
+        "Zener_Voltage": {
+          "value": 5.1,
+          "unit": "V",
+          "min": 2.4,
+          "max": 200,
+          "step": 0.1,
+          "description": "Reverse breakdown voltage"
+        },
+        "Max_Zener_Current": {
+          "value": 100,
+          "unit": "mA",
+          "min": 1,
+          "max": 100000,
+          "step": 1,
+          "description": "Maximum reverse current (DC)"
+        },
+        "Zener_Impedance": {
+          "value": 50,
+          "unit": "Ω",
+          "min": 1,
+          "max": 5000,
+          "step": 1,
+          "description": "Dynamic impedance in breakdown region"
+        },
+        "Power_Dissipation": {
+          "value": 0.5,
+          "unit": "W",
+          "min": 0.25,
+          "max": 50,
+          "step": 0.25,
+          "description": "Maximum power rating"
+        },
+        "Temperature_Coefficient": {
+          "value": 0.05,
+          "unit": "%/°C",
+          "min": 0.01,
+          "max": 0.3,
+          "step": 0.01,
+          "description": "Voltage drift with temperature"
+        },
+        "Forward_Voltage": {
+          "value": 0.7,
+          "unit": "V",
+          "min": 0.3,
+          "max": 1.5,
+          "step": 0.1,
+          "description": "Forward direction voltage"
+        },
+        "Tolerance": {
+          "value": 5,
+          "unit": "%",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "description": "Zener voltage tolerance"
+        },
+        "Package": {
+          "value": "DO-35",
+          "unit": "type",
+          "options": ["DO-35", "DO-41", "SMD", "TO-220"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Vishay, Fairchild, ON Semiconductor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.05,
+          "unit": "USD",
+          "min": 0.01,
+          "max": 100,
+          "step": 0.05,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "led_diode",
+      "name": "LED (Light Emitting Diode)",
+      "type": "Diode",
+      "symbol": "LED",
+      "description": "Semiconductor light source with colors from infrared to ultraviolet. Forward voltage 1.5-4V depending on color/material. Power LEDs support 1W+ with integrated drivers. Essential for indicators, displays, and lighting. Modern high-efficiency LEDs achieve >100 lm/W. Wide operating temperature range.",
+      "use_cases": "Indicator lights, displays, lighting, backlighting, status indicators, decorative lighting",
+      "editable_properties": {
+        "Color": {
+          "value": "Red",
+          "unit": "color",
+          "options": ["Red", "Green", "Blue", "Yellow", "Orange", "White", "UV", "IR"],
+          "description": "LED color and wavelength"
+        },
+        "Forward_Voltage": {
+          "value": 2.0,
+          "unit": "V",
+          "min": 1.5,
+          "max": 4,
+          "step": 0.2,
+          "description": "Forward voltage at rated current"
+        },
+        "Max_Forward_Current": {
+          "value": 20,
+          "unit": "mA",
+          "min": 1,
+          "max": 10000,
+          "step": 1,
+          "description": "Continuous current rating"
+        },
+        "Max_Reverse_Voltage": {
+          "value": 5,
+          "unit": "V",
+          "min": 2,
+          "max": 20,
+          "step": 1,
+          "description": "Reverse voltage rating"
+        },
+        "Luminous_Intensity": {
+          "value": 100,
+          "unit": "mcd",
+          "min": 1,
+          "max": 100000,
+          "step": 1,
+          "description": "Light intensity"
+        },
+        "Viewing_Angle": {
+          "value": 15,
+          "unit": "°",
+          "min": 5,
+          "max": 180,
+          "step": 5,
+          "description": "Half-angle light emission"
+        },
+        "Efficiency": {
+          "value": 80,
+          "unit": "lm/W",
+          "min": 5,
+          "max": 200,
+          "step": 5,
+          "description": "Luminous efficiency"
+        },
+        "Wavelength": {
+          "value": 630,
+          "unit": "nm",
+          "min": 380,
+          "max": 1100,
+          "step": 10,
+          "description": "Peak wavelength"
+        },
+        "Package": {
+          "value": "5mm",
+          "unit": "type",
+          "options": ["0603", "0805", "3mm", "5mm", "10mm", "SMD", "Power LED"],
+          "description": "Package type"
+        },
+        "Manufacturer": {
+          "value": "Kingbright, Lumileds, Philips",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.10,
+          "unit": "USD",
+          "min": 0.02,
+          "max": 100,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "photodiode",
+      "name": "Photodiode (Light Sensor)",
+      "type": "Diode",
+      "symbol": "D",
+      "description": "Reverse-biased p-n junction that generates photocurrent proportional to incident light. Ultra-low dark current (pA range) and fast response time (<1μs). Used in optical receivers, light sensors, and fiber-optic communications. Typical sensitivity 0.4-0.6 A/W. Requires transimpedance amplifier for signal conversion.",
+      "use_cases": "Optical receivers, light sensors, fiber-optic communications, motion detection, spectroscopy",
+      "editable_properties": {
+        "Sensitivity": {
+          "value": 0.5,
+          "unit": "A/W",
+          "min": 0.1,
+          "max": 1,
+          "step": 0.05,
+          "description": "Photocurrent per unit light power"
+        },
+        "Dark_Current": {
+          "value": 1,
+          "unit": "pA",
+          "min": 0.1,
+          "max": 1000,
+          "step": 0.1,
+          "description": "Leakage current without light"
+        },
+        "Junction_Capacitance": {
+          "value": 10,
+          "unit": "pF",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Junction capacitance - affects bandwidth"
+        },
+        "Response_Time": {
+          "value": 0.1,
+          "unit": "μs",
+          "min": 0.001,
+          "max": 100,
+          "step": 0.01,
+          "description": "Time to respond to light change"
+        },
+        "Bandwidth": {
+          "value": 10,
+          "unit": "MHz",
+          "min": 0.1,
+          "max": 1000,
+          "step": 10,
+          "description": "Frequency response"
+        },
+        "Peak_Wavelength": {
+          "value": 850,
+          "unit": "nm",
+          "min": 350,
+          "max": 1700,
+          "step": 10,
+          "description": "Wavelength of maximum sensitivity"
+        },
+        "Spectral_Range": {
+          "value": 400,
+          "unit": "nm",
+          "min": 50,
+          "max": 1000,
+          "step": 50,
+          "description": "Usable wavelength range"
+        },
+        "Operating_Temp_Max": {
+          "value": 100,
+          "unit": "°C",
+          "min": 50,
+          "max": 150,
+          "step": 5,
+          "description": "Maximum temperature"
+        },
+        "Manufacturer": {
+          "value": "Hamamatsu, Vishay, ON Semiconductor",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.25,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 500,
+          "step": 0.25,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "tvs_diode",
+      "name": "TVS Diode (Transient Voltage Suppression)",
+      "type": "Diode",
+      "symbol": "D",
+      "description": "Ultra-fast diode for ESD and surge protection. Clamping voltage and response time <1ns. Used to protect sensitive circuits from voltage spikes and ESD. Available unidirectional or bidirectional with voltage ratings 5V-500V. Typical clamping voltage 10% above operating voltage.",
+      "use_cases": "ESD protection, surge protection, I/O line protection, sensitive circuit protection, transient suppression",
+      "editable_properties": {
+        "Reverse_Breakdown_Voltage": {
+          "value": 5.0,
+          "unit": "V",
+          "min": 2,
+          "max": 500,
+          "step": 0.5,
+          "description": "Breakdown voltage rating"
+        },
+        "Clamping_Voltage": {
+          "value": 8.0,
+          "unit": "V",
+          "min": 3,
+          "max": 550,
+          "step": 0.5,
+          "description": "Maximum clamping voltage at peak current"
+        },
+        "Peak_Pulse_Current": {
+          "value": 50,
+          "unit": "A",
+          "min": 1,
+          "max": 1000,
+          "step": 1,
+          "description": "Maximum peak pulse current capability"
+        },
+        "Response_Time": {
+          "value": 0.5,
+          "unit": "ns",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "description": "Time to clamping - ultra-fast"
+        },
+        "Leakage_Current": {
+          "value": 1,
+          "unit": "μA",
+          "min": 0.1,
+          "max": 100,
+          "step": 0.1,
+          "description": "Leakage at rated voltage"
+        },
+        "Junction_Capacitance": {
+          "value": 20,
+          "unit": "pF",
+          "min": 5,
+          "max": 500,
+          "step": 5,
+          "description": "Junction capacitance"
+        },
+        "Power_Dissipation": {
+          "value": 200,
+          "unit": "W",
+          "min": 10,
+          "max": 5000,
+          "step": 10,
+          "description": "Peak power handling during surge"
+        },
+        "Type": {
+          "value": "Unidirectional",
+          "unit": "type",
+          "options": ["Unidirectional", "Bidirectional"],
+          "description": "Protection direction"
+        },
+        "Manufacturer": {
+          "value": "Vishay, ON Semiconductor, Infineon",
+          "unit": "text",
+          "description": "Manufacturer"
+        },
+        "Unit_Cost": {
+          "value": 0.15,
+          "unit": "USD",
+          "min": 0.05,
+          "max": 100,
+          "step": 0.1,
+          "description": "Cost per unit"
+        }
+      }
+    },
+    {
+      "id": "tunnel_diode",
+      "name": "Tunnel Diode (Esaki Diode)",
+      "type": "Diode",
+      "symbol": "D",
+      "description": "Specialized diode with negative resistance region for oscillator and high-speed switching applications. Quantum tunneling effect enables peak current 5-100mA at only 0.1-0.5V. Ultra-low capacitance and sub-nanosecond switching. Used in RF oscillators and terahertz circuits. Requires careful bias point selection.",
+      "use_cases": "RF oscillators, high-speed switching, terahertz circuits, negative resistance networks, specialized RF applications",
+      "editable_properties": {
+        "Peak_Voltage": {
+          "value": 0.3,
+          "unit": "V",
+          "min": 0.05,
+          "max": 1,
+          "step": 0.05,
+          "description": "Voltage at peak current"
+        },
+        "Peak_Current": {
+          "value": 10,
+          "unit": "mA",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "description": "Maximum current in negative resistance region"
+        },
+        "Valley_Voltage": {
+          "value": 0.5,
+          "unit": "V",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.1,
+          "description": "Voltage at valley current"
+        },
+        "Valley_Current": {
+          "value": 1,
+          "unit": "mA",
+          "min": 0.1,
+          "max": 50,
+          "step": 0.1,
+          "description": "Minimum current in negative resistance region"
+        },
+        "Negative_Resistance": {
+          "value": -50,
+          "unit": "Ω",
+          "min": -5000,
+          "max": -1,
+          "step": -10,
+          "description": "Negative resistance magnitude"
+        },
+        "Junction_Capacitance": {
+          "value": 1,
+          "unit": "pF",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "description": "Ultra-low capacitance"
+        },
+        "Max_Reverse_Voltage": {
+          "value": 1,
+          "unit": "V",
+          "min": 0.5,
+          "max": 10,
+          "step": 0.5,
+          "description": "Maximum reverse voltage"
+        },
+        "Switching_Speed": {
+          "value": 0.1,
+          "unit": "ns",
+          "min": 0.01,
+          "max": 1,
+          "step": 0.01,
+          "description": "Sub-nanosecond switching capability"
+        },
+        "Manufacturer": {
+          "value": "Sony, Toshiba, Microsemi",
+          "unit": "text",
+          "description": "Manufacturer (rare component)"
+        },
+        "Unit_Cost": {
+          "value": 2.00,
+          "unit": "USD",
+          "min": 0.5,
+          "max": 500,
+          "step": 0.5,
+          "description": "Cost per unit (premium/specialty)"
+        }
+      }
+    }
+  ]
+}
